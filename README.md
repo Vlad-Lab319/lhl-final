@@ -2,7 +2,8 @@
 
 ```
 Project Description
-You should have a document describing your project idea. In other words, what your project is all about. It should contain at least the following:
+You should have a document describing your project idea. In other words, what your project is all about.
+It should contain at least the following:
 
 Project title
 Project description - What problem your app solves
@@ -20,9 +21,11 @@ Deadline: Finished and reviewed by a mentor on week 10 day 5.
 - Team members
 ```
 
-1. This is a realtime AV chat application modeled after services like Zoom and Discord which aims to enable real time chat through text and video.
+1. This is a realtime AV chat application modeled after services like Zoom and
+   Discord which aims to enable real time chat through text and video.
 
-2. The target audience is anyone who is looking to chat remotely with a lightweight and reliable application
+2. The target audience is anyone who is looking to chat remotely with a
+   lightweight and reliable application
 
 3. Emily Waters, Haris Rizwan, Vladimir Eremenko
 
@@ -32,7 +35,8 @@ Deadline: Finished and reviewed by a mentor on week 10 day 5.
 
 ```
 User Stories:
-User stories allow you to draft the high-level requirements based on the user needs. It should describe the interaction of the user and the app.
+User stories allow you to draft the high-level requirements based on the user needs.
+It should describe the interaction of the user and the app.
 
 Deliverable: User stories document
 ```
@@ -41,7 +45,10 @@ Deliverable: User stories document
 
 ```
 Wireframes:
-Wireframes are a visual representation of the skeletal structure of your app. It should lay out the structure hierarchy and relationships between the different element of your app. Ideally, you should use a simple design software to get your wireframes done (draw.io, balsamiq, etc).
+Wireframes are a visual representation of the skeletal structure of your app.
+It should lay out the structure hierarchy and relationships between the different
+element of your app. Ideally, you should use a simple design software to get your wireframes
+done (draw.io, balsamiq, etc).
 
 Deliverable: Wireframe designs
 ```
@@ -50,7 +57,8 @@ Deliverable: Wireframe designs
 
 ```
 Entity Relationship Diagram:
-You need to design the database ERD and define what are the tables and their relationships. You should use a design software (draw.io or any other) to draft the ERD.
+You need to design the database ERD and define what are the tables and their relationships.
+You should use a design software (draw.io or any other) to draft the ERD.
 
 Deliverable: ERD design
 ```
@@ -84,7 +92,8 @@ c) Database setup
 You may need to create the database and the initial migration.
 
 d) Seed file
-You may need to create a seed file since the content of the database should never be part of your repo. Each team member will have to seed their local database.
+You may need to create a seed file since the content of the database should never be part of your repo.
+Each team member will have to seed their local database.
 
 Deliverable: Setup of your app
 ```
@@ -93,7 +102,10 @@ Deliverable: Setup of your app
 
 ```
 Project Communication
-We highly recommend that your group implements a daily stand up which will allow better communication and follow-up. You can appoint one member of your team to be the "Stand Up Master", or you can ask a mentor to help lead your stand up meetings. The stand up will allow to review:
+We highly recommend that your group implements a daily stand up which will allow better
+communication and follow-up. You can appoint one member of your team to be
+the "Stand Up Master", or you can ask a mentor to help lead your stand up meetings.
+The stand up will allow to review:
 
 What has been accomplished
 What will you be working on
@@ -101,12 +113,18 @@ What hurdles are you facing
 Deliverable: Daily stand up
 
 Project Workflow
-You need to take a few key decisions to ensure a smooth project workflow. Ideally, you should think about the following:
+You need to take a few key decisions to ensure a smooth project workflow.
+Ideally, you should think about the following:
 
-What are the project milestones: you need to create a list of the project milestones and specify what are the deadlines.
-Git workflow: establish rules about how you’re going to manage your Git workflow. You can discuss it with a mentor if needed.
-How to distribute teamwork: before distributing work, you might want to consider working together until you build the core of your app. Afterward, you need to think about how you will distribute the work among your team members.
-Coding styles: consider establishing some coding guidelines to ensure consistency between team members.
+What are the project milestones: you need to create a list of the project milestones and
+specify what are the deadlines.
+Git workflow: establish rules about how you’re going to manage your Git workflow.
+You can discuss it with a mentor if needed.
+How to distribute teamwork: before distributing work, you might want to consider
+working together until you build the core of your app. Afterward, you need to think about
+how you will distribute the work among your team members.
+Coding styles: consider establishing some coding guidelines to ensure consistency between
+team members.
 
 Deliverable: Project milestones document
 ```
@@ -114,7 +132,9 @@ Deliverable: Project milestones document
 ## **Project Development**
 
 ```
-You should work on the development of your app according to your feature list and project milestones. You should not develop any new features beyond week 11 day 5, since you need to prepare for Demo Day.
+You should work on the development of your app according to your feature list and project
+milestones. You should not develop any new features beyond week 11 day 5, since you need to
+prepare for Demo Day.
 
 Deadline: Week 11, day 5
 
@@ -134,7 +154,9 @@ Deadline: Demo Day minus 2
 ## **Project Deployment**
 
 ```
-You should have a production-ready local version of your app for Demo Day. Optionally, you might want to consider deploying your app on Heroku (or elsewhere). However, you need to account for the extra time to deploy on Heroku (or again, elsewhere).
+You should have a production-ready local version of your app for Demo Day.
+Optionally, you might want to consider deploying your app on Heroku (or elsewhere).
+However, you need to account for the extra time to deploy on Heroku (or again, elsewhere).
 ```
 
 ## **Project Presentation**
@@ -143,10 +165,14 @@ You should have a production-ready local version of your app for Demo Day. Optio
 It’s important to take some time to structure the presentation of your app.
 
 Who is the target audience:
-You have 2 targets: Employers and the public. For prospective employers you should focus on what you’ve accomplished, highlight - your skills, the technologies you used. For the public, it’s more about the user experience.
-You should have a script for the live demo. Optionally, you might want to consider using a power point.
+You have 2 targets: Employers and the public. For prospective employers you should
+focus on what you’ve accomplished, highlight - your skills, the technologies you used.
+For the public, it’s more about the user experience.
+You should have a script for the live demo. Optionally, you might want to consider
+using a power point.
 Audio/video setup: it’s important that you check your setup to ensure that everything works.
-Presentation practice: It’s important to practice before Demo Day. You should practice in front of a mentor so you can get some feedback.
+Presentation practice: It’s important to practice before Demo Day. You should practice in
+front of a mentor so you can get some feedback.
 
 Deadlines: - Practice Demo (with mentors): Demo Day minus 1 - Demo Day
 ```
