@@ -2,7 +2,8 @@
 
 ```
 Project Description
-You should have a document describing your project idea. In other words, what your project is all about.
+You should have a document describing your project idea. In other words, what your project
+is all about.
 It should contain at least the following:
 
 Project title
@@ -92,7 +93,8 @@ c) Database setup
 You may need to create the database and the initial migration.
 
 d) Seed file
-You may need to create a seed file since the content of the database should never be part of your repo.
+You may need to create a seed file since the content of the database should never be part
+of your repo.
 Each team member will have to seed their local database.
 
 Deliverable: Setup of your app
