@@ -28,7 +28,7 @@ Deadline: Finished and reviewed by a mentor on week 10 day 5.
 2. The target audience is anyone who is looking to chat remotely with a
    lightweight and reliable application
 
-3. Emily Waters, Haris Rizwan, Vladimir Eremenko
+3. Emily Waters, Haris Rizwan, Vladimir Eremenko (here)
 
 ---
 
