@@ -28,3 +28,7 @@ bcrypt.compareSync("pink-donkey-minotaur", hashedPassword);
 # React
 
 [React Docs](https://create-react-app.dev/)
+
+# Websockets
+
+[Gary's websocket repo](https://github.com/gary-jipp/demo-websockets)
