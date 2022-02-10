@@ -22,13 +22,19 @@ Deadline: Finished and reviewed by a mentor on week 10 day 5.
 - Team members
 ```
 
-1. This is a realtime AV chat application modeled after services like Zoom and
-   Discord which aims to enable real time chat through text and video.
+1. This app enables users to communicate in realtime with one another through
+   text chat, as well as video calls using websockets. Users can register an
+   account, sign in and join rooms or create private conversations with other
+   members. Visitors will also be able to join in on calls using a unique one
+   time key provided to them by a registered user.
 
-2. The target audience is anyone who is looking to chat remotely with a
-   lightweight and reliable application
+2. The target audience for this app is anyone who is looking to connect and chat
+   with friends or coworkers remotely.
 
-3. Emily Waters, Haris Rizwan, Vladimir Eremenko
+3. Group members [Github Links]:
+   [Emily Waters](https://github.com/Emily-Waters),
+   [Haris Rizwan](https://github.com/harisrizwan1),
+   [Vladimir Eremenko](https://github.com/Vlad-Lab319)
 
 ---
 
@@ -42,6 +48,19 @@ It should describe the interaction of the user and the app.
 Deliverable: User stories document
 ```
 
+### **As a user I can :**
+
+- Register an account
+- Login with an exisiting account
+- Create or join chatrooms
+- Start a private conversation with other users
+- Host a video call within a room or private message
+- Join ongoing video calls (with permission)
+- As a non registered user, I can join a hosted call if provided a unique one
+  time key.
+
+---
+
 ## **Wireframes**
 
 ```
@@ -54,6 +73,8 @@ done (draw.io, balsamiq, etc).
 Deliverable: Wireframe designs
 ```
 
+---
+
 ## **ERD**
 
 ```
@@ -63,6 +84,8 @@ You should use a design software (draw.io or any other) to draft the ERD.
 
 Deliverable: ERD design
 ```
+
+---
 
 ## **Stack**
 
@@ -76,6 +99,20 @@ Database
 
 Deliverable: Stack choices document
 ```
+
+### **Stack :**
+
+- Front End - React
+- Back End - NodeJS, ExpressJs
+- Database - Postgres? GraphQL? MongoDB?
+- Websocket - Socket.io?
+- Libraries
+  - bcryptjs
+  - nodemon
+  - cookie-session(if we use cookies)
+  - axios
+
+---
 
 ## **Setup**
 
@@ -99,6 +136,8 @@ Each team member will have to seed their local database.
 
 Deliverable: Setup of your app
 ```
+
+---
 
 ## **Workflow**
 
@@ -131,6 +170,8 @@ team members.
 Deliverable: Project milestones document
 ```
 
+---
+
 ## **Project Development**
 
 ```
@@ -153,6 +194,8 @@ Cleaning up your code
 Deadline: Demo Day minus 2
 ```
 
+---
+
 ## **Project Deployment**
 
 ```
@@ -160,6 +203,8 @@ You should have a production-ready local version of your app for Demo Day.
 Optionally, you might want to consider deploying your app on Heroku (or elsewhere).
 However, you need to account for the extra time to deploy on Heroku (or again, elsewhere).
 ```
+
+---
 
 ## **Project Presentation**
 
