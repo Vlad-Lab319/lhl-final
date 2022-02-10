@@ -1,0 +1,36 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "eslint.format.enable": true,
+    "prettier.proseWrap": "always",
+    "prettier.embeddedLanguageFormatting": "auto",
+    "prettier.printWidth": 80,
+    "files.trimTrailingWhitespace": true,
+    "editor.tabSize": 2,
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true,
+      "source.organizeImports": true
+    },
+    // Optional personalized settings
+    "git.confirmSync": false,
+    "git.autofetch": true,
+    "eslint.alwaysShowStatus": true,
+    "workbench.editor.highlightModifiedTabs": true,
+    "editor.bracketPairColorization.enabled": true,
+    "editor.detectIndentation": false,
+    "editor.linkedEditing": true,
+    "editor.formatOnPaste": true,
+    "editor.formatOnType": true,
+    "editor.minimap.enabled": false,
+    "editor.acceptSuggestionOnEnter": "smart",
+    "editor.fontSize": 16,
+    "editor.guides.bracketPairs": "active"
+  }
+}

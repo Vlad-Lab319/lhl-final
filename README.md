@@ -22,13 +22,23 @@ Deadline: Finished and reviewed by a mentor on week 10 day 5.
 - Team members
 ```
 
-1. This is a realtime AV chat application modeled after services like Zoom and
-   Discord which aims to enable real time chat through text and video.
+1. This app enables users to communicate in realtime with one another through
+   text chat, as well as video calls using websockets. Users can register an
+   account, sign in and join rooms or create private conversations with other
+   members. Visitors will also be able to join in on calls using a unique one
+   time key provided to them by a registered user.
 
-2. The target audience is anyone who is looking to chat remotely with a
-   lightweight and reliable application
+2. The target audience for this app is anyone who is looking to connect and chat
+   with friends or coworkers remotely.
 
+<<<<<<< HEAD
 3. Emily Waters, Haris Rizwan, Vladimir Eremenko (here)
+=======
+3. Group members [Github Links]:
+   [Emily Waters](https://github.com/Emily-Waters),
+   [Haris Rizwan](https://github.com/harisrizwan1),
+   [Vladimir Eremenko](https://github.com/Vlad-Lab319)
+>>>>>>> main
 
 ---
 
@@ -42,6 +52,44 @@ It should describe the interaction of the user and the app.
 Deliverable: User stories document
 ```
 
+### **As a user I can :**
+
+- Register an account
+- Login with an exisiting account
+- Create or join chatrooms
+- Start a private conversation with other users
+- Host a video call within a room or private message
+- Join ongoing video calls (with permission)
+- As a non registered user, I can join a hosted call if provided a unique one
+  time key.
+- A user can add attachments like images or audio files in a chatroom or private
+  message
+- The owner of a chatroom can delete chatrooms and moderate membership/messages
+- A user can delete or edit messages
+- A room can have channels for video and audiocalls that room members can join
+  and leave freely
+- A user can host a video call and send out invites to individual members, in a
+  group, or send a one time key to unregistered users to jump in on calls
+- The user that owns a room/group has the power to add users, remove users,
+  delete comments and moderate members. The admin user can create and delete
+  channels within a group
+- A user can search for other members on the app
+- A user can share a link outside of the app to other users inviting them to
+  join a group
+- The owner of a group can set a group to public or private, public groups are
+  listed on the homepage, private groups require a link to join/find
+- The user can search for public groups to join
+- The user can search for other users by (username?email?)
+- A user can be kicked from a group and their messages are automatically(admin
+  choice?) deleted
+- A user can be blacklisted from rejoining a group by the group owner
+- Each channel in each room will have a message history that loads messages from
+  the database and updates in realtime through a websocket connection
+
+### Stretch
+
+- files and attachments in chat
+
 ## **Wireframes**
 
 ```
@@ -54,6 +102,8 @@ done (draw.io, balsamiq, etc).
 Deliverable: Wireframe designs
 ```
 
+---
+
 ## **ERD**
 
 ```
@@ -63,6 +113,8 @@ You should use a design software (draw.io or any other) to draft the ERD.
 
 Deliverable: ERD design
 ```
+
+---
 
 ## **Stack**
 
@@ -76,6 +128,20 @@ Database
 
 Deliverable: Stack choices document
 ```
+
+### **Stack :**
+
+- Front End - React
+- Back End - NodeJS, ExpressJs
+- Database - Postgres? GraphQL? MongoDB?
+- Websocket - Socket.io?
+- Libraries
+  - bcryptjs
+  - nodemon
+  - cookie-session(if we use cookies)
+  - axios
+
+---
 
 ## **Setup**
 
@@ -99,6 +165,8 @@ Each team member will have to seed their local database.
 
 Deliverable: Setup of your app
 ```
+
+---
 
 ## **Workflow**
 
@@ -131,6 +199,8 @@ team members.
 Deliverable: Project milestones document
 ```
 
+---
+
 ## **Project Development**
 
 ```
@@ -153,6 +223,8 @@ Cleaning up your code
 Deadline: Demo Day minus 2
 ```
 
+---
+
 ## **Project Deployment**
 
 ```
@@ -160,6 +232,8 @@ You should have a production-ready local version of your app for Demo Day.
 Optionally, you might want to consider deploying your app on Heroku (or elsewhere).
 However, you need to account for the extra time to deploy on Heroku (or again, elsewhere).
 ```
+
+---
 
 ## **Project Presentation**
 
