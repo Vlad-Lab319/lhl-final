@@ -48,20 +48,22 @@ It should describe the interaction of the user and the app.
 Deliverable: User stories document
 ```
 
-### **As a user I can :**
+## **As a user I can :**
 
 - Register an account
 - Login with an exisiting account
-- Create or join chatrooms
+- Search for public rooms to join
+- Chat with other users in that rooms channels
+- See persistent message history in a chatroom, updated in realtime
+- Edit or delete my own messages
+- Search for other users (by username?email?)
+- Leave a chatroom and have the option of having my messages deleted
 - Start a private conversation with other users
 - Host a video call within a room or private message
 - Join ongoing video calls (with permission)
 - As a non registered user, I can join a hosted call if provided a unique one
   time key.
-- A user can add attachments like images or audio files in a chatroom or private
-  message
-- The owner of a chatroom can delete chatrooms and moderate membership/messages
-- A user can delete or edit messages
+
 - A room can have channels for video and audiocalls that room members can join
   and leave freely
 - A user can host a video call and send out invites to individual members, in a
@@ -69,22 +71,22 @@ Deliverable: User stories document
 - The user that owns a room/group has the power to add users, remove users,
   delete comments and moderate members. The admin user can create and delete
   channels within a group
-- A user can search for other members on the app
 - A user can share a link outside of the app to other users inviting them to
   join a group
-- The owner of a group can set a group to public or private, public groups are
-  listed on the homepage, private groups require a link to join/find
-- The user can search for public groups to join
-- The user can search for other users by (username?email?)
-- A user can be kicked from a group and their messages are automatically(admin
-  choice?) deleted
-- A user can be blacklisted from rejoining a group by the group owner
-- Each channel in each room will have a message history that loads messages from
-  the database and updates in realtime through a websocket connection
 
-### Stretch
+### **Stretch**
 
-- files and attachments in chat
+- A user can add attachments like images or audio files in a chatroom or private
+  message
+
+## **As a chatroom creator I can :**
+
+- Create a public chatroom (Public rooms are shown on the homepage)
+- Create a private chatroom (Private rooms are invite only, can only be found by
+  invitation)
+- Change a chatroom I've created from public to private (Ideally, one way only)
+- Create channels in a chatroom
+- Moderate membership in my chatroom (mute, kick, ban)
 
 ## **Wireframes**
 
