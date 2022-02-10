@@ -31,14 +31,10 @@ Deadline: Finished and reviewed by a mentor on week 10 day 5.
 2. The target audience for this app is anyone who is looking to connect and chat
    with friends or coworkers remotely.
 
-<<<<<<< HEAD
-3. Emily Waters, Haris Rizwan, Vladimir Eremenko (here)
-=======
 3. Group members [Github Links]:
    [Emily Waters](https://github.com/Emily-Waters),
    [Haris Rizwan](https://github.com/harisrizwan1),
    [Vladimir Eremenko](https://github.com/Vlad-Lab319)
->>>>>>> main
 
 ---
 
