@@ -58,8 +58,33 @@ Deliverable: User stories document
 - Join ongoing video calls (with permission)
 - As a non registered user, I can join a hosted call if provided a unique one
   time key.
+- A user can add attachments like images or audio files in a chatroom or private
+  message
+- The owner of a chatroom can delete chatrooms and moderate membership/messages
+- A user can delete or edit messages
+- A room can have channels for video and audiocalls that room members can join
+  and leave freely
+- A user can host a video call and send out invites to individual members, in a
+  group, or send a one time key to unregistered users to jump in on calls
+- The user that owns a room/group has the power to add users, remove users,
+  delete comments and moderate members. The admin user can create and delete
+  channels within a group
+- A user can search for other members on the app
+- A user can share a link outside of the app to other users inviting them to
+  join a group
+- The owner of a group can set a group to public or private, public groups are
+  listed on the homepage, private groups require a link to join/find
+- The user can search for public groups to join
+- The user can search for other users by (username?email?)
+- A user can be kicked from a group and their messages are automatically(admin
+  choice?) deleted
+- A user can be blacklisted from rejoining a group by the group owner
+- Each channel in each room will have a message history that loads messages from
+  the database and updates in realtime through a websocket connection
 
----
+### Stretch
+
+- files and attachments in chat
 
 ## **Wireframes**
 
