@@ -14,5 +14,12 @@ const ChannelList = (props) => {
     );
   });
 
-  return <>{channels}</>;
+  return (
+    <div>
+      Channels
+      {channels}
+    </div>
+  );
 };
+
+export default ChannelList;
