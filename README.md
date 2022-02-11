@@ -56,14 +56,16 @@ Deadline: Finished and reviewed by a mentor on week 10 day 5.
 
 ## **As a room creator I can :**
 
-- Create a public room (Public rooms are shown on the homepage)
-- Create a private room (Private rooms are invite only, can only be found by
-  invitation)
+- Create a public room and name it(Public rooms are shown on the homepage)
+- Create a private room and name it(Private rooms are invite only, can only be
+  found by invitation)
 - Delete an entire room and all it's channels that I own
-- Create channels in a chatroom
+- Create channels in a chatroom and name them
 - Delete channels in a chatroom
 - Delete individual messages in a channel
 - Change a room I've created from public to private (Ideally, one way only)
+- Change the name of a room I've created
+- Change the name of a channel I've created
 - Moderate membership in the rooms I own (allow, mute, kick, ban)
 
 ### **Stretch**
@@ -99,6 +101,8 @@ You should use a design software (draw.io or any other) to draft the ERD.
 
 Deliverable: ERD design
 ```
+
+![Entity Relationship Diagram](https://github.com/Emily-Waters/lhl-final/blob/main/lhl-final-erd.png)
 
 ---
 
