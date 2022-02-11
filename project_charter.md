@@ -56,9 +56,9 @@
 
 ## Plan
 
-  Daily meetings in Discord for reviewing a progress at certain time???
-  Never start coding without picking a user story from a list of stories ???
-  Push and merge git requests rules ??? 
+  [x] Daily meetings in Discord for reviewing a progress at 10:00 - 10:30 PST
+  [x] Never start coding without picking a user story from a list of stories
+  [x] Push and merge git requests rules 
   Tasks distribution ???
 
   [x] Git repo Setup
