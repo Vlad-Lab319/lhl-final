@@ -26,6 +26,7 @@ bcrypt.compareSync("pink-donkey-minotaur", hashedPassword);
 # **React**
 
 [React Docs](https://create-react-app.dev/)
+[Video conferencing with React](https://www.section.io/engineering-education/video-conferencing-app-with-react-node/)
 
 # **Websockets** - Setting up a websocket connection in express and react
 
