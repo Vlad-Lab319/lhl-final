@@ -102,6 +102,8 @@ You should use a design software (draw.io or any other) to draft the ERD.
 Deliverable: ERD design
 ```
 
+![Entity Relationship Diagram](https://github.com/Emily-Waters/lhl-final/blob/main/lhl-final-erd.png)
+
 ---
 
 # **Stack**
