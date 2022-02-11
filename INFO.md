@@ -23,14 +23,24 @@ bcrypt.compareSync("pink-donkey-minotaur", hashedPassword);
 // returns false
 ```
 
----
-
-# React
+# **React**
 
 [React Docs](https://create-react-app.dev/)
+[Video conferencing with React](https://www.section.io/engineering-education/video-conferencing-app-with-react-node/)
+[WebRTC](https://webrtc.org/)
+[WebRTC Github - Sample Code](https://github.com/webrtc)
 [Component Library](https://mui.com/)
 [React Icons](https://react-icons.github.io/react-icons/)
 
-# Websockets
+# **Websockets** - Setting up a websocket connection in express and react
 
 [Gary's websocket repo](https://github.com/gary-jipp/demo-websockets)
+
+# **UDP** - Alternative to TCP for Video/Audio
+
+[Article on UDP](<https://www.techtarget.com/searchnetworking/definition/UDP-User-Datagram-Protocol#:~:text=User%20Datagram%20Protocol%20(UDP)%20is,provided%20by%20the%20receiving%20party.>)
+
+[Node Docs](https://nodejs.org/api/dgram.html) -
+https://nodejs.org/api/dgram.html
+
+[Tabnine Code Snippets](https://www.tabnine.com/code/javascript/modules/dgram)
