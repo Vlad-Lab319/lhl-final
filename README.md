@@ -14,13 +14,7 @@ Team members
 Deadline: Finished and reviewed by a mentor on week 10 day 5.
 ```
 
-### **Description:**
-
-```
-- What problem does this app solve?
-- Who are our target audience?
-- Team members
-```
+# **Description:**
 
 1. This app enables users to communicate in realtime with one another through
    text chat, as well as video calls using websockets. Users can register an
@@ -38,57 +32,51 @@ Deadline: Finished and reviewed by a mentor on week 10 day 5.
 
 ---
 
-## **User Stories**
-
-```
-User Stories:
-User stories allow you to draft the high-level requirements based on the user needs.
-It should describe the interaction of the user and the app.
-
-Deliverable: User stories document
-```
+# **User Stories**
 
 ## **As a user I can :**
 
-- Register an account
-- Login with an exisiting account
-- Search for public rooms to join
-- Chat with other users in that rooms channels
-- See persistent message history in a chatroom, updated in realtime
-- Edit or delete my own messages
-- Search for other users (by username?email?)
-- Leave a chatroom and have the option of having my messages deleted
-- Start a private conversation with other users
-- Host a video call within a room or private message
-- Join ongoing video calls (with permission)
-- As a non registered user, I can join a hosted call if provided a unique one
-  time key.
+- ### User to App Interaction
 
-- A room can have channels for video and audiocalls that room members can join
-  and leave freely
-- A user can host a video call and send out invites to individual members, in a
-  group, or send a one time key to unregistered users to jump in on calls
-- The user that owns a room/group has the power to add users, remove users,
-  delete comments and moderate members. The admin user can create and delete
-  channels within a group
-- A user can share a link outside of the app to other users inviting them to
-  join a group
+  - Register an account, with a username, email and password
+  - Login with an existing account
+  - Search for public rooms to join
+  - Edit or delete my own messages
+  - Leave a room and have the option of having my messages deleted
+  - Create a room
+
+- ### User To User Interaction
+  - Chat with other users in a rooms channels
+  - See persistent message history in a channel, updated in realtime
+  - Search for other users (by username?email?)
+  - Send friend requests to other users
+  - Start a private conversation with other users
+  - Make a video/audio call in a private message
+  - Share a link to other users inviting them to join a room
+
+## **As a room creator I can :**
+
+- Create a public room (Public rooms are shown on the homepage)
+- Create a private room (Private rooms are invite only, can only be found by
+  invitation)
+- Delete an entire room and all it's channels that I own
+- Create channels in a chatroom
+- Delete channels in a chatroom
+- Delete individual messages in a channel
+- Change a room I've created from public to private (Ideally, one way only)
+- Moderate membership in the rooms I own (allow, mute, kick, ban)
 
 ### **Stretch**
 
+- Join a video/audio call in a dedicated AV channel
 - A user can add attachments like images or audio files in a chatroom or private
   message
+- As a non registered user, I can join a hosted call if provided a unique one
+  time key.
 
-## **As a chatroom creator I can :**
+---
 
-- Create a public chatroom (Public rooms are shown on the homepage)
-- Create a private chatroom (Private rooms are invite only, can only be found by
-  invitation)
-- Change a chatroom I've created from public to private (Ideally, one way only)
-- Create channels in a chatroom
-- Moderate membership in my chatroom (mute, kick, ban)
-
-## **Wireframes**
+# **Wireframes**
 
 ```
 Wireframes:
@@ -102,7 +90,7 @@ Deliverable: Wireframe designs
 
 ---
 
-## **ERD**
+# **ERD**
 
 ```
 Entity Relationship Diagram:
@@ -114,20 +102,7 @@ Deliverable: ERD design
 
 ---
 
-## **Stack**
-
-```
-Stack Choices:
-What are the technologies you’re going to use to develop for your app. You need to think about:
-
-Front-End
-Back-End
-Database
-
-Deliverable: Stack choices document
-```
-
-### **Stack :**
+# **Stack**
 
 - Front End - React
 - Back End - NodeJS, ExpressJs
@@ -141,7 +116,7 @@ Deliverable: Stack choices document
 
 ---
 
-## **Setup**
+# **Setup**
 
 ```
 Project Setup
@@ -166,7 +141,7 @@ Deliverable: Setup of your app
 
 ---
 
-## **Workflow**
+# **Workflow**
 
 ```
 Project Communication
@@ -199,7 +174,7 @@ Deliverable: Project milestones document
 
 ---
 
-## **Project Development**
+# **Project Development**
 
 ```
 You should work on the development of your app according to your feature list and project
@@ -223,7 +198,7 @@ Deadline: Demo Day minus 2
 
 ---
 
-## **Project Deployment**
+# **Project Deployment**
 
 ```
 You should have a production-ready local version of your app for Demo Day.
@@ -233,7 +208,7 @@ However, you need to account for the extra time to deploy on Heroku (or again, e
 
 ---
 
-## **Project Presentation**
+# **Project Presentation**
 
 ```
 It’s important to take some time to structure the presentation of your app.
