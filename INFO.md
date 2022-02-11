@@ -29,6 +29,8 @@ bcrypt.compareSync("pink-donkey-minotaur", hashedPassword);
 [Video conferencing with React](https://www.section.io/engineering-education/video-conferencing-app-with-react-node/)
 [WebRTC](https://webrtc.org/)
 [WebRTC Github - Sample Code](https://github.com/webrtc)
+[Component Library](https://mui.com/)
+[React Icons](https://react-icons.github.io/react-icons/)
 
 # **Websockets** - Setting up a websocket connection in express and react
 
