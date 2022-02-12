@@ -1,0 +1,27 @@
+@import "variables.scss";
+
+.header {
+  position: fixed;
+  top: 0;
+  display: flex;
+  flex-direction: row;
+  color: white;
+  background-color: $dark-background;
+  width: 100vw;
+  height: $sidebar-width;
+}
+
+.sidebar {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &--rooms {
+    margin-top: $sidebar-width;
+    bottom: 0;
+    width: $sidebar-width;
+    background-color: lighten($dark-background, 5);
+  }
+}
