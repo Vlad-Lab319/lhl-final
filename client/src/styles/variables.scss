@@ -1,0 +1,21 @@
+$dark-background: rgb(50, 50, 50);
+$font-family: "Source Sans Pro", sans-serif;
+
+$icon-hw: 4rem;
+$icon-margin: 1rem;
+$sidebar-width: ($icon-margin * 2) + $icon-hw;
+
+$active-opacity: 1;
+$inactive-opacity: 0.15;
+
+$white: #fff;
+$black: #000;
+
+$spacing: 2rem;
+
+@mixin icon-vars {
+  border-radius: 2rem;
+  height: $icon-hw;
+  width: $icon-hw;
+  background-color: darken($dark-background, 5);
+}

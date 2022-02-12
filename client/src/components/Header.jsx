@@ -3,7 +3,16 @@ import "../styles/Header.scss";
 
 const Header = (props) => {
   const {} = props;
-  return;
+  return (
+    <div className="container">
+      <div className="user-options user-options--logo">LOGO</div>
+      <div className="user-options">
+        <div className="user-options user-options--avatar">AVATAR</div>
+        <div className="user-options user-options--gear">GEAR</div>
+        <div className="user-options user-options--hamburger">HAMBURGER</div>
+      </div>
+    </div>
+  );
 };
 
 export default Header;
