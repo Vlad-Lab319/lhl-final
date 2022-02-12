@@ -70,6 +70,6 @@ POST /rooms/:id/channels/:id/messages
 
 - add new message
 
-GET /rooms/:id/channels/:id/messages
+GET /rooms/:id/channels/:id/messages/:id
 
 - get specific message
