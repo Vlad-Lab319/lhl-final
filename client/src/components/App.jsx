@@ -29,11 +29,10 @@ const App = () => {
         <div className="sidebar sidebar--friends">
           <FriendList />
         </div>
-       <div className="webrtc">
+        <div className="webrtc">
           <WebRtc />
-       </div>
+        </div>
       </div>
-      
     </main>
   );
 };
