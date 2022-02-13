@@ -17,7 +17,7 @@ const WebRtc = (props) => {
   const firebaseConfig =
 
   {
-    //goes here...
+   // Firebase stuff goes here
   };
 
 
@@ -170,21 +170,28 @@ const WebRtc = (props) => {
 
 
   return (
-    <div className="container">
-      WebRTC
-      <div className="videos">
+    <div>
 
-        <span>
-          <h3>Local Stream</h3>
-          <video autoPlay playsInline ref={webCam}></video>
-        </span>
-        <span>
-          <h3>Remote Stream</h3>
-          <video autoPlay playsInline ref={remoteCam}></video>
-        </span>
+
+
+      <div className="container">
+        <div>
+
+          WebRTC
+        </div>
+        <div className="videos">
+
+          <span>
+            <h3>Local Stream</h3>
+            <video autoPlay playsInline ref={webCam}></video>
+          </span>
+          <span>
+            <h3>Remote Stream</h3>
+            <video autoPlay playsInline ref={remoteCam}></video>
+          </span>
+        </div>
       </div>
-
-      <div>
+      <div className="container">
 
         <button onClick={getLocalStream}>Start stream</button>
         <button onClick={startMeeting}>Host meeting</button>
@@ -202,6 +209,7 @@ const WebRtc = (props) => {
         <button onClick={joinMeeting}>Join meeting</button>
         {/* <button onClick={hangup}>Hangup</button> */}
       </div>
+
 
 
 
