@@ -26,4 +26,6 @@ router.get("/friends/:userID", (req, res) => {
   });
 });
 
+// TODO: get all distinct users from the users table that are in the same rooms as the current logged in user
+
 module.exports = router;

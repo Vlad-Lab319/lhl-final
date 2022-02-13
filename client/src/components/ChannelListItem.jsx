@@ -1,10 +1,26 @@
+import TextsmsIcon from "@mui/icons-material/Textsms";
+import classNames from "classnames";
 import "../styles/ChannelListItem.scss";
 
-// TODO: MessageListItem will render individual messages showing a user avatar, user name and the message content. Messages can be edited or deleted by the user, or deleted by the room owner.
-
 const ChannelListItem = (props) => {
-  const {} = props;
-  return;
+  const { name, setChannel, selected, type } = props;
+
+  const channelListClass = classNames(
+    "channel-item",
+    selected && "channel-item--selected"
+  );
+
+  const iconClass = classNames(
+    "channel-icon",
+    selected && "channel-icon--selected"
+  );
+
+  return (
+    <div className={channelListClass} onClick={setChannel}>
+      <div className={iconClass}>{type === "text" && <TextsmsIcon />}</div>
+      <span>{name}</span>
+    </div>
+  );
 };
 
 export default ChannelListItem;
