@@ -1,16 +1,11 @@
 const express = require("express");
+const db = require("../db/index");
 const router = express.Router();
-const userQueries = require("../db/user-queries");
 
 router.get("/", (req, res) => {
-  userQueries
-    .getUsers()
-    .then((users) => {
-      res.json({ users });
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err.message });
-    });
+  db.query(`SELECT * FROM users;`).then(({ rows: users }) => {
+    res.json(users);
+  });
 });
 
 module.exports = router;
