@@ -28,8 +28,8 @@ body {
 .main-container {
   position: relative;
   width: 100%;
-  top: $sidebar-width;
-  bottom: 0rem;
+  // top: $sidebar;
+  // bottom: 0rem;
   display: flex;
   justify-content: space-between;
   flex-direction: row;

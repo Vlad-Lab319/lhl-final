@@ -1,0 +1,33 @@
+.channel-title {
+  margin: 1rem;
+  text-align: center;
+  font-size: smaller;
+}
+
+.channel-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  color: rgb(100, 100, 100);
+  &--selected {
+    color: white;
+  }
+}
+
+.channel-item:hover {
+  font-weight: 700;
+}
+
+.channel-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0.5rem 1rem 0.5rem;
+  text-align: center;
+  width: 2rem;
+  height: 2rem;
+  &--selected {
+    color: red;
+  }
+}
