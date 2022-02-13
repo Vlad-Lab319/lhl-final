@@ -25,3 +25,20 @@
     background-color: lighten($dark-background, 5);
   }
 }
+.webrtc {
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  left: $sidebar-width;
+  top: $sidebar-width;
+  background-color: lighten($dark-background, 5);
+
+}
+
+video {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

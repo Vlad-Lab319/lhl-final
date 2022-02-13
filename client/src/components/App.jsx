@@ -4,6 +4,7 @@ import "../styles/App.scss";
 import Header from "./Header";
 // import MessageList from "./MessageList";
 import RoomList from "./RoomList";
+import WebRtc from "./WebRTC";
 
 const App = () => {
   return (
@@ -19,6 +20,10 @@ const App = () => {
       <ChannelList />
       <MessageList />
       <FriendList /> */}
+      <div className="webrtc">
+        <WebRtc />
+
+      </div>
     </main>
   );
 };
