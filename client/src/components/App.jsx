@@ -1,5 +1,8 @@
 // Helpers
-import { getChannelsForRoom } from "../helpers/selectors";
+import {
+  getChannelsForRoom,
+  getMessagesForChannel,
+} from "../helpers/selectors";
 // State
 import useApplicationData from "../hooks/useApplicationData";
 // Styles - scss
@@ -8,12 +11,13 @@ import ChannelList from "./ChannelList";
 import ChatInput from "./ChatInput";
 import FriendList from "./FriendList";
 import Header from "./Header";
+import MessageList from "./MessageList";
 import RoomList from "./RoomList";
 
 const App = () => {
   const { state, setChannel, setRoom, setUser } = useApplicationData();
   const channelList = getChannelsForRoom(state.room, state);
-  // const messageList = getMessagesForChannel(state.channel, state);
+  const messageList = getMessagesForChannel(state.channel, state);
   // const user = setUser;
   return (
     <main className="layout">
@@ -27,9 +31,10 @@ const App = () => {
           setChannel={setChannel}
           channelList={channelList}
           value={state.channel}
+          room={state.room}
         />
         <div className="messages">
-          {/* <MessageList messageList={messageList} /> */}
+          <MessageList messageList={messageList} channel={state.channel} />
           <ChatInput />
         </div>
         <div className="sidebar sidebar--friends">
