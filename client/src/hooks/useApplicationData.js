@@ -99,6 +99,7 @@ export default function useApplicationData() {
       axios.get(`/api/rooms/${state.user.id}`),
       axios.get(`/api/channels/${state.user.id}`),
       axios.get(`/api/messages/${state.user.id}`),
+      // axios.get(`/api/users/${state.user.id}`),
     ]).then((all) => {
       const [rooms, channels, messages] = all;
       console.log(messages.data);

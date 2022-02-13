@@ -31,6 +31,7 @@
     "editor.minimap.enabled": false,
     "editor.acceptSuggestionOnEnter": "smart",
     "editor.fontSize": 16,
-    "editor.guides.bracketPairs": "active"
+    "editor.guides.bracketPairs": "active",
+    "todo-tree.filtering.excludeGlobs": ["**/node_modules", "~/node_modules"]
   }
 }
