@@ -6,17 +6,17 @@ import "../styles/MessageListItem.scss";
 const MessageListItem = (props) => {
   const { id, content, time, user } = props;
   console.log("Content: ", content);
-  const messageClass = classNames();
+  const messageClass = classNames("message-item");
 
   return (
-    <div>
-      <li className={messageClass}>
+    <ul className={messageClass}>
+      <section>
         {/* <img src={user.avatar} alt={(user.name, " avatar")} /> */}
         <h2>{user}</h2>
         <span>{time}</span>
-      </li>
-      <li>{content}</li>
-    </div>
+      </section>
+      <article>{content}</article>
+    </ul>
   );
 };
 

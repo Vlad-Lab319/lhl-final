@@ -9,15 +9,16 @@ import useApplicationData from "../hooks/useApplicationData";
 import "../styles/App.scss";
 import ChannelList from "./ChannelList";
 import ChatInput from "./ChatInput";
-import FriendList from "./FriendList";
 import Header from "./Header";
 import MessageList from "./MessageList";
 import RoomList from "./RoomList";
+import RoomMembersList from "./RoomMembersList";
 
 const App = () => {
   const { state, setChannel, setRoom, setUser } = useApplicationData();
   const channelList = getChannelsForRoom(state.room, state);
   const messageList = getMessagesForChannel(state.channel, state);
+  const memberList = [];
   // const user = setUser;
   return (
     <main className="layout">
@@ -38,7 +39,8 @@ const App = () => {
           <ChatInput />
         </div>
         <div className="sidebar sidebar--friends">
-          <FriendList />
+          {/* <FriendList /> */}
+          <RoomMembersList memberList={memberList} />
         </div>
         {/* <div className="webrtc">
           <WebRtc />

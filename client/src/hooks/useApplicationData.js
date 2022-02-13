@@ -10,6 +10,7 @@ export default function useApplicationData() {
     rooms: [],
     channels: [],
     friends: [],
+    members: [],
     messages: [],
   };
 
