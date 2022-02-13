@@ -9,8 +9,14 @@ app.use(express.static("public"));
 const PORT = 8080;
 
 const usersRoutes = require("./routes/users");
+const roomsRoutes = require("./routes/rooms");
+const channelsRoutes = require("./routes/channels");
+const messagesRoutes = require("./routes/messages");
 
 app.use("/api/users", usersRoutes);
+app.use("/api/rooms", roomsRoutes);
+app.use("/api/channels", channelsRoutes);
+app.use("/api/messages", messagesRoutes);
 
 app.get("/", (req, res) => {});
 
