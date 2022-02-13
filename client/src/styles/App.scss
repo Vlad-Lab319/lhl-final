@@ -15,8 +15,8 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  // top: 0;
-  // bottom: 0;
+  top: 0;
+  bottom: 0;
 
   &--rooms {
     width: $sidebar-width;
@@ -50,6 +50,7 @@
   width: 100%;
   align-items: stretch;
 }
+
 .webrtc {
   position: fixed;
   display: flex;
@@ -59,7 +60,6 @@
   left: $sidebar-width;
   top: $sidebar-width;
   background-color: lighten($dark-background, 5);
-
 }
 
 video {
