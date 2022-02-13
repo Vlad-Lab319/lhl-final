@@ -32,7 +32,7 @@ const App = () => {
        <div className="webrtc">
           <WebRtc />
        </div>
-
+      </div>
       
     </main>
   );
