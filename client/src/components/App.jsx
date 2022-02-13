@@ -5,7 +5,6 @@ import FriendList from "./FriendList";
 import Header from "./Header";
 import MessageList from "./MessageList";
 import RoomList from "./RoomList";
-
 import WebRtc from "./WebRTC";
 
 const App = () => {
@@ -29,11 +28,10 @@ const App = () => {
         <div className="sidebar sidebar--friends">
           <FriendList />
         </div>
-       <div className="webrtc">
+        <div className="webrtc">
           <WebRtc />
-       </div>
-
-      
+        </div>
+      </div>
     </main>
   );
 };
