@@ -97,15 +97,16 @@ export default function useApplicationData() {
     Promise.all([
       axios.get(`/api/rooms/${state.user.id}`),
       axios.get(`/api/channels/${state.user.id}`),
-      // axios.get("/api/friends/", state.user.id),
+      axios.get(`/api/messages/${state.user.id}`),
     ]).then((all) => {
-      const [rooms, channels /* friends*/] = all;
+      const [rooms, channels, messages] = all;
+      console.log(messages.data);
       dispatch({
         type: SET_APPLICATION_DATA,
         value: {
           rooms: rooms.data,
           channels: channels.data,
-          // friends: friends.data,
+          messages: messages.data,
         },
       });
     });
