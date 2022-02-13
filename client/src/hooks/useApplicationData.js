@@ -93,7 +93,6 @@ export default function useApplicationData() {
   // });
 
   // Retrieves data from the server database to populate state
-  // TODO: IMPORTANT!!!
   useEffect(() => {
     Promise.all([
       axios.get(`/api/rooms/${state.user.id}`),
@@ -101,7 +100,6 @@ export default function useApplicationData() {
       // axios.get("/api/friends/", state.user.id),
     ]).then((all) => {
       const [rooms, channels /* friends*/] = all;
-      // console.log(rooms.data);
       dispatch({
         type: SET_APPLICATION_DATA,
         value: {
@@ -111,7 +109,7 @@ export default function useApplicationData() {
         },
       });
     });
-  }, []);
+  }, [state.user.id]);
 
   return {
     state,
