@@ -1,9 +1,10 @@
+import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import classNames from "classnames";
 import "../styles/RoomListItem.scss";
-// TODO:
 
 const RoomListItem = (props) => {
   const { name, icon, setRoom, selected } = props;
+
   const roomItemClass = classNames(
     "room-icon",
     selected && "room-icon--selected"
@@ -15,12 +16,13 @@ const RoomListItem = (props) => {
       .map((word) => word[0].toUpperCase())
       .join(" ");
   };
+
   const roomInitials = formatRoomName(name);
-  console.log(roomInitials);
   return (
-    <div className="container">
+    <div className="room-container" onClick={setRoom}>
+      <FiberManualRecordIcon className="notification" />
       <div className="room-name">{roomInitials}</div>
-      <img className={roomItemClass} src={icon} alt="" onClick={setRoom} />
+      <img className={roomItemClass} src={icon} alt="" />
     </div>
   );
 };
