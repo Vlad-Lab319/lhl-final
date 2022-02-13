@@ -1,5 +1,5 @@
 import "../styles/Header.scss";
-// TODO: Header will contain the app logo and user options (login, logout, change name etc...)
+// TODO: Header needs actual interactive icons rather than the placeholder text here, register/login/logout needs to be implemented (Probably create a new component that get rendered by the Header and handles that)
 
 const Header = (props) => {
   const {} = props;

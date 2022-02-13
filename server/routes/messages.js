@@ -20,11 +20,3 @@ router.get("/:userID", (req, res) => {
 });
 
 module.exports = router;
-
-// select messages.*
-//   from messages
-// join channels on channels.id = messsages.channel_id
-// join rooms ON channels.room_id = rooms.id
-// join room_users ON rooms.id = room_users.room_id
-// join users ON users.id = room_users.user_id
-// where users.id = $1

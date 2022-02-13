@@ -1,11 +1,9 @@
-import firebase from 'firebase/app';
-import 'firebase/firestore';
-
-import { useRef, useEffect, useState } from "react";
-// TODO:
+import firebase from "firebase/app";
+import "firebase/firestore";
+import { useRef, useState } from "react";
 
 const WebRtc = (props) => {
-  const { } = props;
+  const {} = props;
 
   const [meetingId, setOffer] = useState("waiting...");
   const [input, setInput] = useState("");
@@ -13,30 +11,27 @@ const WebRtc = (props) => {
   const webCam = useRef();
   const remoteCam = useRef();
 
-
-  const firebaseConfig =
-
-  {
-   // Firebase stuff goes here
+  const firebaseConfig = {
+    // Firebase stuff goes here
   };
-
 
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
   }
-
 
   const firestore = firebase.firestore();
 
   const servers = {
     iceServers: [
       {
-        urls: ['stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302'],
+        urls: [
+          "stun:stun1.l.google.com:19302",
+          "stun:stun2.l.google.com:19302",
+        ],
       },
     ],
     iceCandidatePoolSize: 10,
   };
-
 
   const pc = new RTCPeerConnection(servers);
   let localStream = null;
@@ -45,12 +40,13 @@ const WebRtc = (props) => {
   // Setup media sources
 
   function getLocalStream() {
-    console.log('WebCam');
-    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-      .then(stream => {
+    console.log("WebCam");
+    navigator.mediaDevices
+      .getUserMedia({ video: true, audio: true })
+      .then((stream) => {
         localStream = stream;
         remoteStream = new MediaStream();
-        console.log('streaming');
+        console.log("streaming");
 
         // Push tracks from local stream to peer connection
         localStream.getTracks().forEach((track) => {
@@ -66,20 +62,19 @@ const WebRtc = (props) => {
 
         webCam.current.srcObject = localStream;
         remoteCam.current.srcObject = remoteStream;
-
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   }
 
   // Create an offer
 
   async function startMeeting() {
-    console.log('Meeting');
+    console.log("Meeting");
 
     // Reference Firestore collections for signaling
-    const callDoc = firestore.collection('calls').doc();
-    const offerCandidates = callDoc.collection('offerCandidates');
-    const answerCandidates = callDoc.collection('answerCandidates');
+    const callDoc = firestore.collection("calls").doc();
+    const offerCandidates = callDoc.collection("offerCandidates");
+    const answerCandidates = callDoc.collection("answerCandidates");
 
     // callInput.value = callDoc.id;
     console.log(callDoc.id);
@@ -113,25 +108,22 @@ const WebRtc = (props) => {
     // When answered, add candidate to peer connection
     answerCandidates.onSnapshot((snapshot) => {
       snapshot.docChanges().forEach((change) => {
-        if (change.type === 'added') {
+        if (change.type === "added") {
           const candidate = new RTCIceCandidate(change.doc.data());
           pc.addIceCandidate(candidate);
         }
       });
     });
-
-
   }
 
   // 3. Answer the call with the unique ID
 
   async function joinMeeting() {
-
     const callId = input;
 
-    const callDoc = firestore.collection('calls').doc(callId);
-    const answerCandidates = callDoc.collection('answerCandidates');
-    const offerCandidates = callDoc.collection('offerCandidates');
+    const callDoc = firestore.collection("calls").doc(callId);
+    const answerCandidates = callDoc.collection("answerCandidates");
+    const offerCandidates = callDoc.collection("offerCandidates");
 
     pc.onicecandidate = (event) => {
       event.candidate && answerCandidates.add(event.candidate.toJSON());
@@ -155,32 +147,24 @@ const WebRtc = (props) => {
     offerCandidates.onSnapshot((snapshot) => {
       snapshot.docChanges().forEach((change) => {
         console.log(change);
-        if (change.type === 'added') {
+        if (change.type === "added") {
           let data = change.doc.data();
           pc.addIceCandidate(new RTCIceCandidate(data));
         }
       });
     });
-  };
+  }
 
   // function hangup() {
 
   //   pc.close();
   // }
 
-
   return (
     <div>
-
-
-
       <div className="container">
-        <div>
-
-          WebRTC
-        </div>
+        <div>WebRTC</div>
         <div className="videos">
-
           <span>
             <h3>Local Stream</h3>
             <video autoPlay playsInline ref={webCam}></video>
@@ -192,11 +176,10 @@ const WebRtc = (props) => {
         </div>
       </div>
       <div className="container">
-
         <button onClick={getLocalStream}>Start stream</button>
         <button onClick={startMeeting}>Host meeting</button>
         <span>{meetingId}</span>
-        <form onSubmit={e => e.preventDefault()} autoComplete="off">
+        <form onSubmit={(e) => e.preventDefault()} autoComplete="off">
           <input
             className=""
             name="offer"
@@ -209,10 +192,6 @@ const WebRtc = (props) => {
         <button onClick={joinMeeting}>Join meeting</button>
         {/* <button onClick={hangup}>Hangup</button> */}
       </div>
-
-
-
-
     </div>
   );
 };

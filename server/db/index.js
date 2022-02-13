@@ -21,3 +21,5 @@ const query = (queryString, queryParams) => {
 module.exports = {
   query,
 };
+
+// TODO: It would be nice to have some more seeds for the db, but don't waste alot of time on it

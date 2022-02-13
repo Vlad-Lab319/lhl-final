@@ -69,6 +69,8 @@ export default function useApplicationData() {
     dispatch({ type: SET_ROOM, value: room });
   };
 
+  // TODO: Websocket for updating new messages, new channels, and active users in a channel
+
   // // Websocket
   // useEffect(() => {
   //   const webSocket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
@@ -99,6 +101,7 @@ export default function useApplicationData() {
       axios.get(`/api/rooms/${state.user.id}`),
       axios.get(`/api/channels/${state.user.id}`),
       axios.get(`/api/messages/${state.user.id}`),
+      // TODO: Needs route for getting all users who are in the same rooms as the currently signed in user
       // axios.get(`/api/users/${state.user.id}`),
     ]).then((all) => {
       const [rooms, channels, messages] = all;

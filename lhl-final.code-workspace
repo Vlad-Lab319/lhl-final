@@ -32,6 +32,7 @@
     "editor.acceptSuggestionOnEnter": "smart",
     "editor.fontSize": 16,
     "editor.guides.bracketPairs": "active",
-    "todo-tree.filtering.excludeGlobs": ["**/node_modules", "~/node_modules"]
+    "todo-tree.filtering.excludeGlobs": ["**/node_modules", "~/node_modules"],
+    "todo-tree.general.tags": ["BUG", "HACK", "FIXME", "TODO", "XXX"]
   }
 }
