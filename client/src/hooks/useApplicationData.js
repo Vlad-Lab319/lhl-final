@@ -96,17 +96,18 @@ export default function useApplicationData() {
   // TODO: IMPORTANT!!!
   useEffect(() => {
     Promise.all([
-      axios.get("/api/rooms/", state.user.id),
-      axios.get("/api/channels/", state.user.id),
-      axios.get("/api/friends/", state.user.id),
+      axios.get(`/api/rooms/${state.user.id}`),
+      axios.get(`/api/channels/${state.user.id}`),
+      // axios.get("/api/friends/", state.user.id),
     ]).then((all) => {
-      const [rooms, channels, friends] = all;
+      const [rooms, channels /* friends*/] = all;
+      // console.log(rooms.data);
       dispatch({
         type: SET_APPLICATION_DATA,
         value: {
           rooms: rooms.data,
           channels: channels.data,
-          friends: friends.data,
+          // friends: friends.data,
         },
       });
     });
