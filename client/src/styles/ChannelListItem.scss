@@ -8,9 +8,14 @@
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
+  color: rgb(100, 100, 100);
   &--selected {
-    font-weight: 700;
+    color: white;
   }
+}
+
+.channel-item:hover {
+  font-weight: 700;
 }
 
 .channel-icon {
