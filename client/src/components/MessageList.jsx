@@ -3,9 +3,9 @@ import "../styles/MessageList.scss";
 import MessageListItem from "./MessageListItem";
 // import {addUserToMessage} from '../helpers/selectors'
 
-// TODO: MessageList will render MessageListItem for a channel. MessageListItem will take a single message from the messageList. messageList is an array of objects containing a user_id and message content
-
 // TODO: Message objects will need to attach a user object by user id which provides the user name and avatar
+
+// TODO: Message time needs to be formatted, maybe checkout the timeago library or something similar (format should be something like "Today at 12:00pm")
 
 const MessageList = (props) => {
   const { messageList, channel } = props;
@@ -17,7 +17,7 @@ const MessageList = (props) => {
         // key={message.id}
         id={message.id}
         content={message.message}
-        time={message.time}
+        time={message.created_at}
         user={message.user}
       />
     );

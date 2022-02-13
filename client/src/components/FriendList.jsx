@@ -1,7 +1,8 @@
 import classNames from "classnames";
 import "../styles/FriendList.scss";
 // import FriendListItem from "./FriendListItem";
-// TODO:
+
+// TODO: FriendList needs to be implemented
 
 const FriendList = (props) => {
   const { friendList } = props;

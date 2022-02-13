@@ -1,6 +1,5 @@
 import "../styles/ChannelList.scss";
 import ChannelListItem from "./ChannelListItem";
-// TODO: ChannelList will render ChannelListItems for a room. ChannelListItems will take a single channel from the channelList. channelList is an array of objects containing a channel_id, channel_name
 
 const ChannelList = (props) => {
   const { channelList, setChannel, value, room } = props;
