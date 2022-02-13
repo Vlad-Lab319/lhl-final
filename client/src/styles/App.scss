@@ -1,7 +1,7 @@
 @import "variables.scss";
 
 .header {
-  position: fixed;
+  position: relative;
   top: 0;
   display: flex;
   flex-direction: row;
@@ -12,16 +12,41 @@
 }
 
 .sidebar {
-  position: fixed;
+  position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  // top: 0;
+  // bottom: 0;
 
   &--rooms {
-    margin-top: $sidebar-width;
-    bottom: 0;
     width: $sidebar-width;
     background-color: lighten($dark-background, 5);
+    margin: 0;
   }
+
+  &--channels {
+    padding: 1rem;
+    width: $sidebar-width * 3;
+    background-color: lighten($dark-background, 10);
+  }
+
+  &--friends {
+    position: relative;
+    padding: 1rem;
+    right: 0rem;
+    width: $sidebar-width * 3;
+    background-color: lighten($dark-background, 10);
+  }
+}
+
+.messages {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  top: 0;
+  bottom: 0;
+  background-color: lighten($dark-background, 5);
+  width: 100%;
+  align-items: stretch;
 }
