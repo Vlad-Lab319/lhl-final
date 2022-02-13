@@ -1,0 +1,46 @@
+@import "./variables.scss";
+
+.room {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  @include icon-vars;
+  margin: $icon-margin;
+  padding: $icon-margin;
+}
+
+.room-icon {
+  height: 4rem;
+  width: 4rem;
+  border-radius: 2rem;
+  box-shadow: 0px 0px 20px black;
+  // margin: $icon-margin;
+
+  &--selected {
+    box-shadow: 0px 0px 5px rgb(95, 1, 1);
+  }
+}
+
+.room-icon:hover {
+  border-radius: 1rem;
+  box-shadow: 0px 0px 20px rgb(95, 1, 1);
+}
+
+.room-name {
+  width: 3.5rem;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.container {
+  position: relative;
+  text-align: center;
+  height: $icon-hw;
+  width: $icon-hw;
+  margin: $icon-margin;
+}
