@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useReducer } from "react";
+import io from "socket.io-client";
 
 export default function useApplicationData() {
   // Establishing state structure for app
@@ -71,29 +72,22 @@ export default function useApplicationData() {
 
   // TODO: Websocket for updating new messages, new channels, and active users in a channel
 
-  // // Websocket
-  // useEffect(() => {
-  //   const webSocket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
+  // Websocket
+  useEffect(() => {
+    const socket = io(process.env.REACT_APP_WEBSOCKET_URL);
 
-  //   webSocket.onopen = function (event) {
-  //     webSocket.send("WebSocket (Client) Connected");
-  //   };
+    socket.on("connect", () => {
+      socket.emit("user", state.user);
+      socket.on("message", (event) => {
+        // const { type, value } = JSON.parse(event.data);
+        console.log(event);
+      });
+    });
 
-  //   webSocket.onmessage = function (event) {
-  //     const { type, data } = JSON.parse(event.data);
-  //     if (type === SET_MESSAGES) {
-  //       dispatch({
-  //         type: type,
-  //         value: data,
-  //       });
-  //     }
-  //   };
-  //   return () => {
-  //     if (webSocket.readyState) {
-  //       webSocket.close();
-  //     }
-  //   };
-  // });
+    return () => {
+      socket.disconnect();
+    };
+  });
 
   // Retrieves data from the server database to populate state
   useEffect(() => {
@@ -105,7 +99,6 @@ export default function useApplicationData() {
       // axios.get(`/api/users/${state.user.id}`),
     ]).then((all) => {
       const [rooms, channels, messages] = all;
-      console.log(messages.data);
       dispatch({
         type: SET_APPLICATION_DATA,
         value: {
