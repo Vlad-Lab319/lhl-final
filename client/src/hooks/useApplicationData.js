@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useReducer } from "react";
+import io from "socket.io-client";
 
 export default function useApplicationData() {
   // Establishing state structure for app
@@ -71,29 +72,24 @@ export default function useApplicationData() {
 
   // TODO: Websocket for updating new messages, new channels, and active users in a channel
 
-  // // Websocket
-  // useEffect(() => {
-  //   const webSocket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
+  // Websocket
+  useEffect(() => {
+    // in client/.env, set REACT_APP_WEBSOCKET_URL=localhost:[port that the server is running on, currently 8080]
+    const socket = io(process.env.REACT_APP_WEBSOCKET_URL);
 
-  //   webSocket.onopen = function (event) {
-  //     webSocket.send("WebSocket (Client) Connected");
-  //   };
+    socket.on("connect", () => {
+      // Sends the user object to the server, the server tracks connected users by their unique socket.id
+      socket.emit("user", state.user);
 
-  //   webSocket.onmessage = function (event) {
-  //     const { type, data } = JSON.parse(event.data);
-  //     if (type === SET_MESSAGES) {
-  //       dispatch({
-  //         type: type,
-  //         value: data,
-  //       });
-  //     }
-  //   };
-  //   return () => {
-  //     if (webSocket.readyState) {
-  //       webSocket.close();
-  //     }
-  //   };
-  // });
+      socket.on("user", (event) => {
+        console.log(event);
+      });
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   // Retrieves data from the server database to populate state
   useEffect(() => {
@@ -105,7 +101,6 @@ export default function useApplicationData() {
       // axios.get(`/api/users/${state.user.id}`),
     ]).then((all) => {
       const [rooms, channels, messages] = all;
-      console.log(messages.data);
       dispatch({
         type: SET_APPLICATION_DATA,
         value: {

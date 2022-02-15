@@ -11,10 +11,9 @@ const MessageList = (props) => {
   const { messageList, channel } = props;
   const messageClass = classNames();
   const messages = messageList.map((message) => {
-    console.log(message);
     return (
       <MessageListItem
-        // key={message.id}
+        key={message.id}
         id={message.id}
         content={message.message}
         time={message.created_at}
