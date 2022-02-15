@@ -57,26 +57,3 @@
   align-items: stretch;
 }
 
-.webrtc {
-  position: fixed;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  left: $sidebar-width;
-  top: $sidebar-width;
-  background-color: lighten($dark-background, 5);
-}
-
-video {
-  width: 40vw;
-  height: 30vw;
-  margin: 2rem;
-  background: #2c3e50;
-}
-
-.videos {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}

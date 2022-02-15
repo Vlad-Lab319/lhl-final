@@ -1,6 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
 import { useRef, useState, useEffect } from "react";
+import "../styles/WebRTC.scss";
 
 const WebRtc = (props) => {
   const { } = props;
@@ -40,6 +41,9 @@ const WebRtc = (props) => {
   
   
   // Setup media sources
+
+  // useEffect(()=> {
+
   
   async function getLocalStream() {
     console.log("WebCam");
@@ -55,13 +59,13 @@ const WebRtc = (props) => {
     });
     
     // Pull tracks from remote stream, add to video stream
-    // pc.ontrack = (event) => {
-    //   console.log("Remote tracks...", event)
-    //   event.streams[0].getTracks().forEach((track) => {
-    //     console.log("Track ...")
-    //     remoteStream.addTrack(track);
-    //   });
-    // };
+    pc.ontrack = (event) => {
+      console.log("Remote tracks...", event)
+      event.streams[0].getTracks().forEach((track) => {
+        console.log("Track ...")
+        remoteStream.addTrack(track);
+      });
+    };
     // pc.ontrack = (event) => {
     //   console.log("Remote tracks...", event);
     //   if (event.streams && event.streams[0]) {
@@ -80,7 +84,13 @@ const WebRtc = (props) => {
     remoteCam.current.srcObject = remoteStream;
   }
     
-  useEffect(()=> {
+  // useEffect(()=> {
+    // Push tracks from local stream to peer connection
+    // localStream.getTracks().forEach((track) => {
+    //   console.log("Local stream track...", track);
+    //   pc.addTrack(track, localStream);
+    // });
+
     pc.ontrack = (event) => {
       console.log("Remote tracks...", event);
       if (event.streams && event.streams[0]) {
@@ -89,15 +99,15 @@ const WebRtc = (props) => {
       } else {
         if (!remoteStream) {
           console.log("No stream...");
-          remoteStream = new MediaStream();
-          remoteCam.current.srcObject = remoteStream;
+          // remoteStream = new MediaStream();
+          // remoteCam.current.srcObject = remoteStream;
         }
         console.log("Add remote track...");
         remoteStream.addTrack(event.track);
 
       }
     };
-  }, [pc]);
+  // }, [pc]);
 
   // Create an offer
 
@@ -191,6 +201,8 @@ const WebRtc = (props) => {
     });
   }
 
+  // }, [pc]);
+
 
 
 
@@ -201,8 +213,8 @@ const WebRtc = (props) => {
 
   return (
     <div>
-      <div className="container">
-        <div>WebRTC</div>
+      <div className="webrtc-container">
+        <h2>Video meeting</h2>
         <div className="videos">
           <span>
             <h3>Local Stream</h3>
@@ -214,9 +226,9 @@ const WebRtc = (props) => {
           </span>
         </div>
       </div>
-      <div className="container">
-        <button onClick={getLocalStream}>Start stream</button>
-        <button onClick={startMeeting}>Host meeting</button>
+      <div className="webrtc-buttons-container">
+        <button className="stream-button" onClick={getLocalStream}>Start stream</button>
+        <button className="stream-button" onClick={startMeeting}>Host meeting</button>
         <span>{meetingId}</span>
         <form onSubmit={(e) => e.preventDefault()} autoComplete="off">
           <input
@@ -228,7 +240,7 @@ const WebRtc = (props) => {
             onChange={(e) => setInput(e.target.value)}
           />
         </form>
-        <button onClick={joinMeeting}>Join meeting</button>
+        <button className="stream-button" onClick={joinMeeting}>Join meeting</button>
         {/* <button onClick={() => joinMeeting()}>Join meeting</button> */}
         {/* <button onClick={hangup}>Hangup</button> */}
       </div>

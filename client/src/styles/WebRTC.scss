@@ -1,0 +1,66 @@
+@import "variables.scss";
+
+.webrtc {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  bottom: 0;
+  background-color: lighten($dark-background, 5);
+  width: 100%;
+}
+
+.webrtc-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  text-align: center;
+}
+
+.webrtc-buttons-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  text-align: center;
+}
+
+.videos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+video {
+  // width: 10vw;
+  // width: 30rem;
+  width: 90%;
+  height: 90%;
+  // height: 75%;
+  margin: 2rem;
+  // background: #2c3e50;
+  background-color: lighten($dark-background, 10);
+  border-radius: 1rem;
+}
+
+
+.stream-button {
+  display: flex;
+  margin: 0.2rem;
+  width: 30%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  background-color: lighten($dark-background, 10);
+  border-radius: 0.5rem;
+  // color: rgb(100, 100, 100);
+  // &--selected {
+  //   color: white;
+  // }
+}
