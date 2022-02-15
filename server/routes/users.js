@@ -10,11 +10,12 @@ router.get("/", (req, res) => {
 
 // get single user
 router.get("/:id", (req, res) => {
-  db.query(`SELECT * FROM users WHERE id = $1;`, [req.params.id]).then(
-    ({ rows: users }) => {
-      res.json(users[0]);
-    }
-  );
+  db.query(
+    `SELECT id, username AS name, avatar_url AS avatar FROM users WHERE id = $1;`,
+    [req.params.id]
+  ).then(({ rows: users }) => {
+    res.json(users[0]);
+  });
 });
 
 // get friends

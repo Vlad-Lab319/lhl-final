@@ -1,29 +1,23 @@
-import axios from "axios";
 import { useState } from "react";
 import "../styles/Login.scss";
 
 const Login = (props) => {
-  const { user, setUser } = props;
+  const { user, loginUser } = props;
   const [value, setValue] = useState(props.user || "");
-  const validateUser = (id) => {
-    axios.get(`/api/users/${id}`).then((user) => {
-      // console.log(user.data[0]);
-      if (user.data) {
-        setUser(user.data[0]);
-      }
-    });
-  };
+
   return (
     <div className="login">
+      <span className="login-message">Looks like you're not logged in...</span>
       <form
         autoComplete="off"
         onSubmit={(e) => {
           e.preventDefault();
-          validateUser(e.target[0].value);
+          console.log(e.target[0].value);
+          loginUser(e.target[0].value);
         }}
       >
         <input
-          className="appointment__create-input text--semi-bold"
+          className="login-input"
           name="name"
           type="text"
           value={value}

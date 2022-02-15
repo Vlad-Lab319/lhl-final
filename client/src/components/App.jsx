@@ -10,10 +10,10 @@ import "../styles/App.scss";
 import ChannelList from "./ChannelList";
 import ChatInput from "./ChatInput";
 import Header from "./Header";
+import Login from "./Login";
 import MessageList from "./MessageList";
 import RoomList from "./RoomList";
 import RoomMembersList from "./RoomMembersList";
-import WebRtc from "./WebRTC";
 
 // TODO: setUser needs to be passed to the header and login needs to be implemented, for now the user is hardcoded in state "../hooks/useApplicationData"
 
@@ -22,7 +22,7 @@ import WebRtc from "./WebRTC";
 // TODO: WebRTC needs to be integrated into the app, likely we'll need to put it in the private chat component
 
 const App = () => {
-  const { state, setChannel, setRoom, setUser } = useApplicationData();
+  const { state, setChannel, setRoom, loginUser } = useApplicationData();
   const channelList = getChannelsForRoom(state.room, state);
   const messageList = getMessagesForChannel(state.channel, state);
   const memberList = [];
@@ -32,26 +32,36 @@ const App = () => {
       <header className="header">
         <Header />
       </header>
-      <div className="main-container">
-        <RoomList setRoom={setRoom} roomList={state.rooms} value={state.room} />
-        <ChannelList
-          setChannel={setChannel}
-          channelList={channelList}
-          value={state.channel}
-          room={state.room}
-        />
-        <div className="messages">
-          <MessageList messageList={messageList} channel={state.channel} />
-          <ChatInput />
+      {state.user ? (
+        <div className="main-container">
+          <RoomList
+            setRoom={setRoom}
+            roomList={state.rooms}
+            value={state.room}
+          />
+          <ChannelList
+            setChannel={setChannel}
+            channelList={channelList}
+            value={state.channel}
+            room={state.room}
+          />
+          <div className="messages">
+            <MessageList messageList={messageList} channel={state.channel} />
+            <ChatInput />
+          </div>
+          <div className="sidebar sidebar--friends">
+            {/* <FriendList /> */}
+            <RoomMembersList memberList={memberList} />
+          </div>
+          {/* <div className="webrtc">
+            <WebRtc />
+          </div> */}
         </div>
-        <div className="sidebar sidebar--friends">
-          {/* <FriendList /> */}
-          <RoomMembersList memberList={memberList} />
+      ) : (
+        <div className="main-container">
+          <Login loginUser={loginUser} />{" "}
         </div>
-        <div className="webrtc">
-          <WebRtc />
-        </div>
-      </div>
+      )}
     </main>
   );
 };
