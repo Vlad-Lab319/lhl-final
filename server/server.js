@@ -40,7 +40,7 @@ app.use(bodyParser.json());
 // app.use(express.urlencoded({ extended: true }));
 // app.use(express.static("public"));
 
-const PORT = 8081;
+const PORT = process.env.SERVER_PORT || 8080;
 
 const usersRoutes = require("./routes/users");
 const roomsRoutes = require("./routes/rooms");
