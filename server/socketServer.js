@@ -7,6 +7,15 @@ const getUserBySocket = (socketID) => {
   return Object.values(users).find((user) => user.socketID === socketID);
 };
 
+const updateDispatch = (action, socket) => {
+  switch (action.type) {
+    case SET_USERS:
+      users[action.value.id] = { ...action.value, socketID: socket.id };
+      console.log(users);
+      return { type: action.type, value: users };
+  }
+};
+
 // Web socket connection listener
 const listen = function (httpServer) {
   const server = socketio(httpServer, {
@@ -17,13 +26,7 @@ const listen = function (httpServer) {
 
   server.on("connection", (socket) => {
     socket.on("update", (action) => {
-      switch (action.type) {
-        case SET_USERS:
-          users[action.value.id] = { ...action.value, socketID: socket.id };
-          console.log(users);
-          server.emit("update", { type: action.type, value: users });
-          break;
-      }
+      server.emit("update", updateDispatch(action, socket));
     });
 
     socket.on("disconnect", () => {
