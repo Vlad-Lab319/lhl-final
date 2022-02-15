@@ -13,6 +13,8 @@ const updateDispatch = (action, socket) => {
       users[action.value.id] = { ...action.value, socketID: socket.id };
       console.log(users);
       return { type: action.type, value: users };
+    case SET_MESSAGES: {
+    }
   }
 };
 
