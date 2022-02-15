@@ -1,10 +1,7 @@
 const socketio = require("socket.io");
 const users = {};
 const SET_MESSAGES = "SET_MESSAGES";
-
-const getUserSocketId = (userid) => {
-  return users[userid].socketID;
-};
+const SET_USERS = "SET_USERS";
 
 const getUserBySocket = (socketID) => {
   return Object.values(users).find((user) => user.socketID === socketID);
@@ -19,31 +16,24 @@ const listen = function (httpServer) {
   });
 
   server.on("connection", (socket) => {
-    // This socket param is the sending socket. Has a unique ID (socket.id)
-    // We can use this ID and associate with a specific user
-    console.log("connected:  ", socket.id);
-
-    socket.on("user", (user) => {
-      if (!users[user.id]) {
-        users[user.id] = { ...user, socketID: socket.id };
-        console.log(users);
-        server.emit("user", users);
+    socket.on("update", (action) => {
+      switch (action.type) {
+        case SET_USERS:
+          users[action.value.id] = { ...action.value, socketID: socket.id };
+          console.log(users);
+          server.emit("update", { type: action.type, value: users });
+          break;
       }
+    });
+
+    socket.on("disconnect", () => {
+      const user = getUserBySocket(socket.id);
+      delete users[user.id];
+      server.emit("update", { type: SET_USERS, value: users });
     });
 
     socket.on("message", (message) => {
       socket.emit("message", { type: SET_MESSAGES, value: message });
-    });
-
-    socket.on("disconnect", () => {
-      // Removes user from connected users pool
-      const user = getUserBySocket(socket.id);
-      // console.log("disconnect: ", socket.id);
-      console.log("Users Before Delete", users);
-      if (user) {
-        delete users[user.id];
-      }
-      server.emit("user", users);
     });
 
     // Do something whenever a "chat" event is received

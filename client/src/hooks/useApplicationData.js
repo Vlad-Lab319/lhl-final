@@ -97,10 +97,6 @@ export default function useApplicationData() {
     dispatch({ type: SET_SOCKET, value: socket });
   };
 
-  const setUsers = (users) => {
-    dispatch({ type: SET_USERS, value: users });
-  };
-
   const sendMessage = (userID, messageData) => {
     return axios.post(`/api/messages/${userID}`, messageData).then(() => {
       dispatch({
@@ -142,7 +138,9 @@ export default function useApplicationData() {
   //   // ensures we disconnect to avoid memory leaks
   //   return () => socket.disconnect();
   // }, []);
-
+  const socketUpdate = (action) => {
+    dispatch({ type: action.type, value: action.value });
+  };
   // Websocket
   useEffect(() => {
     // in client/.env, set REACT_APP_WEBSOCKET_URL=localhost:[port that the server is running on, currently 8080]
@@ -151,14 +149,12 @@ export default function useApplicationData() {
       setSocket(socket);
 
       socket.on("connect", () => {
-        console.log("Connected");
-        socket.emit("user", state.user);
+        socket.emit("update", { type: SET_USERS, value: state.user });
       });
 
-      socket.on("user", (users) => {
-        console.log("Users: ", users);
-        setUsers(users);
-        // console.log(state.users);
+      socket.on("update", (action) => {
+        console.log(action);
+        socketUpdate(action);
       });
 
       return () => socket.disconnect();
