@@ -49,7 +49,7 @@ export default function useApplicationData() {
       case SET_MESSAGES:
         return {
           ...state,
-          messages: action.value.messages,
+          messages: [...state.messages, action.value],
         };
       case SET_APPLICATION_DATA:
         return {
@@ -71,15 +71,16 @@ export default function useApplicationData() {
   const setChannel = (channel) => {
     dispatch({ type: SET_CHANNEL, value: channel });
   };
+
   const setRoom = (room) => {
     dispatch({ type: SET_ROOM, value: room });
   };
 
-  const sendMessage = (userID, message) => {
-    return axios.put(`/api/messages/${userID}`, message).then(() => {
+  const sendMessage = (userID, messageData) => {
+    return axios.post(`/api/messages/${userID}`, messageData).then(() => {
       dispatch({
         type: SET_MESSAGES,
-        value: { messages: messages },
+        value: messageData,
       });
     });
   };

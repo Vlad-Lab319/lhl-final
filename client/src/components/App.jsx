@@ -41,7 +41,7 @@ const App = () => {
         />
         <div className="messages">
           <MessageList messageList={messageList} channel={state.channel} />
-          <ChatInput />
+          <ChatInput channel={state.channel} />
         </div>
         <div className="sidebar sidebar--friends">
           {/* <FriendList /> */}

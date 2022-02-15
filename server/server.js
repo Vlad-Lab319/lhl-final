@@ -28,11 +28,17 @@ require("dotenv").config();
 const socketServer = require("./socketServer");
 const express = require("express");
 const bcrypt = require("bcryptjs");
-const bodyparser = require("body-parser");
+const bodyParser = require("body-parser");
 
 const app = express();
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static("public"));
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
+app.use(bodyParser.json());
+// app.use(express.urlencoded({ extended: true }));
+// app.use(express.static("public"));
 
 const PORT = 8080;
 
