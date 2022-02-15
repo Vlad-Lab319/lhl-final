@@ -13,6 +13,7 @@ import Header from "./Header";
 import MessageList from "./MessageList";
 import RoomList from "./RoomList";
 import RoomMembersList from "./RoomMembersList";
+import WebRtc from "./WebRTC";
 
 // TODO: setUser needs to be passed to the header and login needs to be implemented, for now the user is hardcoded in state "../hooks/useApplicationData"
 
@@ -47,9 +48,9 @@ const App = () => {
           {/* <FriendList /> */}
           <RoomMembersList memberList={memberList} />
         </div>
-        {/* <div className="webrtc">
+        <div className="webrtc">
           <WebRtc />
-        </div> */}
+        </div>
       </div>
     </main>
   );
