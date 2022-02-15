@@ -109,7 +109,7 @@ export default function useApplicationData() {
     return () => {
       socket.disconnect();
     };
-  }, [state.user]);
+  }, [state.user, state.channel]);
 
   // Retrieves data from the server database to populate state
   useEffect(() => {

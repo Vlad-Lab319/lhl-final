@@ -20,7 +20,8 @@ import RoomMembersList from "./RoomMembersList";
 // TODO: WebRTC needs to be integrated into the app, likely we'll need to put it in the private chat component
 
 const App = () => {
-  const { state, setChannel, setRoom, loginUser } = useApplicationData();
+  const { state, setChannel, setRoom, loginUser, sendMessage } =
+    useApplicationData();
   const channelList = getChannelsForRoom(state.room, state);
   const messageList = getMessagesForChannel(state.channel, state);
   const memberList = [];
@@ -44,8 +45,16 @@ const App = () => {
             room={state.room}
           />
           <div className="messages">
-            <MessageList messageList={messageList} channel={state.channel} />
-            <ChatInput channel={state.channel} />
+            <MessageList
+              messageList={messageList}
+              channel={state.channel}
+              user={state.user}
+            />
+            <ChatInput
+              channel={state.channel}
+              user={state.user}
+              sendMessage={sendMessage}
+            />
           </div>
           <div className="sidebar sidebar--friends">
             {/* <FriendList /> */}
