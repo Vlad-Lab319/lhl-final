@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const bcrypt = require("bcryptjs");
+const bodyparser = require("body-parser");
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));

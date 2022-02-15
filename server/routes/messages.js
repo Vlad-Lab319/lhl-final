@@ -19,4 +19,24 @@ router.get("/:userID", (req, res) => {
   });
 });
 
+router.put("/messages/:id", (request, response) => {
+  const { student, interviewer } = request.body.interview;
+
+  db.query(
+    `
+      INSERT INTO interviews (student, interviewer_id, appointment_id) VALUES ($1::text, $2::integer, $3::integer)
+      ON CONFLICT (appointment_id) DO
+      UPDATE SET student = $1::text, interviewer_id = $2::integer
+    `,
+    [student, interviewer, Number(request.params.id)]
+  )
+    .then(() => {
+      setTimeout(() => {
+        response.status(204).json({});
+        updateAppointment(Number(request.params.id), request.body.interview);
+      }, 1000);
+    })
+    .catch((error) => console.log(error));
+});
+
 module.exports = router;
