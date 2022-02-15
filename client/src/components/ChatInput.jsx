@@ -6,8 +6,7 @@ import "../styles/ChatInput.scss";
 const ChatInput = (props) => {
   const [message, setMessage] = useState("");
   const { sendMessage, channel, user } = props;
-  console.log("User in ChatInput: ", user);
-  console.log("Channel in ChatInput: ", channel);
+
   const send = () => {
     const userID = user.id;
     const channelID = channel.id;

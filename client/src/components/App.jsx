@@ -45,16 +45,20 @@ const App = () => {
             room={state.room}
           />
           <div className="messages">
-            <MessageList
-              messageList={messageList}
-              channel={state.channel}
-              user={state.user}
-            />
-            <ChatInput
-              channel={state.channel}
-              user={state.user}
-              sendMessage={sendMessage}
-            />
+            {state.channel.id && (
+              <>
+                <MessageList
+                  messageList={messageList}
+                  channel={state.channel}
+                  user={state.user}
+                />
+                <ChatInput
+                  channel={state.channel}
+                  user={state.user}
+                  sendMessage={sendMessage}
+                />
+              </>
+            )}
           </div>
           <div className="sidebar sidebar--friends">
             {/* <FriendList /> */}

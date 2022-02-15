@@ -8,11 +8,8 @@ import MessageListItem from "./MessageListItem";
 // TODO: Message time needs to be formatted, maybe checkout the timeago library or something similar (format should be something like "Today at 12:00pm")
 
 const MessageList = (props) => {
-  const { messageList, channel, user } = props;
+  const { messageList } = props;
   const messageClass = classNames();
-  console.log("User in messagelist: ", user);
-  console.log("Channel in messagelist: ", channel);
-
   const messages = messageList.map((message) => {
     return (
       <MessageListItem

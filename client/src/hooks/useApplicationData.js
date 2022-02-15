@@ -103,13 +103,17 @@ export default function useApplicationData() {
         socket.on("user", (event) => {
           console.log(event);
         });
+
+        socket.on("message", (message) => {
+          dispatch({ type: message.type, value: message.value });
+        });
       });
     }
 
     return () => {
       socket.disconnect();
     };
-  }, [state.user, state.channel]);
+  });
 
   // Retrieves data from the server database to populate state
   useEffect(() => {

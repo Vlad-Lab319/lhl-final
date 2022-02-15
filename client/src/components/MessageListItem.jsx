@@ -4,7 +4,7 @@ import "../styles/MessageListItem.scss";
 // TODO: MessageListItem needs the proper user object
 
 const MessageListItem = (props) => {
-  const { id, content, time, user } = props;
+  const { content, time, user } = props;
   const messageClass = classNames("message-item");
 
   return (
