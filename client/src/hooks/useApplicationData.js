@@ -6,6 +6,8 @@ export default function useApplicationData() {
   // Establishing state structure for app
   const initialState = {
     user: null,
+    users: {},
+    socket: null,
     room: {},
     channel: {},
     rooms: [],
@@ -14,8 +16,9 @@ export default function useApplicationData() {
     members: [],
     messages: [],
   };
-
+  const SET_SOCKET = "SET_SOCKET";
   const SET_USER = "SET_USER";
+  const SET_USERS = "SET_USERS";
   const SET_ROOM = "SET_ROOM";
   const SET_CHANNEL = "SET_CHANNEL";
   const SET_FRIENDS = "SET_FRIENDS";
@@ -26,10 +29,20 @@ export default function useApplicationData() {
 
   function reducer(state, action) {
     switch (action.type) {
+      case SET_SOCKET:
+        return {
+          ...state,
+          socket: action.value,
+        };
       case SET_USER:
         return {
           ...state,
           user: action.value,
+        };
+      case SET_USERS:
+        return {
+          ...state,
+          users: action.value,
         };
       case SET_ROOM:
         return {
@@ -80,6 +93,10 @@ export default function useApplicationData() {
     dispatch({ type: SET_ROOM, value: room });
   };
 
+  const setSocket = (socket) => {
+    dispatch({ type: SET_SOCKET, value: socket });
+  };
+
   const sendMessage = (userID, messageData) => {
     return axios.post(`/api/messages/${userID}`, messageData).then(() => {
       dispatch({
@@ -91,29 +108,58 @@ export default function useApplicationData() {
 
   // TODO: Websocket for updating new messages, new channels, and active users in a channel
 
+  // This app makes a websocket connection immediately
+  // useEffect(() => {
+  //   // Connect to server
+  //   const socket = io("/");
+  //   setSocket(socket);
+
+  //   // All This stuff should be a Custom Hook, right?
+  //   socket.on("connect", (event) => {
+  //     console.log("connected");
+  //   });
+
+  //   socket.on("notify", (msg) => {
+  //     setNotify(msg);
+  //   });
+
+  //   socket.on("status", (msg) => {
+  //     setStatus(msg);
+  //   });
+
+  //   socket.on("public", (msg) => {
+  //     setMessages((prev) => ["Broadcast: " + msg.text, ...prev]);
+  //   });
+
+  //   socket.on("private", (msg) => {
+  //     setMessages((prev) => [`${msg.from} says: ${msg.text}`, ...prev]);
+  //   });
+
+  //   // ensures we disconnect to avoid memory leaks
+  //   return () => socket.disconnect();
+  // }, []);
+  const socketUpdate = (action) => {
+    dispatch({ type: action.type, value: action.value });
+  };
   // Websocket
   useEffect(() => {
     // in client/.env, set REACT_APP_WEBSOCKET_URL=localhost:[port that the server is running on, currently 8080]
-    const socket = io(process.env.REACT_APP_WEBSOCKET_URL);
-    if (state.user) {
+    if (state.user !== null) {
+      const socket = io(process.env.REACT_APP_WEBSOCKET_URL);
+      setSocket(socket);
+
       socket.on("connect", () => {
-        // Sends the user object to the server, the server tracks connected users by their unique socket.id
-        socket.emit("user", state.user);
-
-        socket.on("user", (event) => {
-          console.log(event);
-        });
-
-        socket.on("message", (message) => {
-          dispatch({ type: message.type, value: message.value });
-        });
+        socket.emit("update", { type: SET_USERS, value: state.user });
       });
-    }
 
-    return () => {
-      socket.disconnect();
-    };
-  });
+      socket.on("update", (action) => {
+        console.log(action);
+        socketUpdate(action);
+      });
+
+      return () => socket.disconnect();
+    }
+  }, [state.user]);
 
   // Retrieves data from the server database to populate state
   useEffect(() => {
