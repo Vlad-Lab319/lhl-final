@@ -20,6 +20,7 @@ import WebRtc from "./WebRTC";
 // TODO: Create a private chat Component, the friends list can replace the channels bar, and should we replace the RoomMembersList side bar with something else while in private chats?
 
 // TODO: WebRTC needs to be integrated into the app, likely we'll need to put it in the private chat component
+//TODO: div messages needs to be refactored as a separate component to handle different channel types
 
 const App = () => {
   const { state, setChannel, setRoom, setUser } = useApplicationData();
@@ -44,12 +45,12 @@ const App = () => {
           <MessageList messageList={messageList} channel={state.channel} />
           <ChatInput channel={state.channel} />
         </div>
+        {/* <div className="webrtc">
+          <WebRtc />
+        </div> */}
         <div className="sidebar sidebar--friends">
           {/* <FriendList /> */}
           <RoomMembersList memberList={memberList} />
-        </div>
-        <div className="webrtc">
-          <WebRtc />
         </div>
       </div>
     </main>
