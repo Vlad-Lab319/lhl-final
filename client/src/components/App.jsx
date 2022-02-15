@@ -42,15 +42,9 @@ const App = () => {
           {/* <FriendList /> */}
           <RoomMembersList memberList={memberList} />
         </div>
-<<<<<<< HEAD
-        <div className="webrtc">
-          <WebRtc />
-        </div>
-=======
         {/* <div className="webrtc">
           <WebRtc />
         </div> */}
->>>>>>> b6fb18fbedda484760d6676feed149de219165f1
       </div>
     </main>
   );
