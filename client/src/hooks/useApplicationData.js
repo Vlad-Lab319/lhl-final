@@ -46,6 +46,11 @@ export default function useApplicationData() {
           ...state,
           channel: action.value,
         };
+      case SET_MESSAGES:
+        return {
+          ...state,
+          messages: [...state.messages, action.value],
+        };
       case SET_APPLICATION_DATA:
         return {
           ...state,
@@ -70,8 +75,18 @@ export default function useApplicationData() {
   const setChannel = (channel) => {
     dispatch({ type: SET_CHANNEL, value: channel });
   };
+
   const setRoom = (room) => {
     dispatch({ type: SET_ROOM, value: room });
+  };
+
+  const sendMessage = (userID, messageData) => {
+    return axios.post(`/api/messages/${userID}`, messageData).then(() => {
+      dispatch({
+        type: SET_MESSAGES,
+        value: messageData,
+      });
+    });
   };
 
   // TODO: Websocket for updating new messages, new channels, and active users in a channel
@@ -124,5 +139,6 @@ export default function useApplicationData() {
     setChannel,
     setRoom,
     loginUser,
+    sendMessage,
   };
 }
