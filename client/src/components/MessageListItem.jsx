@@ -5,7 +5,6 @@ import "../styles/MessageListItem.scss";
 
 const MessageListItem = (props) => {
   const { id, content, time, user } = props;
-  console.log("Content: ", content);
   const messageClass = classNames("message-item");
 
   return (
