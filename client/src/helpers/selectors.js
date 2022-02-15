@@ -1,3 +1,5 @@
+// TODO: getUsersForRoom needs to be implemented
+
 const getChannelsForRoom = (room, state) => {
   return state.channels.filter((channel) => channel.room_id === room.id);
 };

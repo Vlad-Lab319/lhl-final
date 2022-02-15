@@ -2,6 +2,8 @@ import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import classNames from "classnames";
 import "../styles/RoomListItem.scss";
 
+// TODO: RoomListItem needs new message notifications implemented, consider incrementing a message count as new messages come in and when the user is in the room currently don't increment the counter or reset it or something
+
 const RoomListItem = (props) => {
   const { name, icon, setRoom, selected } = props;
 
