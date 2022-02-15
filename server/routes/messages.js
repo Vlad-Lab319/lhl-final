@@ -19,4 +19,18 @@ router.get("/:userID", (req, res) => {
   });
 });
 
+router.post("/:userID", (req, res) => {
+  const { userID, channelID, message } = req.body;
+  db.query(
+    `
+      INSERT INTO messages (user_id, channel_id, message) VALUES ($1, $2, $3);
+    `,
+    [userID, channelID, message]
+  )
+    .then(() => {
+      res.status(204).json({});
+    })
+    .catch((error) => console.log(error));
+});
+
 module.exports = router;
