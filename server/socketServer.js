@@ -6,6 +6,10 @@ const getUserSocketId = (userid) => {
   return users[userid].socketID;
 };
 
+const getUserBySocket = (socketID) => {
+  return Object.values(users).find((user) => user.socketID === socketID);
+};
+
 // Web socket connection listener
 const listen = function (httpServer) {
   const server = socketio(httpServer, {
@@ -20,13 +24,10 @@ const listen = function (httpServer) {
     console.log("connected:  ", socket.id);
 
     socket.on("user", (user) => {
-      // TODO: This can be simplified after login is implemented
       if (!users[user.id]) {
         users[user.id] = { ...user, socketID: socket.id };
         console.log(users);
-        socket.emit("user", users);
-      } else {
-        console.log(user, " is already connected");
+        server.emit("user", users);
       }
     });
 
@@ -34,11 +35,15 @@ const listen = function (httpServer) {
       socket.emit("message", { type: SET_MESSAGES, value: message });
     });
 
-    socket.on("disconnect", (event) => {
+    socket.on("disconnect", () => {
       // Removes user from connected users pool
-      console.log("disconnect: ", socket.id);
-      delete users[socket.id];
-      console.log(users);
+      const user = getUserBySocket(socket.id);
+      // console.log("disconnect: ", socket.id);
+      console.log("Users Before Delete", users);
+      if (user) {
+        delete users[user.id];
+      }
+      server.emit("user", users);
     });
 
     // Do something whenever a "chat" event is received
