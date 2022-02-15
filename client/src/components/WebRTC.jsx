@@ -1,6 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 const WebRtc = (props) => {
   const {} = props;
@@ -12,7 +12,12 @@ const WebRtc = (props) => {
   const remoteCam = useRef();
 
   const firebaseConfig = {
-    // Firebase stuff goes here
+    apiKey: "AIzaSyAJ8IqOFiPI2duV_wvRv0oVTL9a6SMs31U",
+    authDomain: "webrtc-lhl-final.firebaseapp.com",
+    projectId: "webrtc-lhl-final",
+    storageBucket: "webrtc-lhl-final.appspot.com",
+    messagingSenderId: "860225798938",
+    appId: "1:860225798938:web:78fd53032b7826583da2a3"
   };
 
   if (!firebase.apps.length) {
@@ -37,33 +42,37 @@ const WebRtc = (props) => {
   let localStream = null;
   let remoteStream = null;
 
+  // useEffect(()=> {
+
+  // }, [remoteStream]);
+
+
   // Setup media sources
 
-  function getLocalStream() {
+  async function getLocalStream() {
     console.log("WebCam");
-    navigator.mediaDevices
-      .getUserMedia({ video: true, audio: true })
-      .then((stream) => {
-        localStream = stream;
-        remoteStream = new MediaStream();
-        console.log("streaming");
+    // localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+    localStream = await navigator.mediaDevices.getUserMedia({ video: true });
+    remoteStream = new MediaStream();
+    // setRemoteStream(new MediaStream());
 
-        // Push tracks from local stream to peer connection
-        localStream.getTracks().forEach((track) => {
-          pc.addTrack(track, localStream);
-        });
+    // Push tracks from local stream to peer connection
+    localStream.getTracks().forEach((track) => {
+      console.log("Local stream track...", track);
+      pc.addTrack(track, localStream);
+    });
 
-        // Pull tracks from remote stream, add to video stream
-        pc.ontrack = (event) => {
-          event.streams[0].getTracks().forEach((track) => {
-            remoteStream.addTrack(track);
-          });
-        };
+    // Pull tracks from remote stream, add to video stream
+    pc.ontrack = (event) => {
+      console.log("Remote tracks...", event)
+      event.streams[0].getTracks().forEach((track) => {
+        console.log("Track ...")
+        remoteStream.addTrack(track);
+      });
+    };
 
-        webCam.current.srcObject = localStream;
-        remoteCam.current.srcObject = remoteStream;
-      })
-      .catch((err) => console.log(err));
+    webCam.current.srcObject = localStream;
+    remoteCam.current.srcObject = remoteStream;
   }
 
   // Create an offer
@@ -102,6 +111,7 @@ const WebRtc = (props) => {
       if (!pc.currentRemoteDescription && data?.answer) {
         const answerDescription = new RTCSessionDescription(data.answer);
         pc.setRemoteDescription(answerDescription);
+        console.log("Answer received... ", answerDescription);
       }
     });
 
@@ -120,8 +130,10 @@ const WebRtc = (props) => {
 
   async function joinMeeting() {
     const callId = input;
+    console.log("Start answering...", callId);
 
     const callDoc = firestore.collection("calls").doc(callId);
+    console.log("callDoc...", callDoc);
     const answerCandidates = callDoc.collection("answerCandidates");
     const offerCandidates = callDoc.collection("offerCandidates");
 
@@ -154,6 +166,9 @@ const WebRtc = (props) => {
       });
     });
   }
+
+
+
 
   // function hangup() {
 
@@ -190,6 +205,7 @@ const WebRtc = (props) => {
           />
         </form>
         <button onClick={joinMeeting}>Join meeting</button>
+        {/* <button onClick={() => joinMeeting()}>Join meeting</button> */}
         {/* <button onClick={hangup}>Hangup</button> */}
       </div>
     </div>
