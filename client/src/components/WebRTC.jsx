@@ -3,7 +3,7 @@ import "firebase/firestore";
 import { useRef, useState, useEffect } from "react";
 
 const WebRtc = (props) => {
-  const {} = props;
+  const { } = props;
 
   const [meetingId, setOffer] = useState("waiting...");
   const [input, setInput] = useState("");
@@ -42,38 +42,81 @@ const WebRtc = (props) => {
   let localStream = null;
   let remoteStream = null;
 
-  // useEffect(()=> {
-
-  // }, [remoteStream]);
-
-
+  
+  
   // Setup media sources
-
+  
   async function getLocalStream() {
     console.log("WebCam");
     // localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
     localStream = await navigator.mediaDevices.getUserMedia({ video: true });
     remoteStream = new MediaStream();
     // setRemoteStream(new MediaStream());
-
+    
     // Push tracks from local stream to peer connection
     localStream.getTracks().forEach((track) => {
       console.log("Local stream track...", track);
       pc.addTrack(track, localStream);
     });
-
+    
     // Pull tracks from remote stream, add to video stream
-    pc.ontrack = (event) => {
-      console.log("Remote tracks...", event)
-      event.streams[0].getTracks().forEach((track) => {
-        console.log("Track ...")
-        remoteStream.addTrack(track);
-      });
-    };
+    // pc.ontrack = (event) => {
+    //   console.log("Remote tracks...", event)
+    //   event.streams[0].getTracks().forEach((track) => {
+    //     console.log("Track ...")
+    //     remoteStream.addTrack(track);
+    //   });
+    // };
+    // pc.ontrack = (event) => {
+    //   console.log("Remote tracks...", event);
+    //   if (event.streams && event.streams[0]) {
+    //     remoteCam.current.srcObject = event.streams[0];
+    //   } else {
+    //     if (!remoteStream) {
+    //       remoteStream = new MediaStream();
+    //       remoteCam.current.srcObject = remoteStream;
+    //     }
+    //     remoteStream.addTrack(event.track);
+    //   }
+    // };
 
+    
     webCam.current.srcObject = localStream;
     remoteCam.current.srcObject = remoteStream;
   }
+  
+  
+  // useEffect(()=> {
+  //   pc.ontrack = (event) => {
+  //     console.log("Remote tracks...", event)
+  //     event.streams[0].getTracks()
+  //     .then((tracks) => {
+  //       tracks.forEach((track) => {
+  //         console.log("Track ...")
+  //         remoteStream.addTrack(track);
+  //     })
+  //     });
+  //   };
+  // }, [pc]);
+
+  useEffect(()=> {
+    pc.ontrack = (event) => {
+      console.log("Remote tracks...", event);
+      if (event.streams && event.streams[0]) {
+        console.log("Get remote stream! ", event.streams[0])
+        remoteCam.current.srcObject = event.streams[0];
+      } else {
+        if (!remoteStream) {
+          console.log("No stream...");
+          remoteStream = new MediaStream();
+          remoteCam.current.srcObject = remoteStream;
+        }
+        console.log("Add remote track...");
+        remoteStream.addTrack(event.track);
+
+      }
+    };
+  }, [pc]);
 
   // Create an offer
 
@@ -158,8 +201,8 @@ const WebRtc = (props) => {
 
     offerCandidates.onSnapshot((snapshot) => {
       snapshot.docChanges().forEach((change) => {
-        console.log(change);
         if (change.type === "added") {
+          console.log(change);
           let data = change.doc.data();
           pc.addIceCandidate(new RTCIceCandidate(data));
         }
@@ -213,3 +256,4 @@ const WebRtc = (props) => {
 };
 
 export default WebRtc;
+

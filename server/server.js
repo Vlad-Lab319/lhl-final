@@ -33,7 +33,7 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-const PORT = 8080;
+const PORT = 8081;
 
 const usersRoutes = require("./routes/users");
 const roomsRoutes = require("./routes/rooms");
