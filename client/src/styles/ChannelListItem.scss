@@ -12,11 +12,8 @@
   color: rgb(100, 100, 100);
   &--selected {
     color: white;
+    font-weight: 700;
   }
-}
-
-.channel-item:hover {
-  font-weight: 700;
 }
 
 .channel-icon {
@@ -30,4 +27,8 @@
   &--selected {
     color: red;
   }
+}
+
+.channel-item:hover {
+  font-weight: 700;
 }

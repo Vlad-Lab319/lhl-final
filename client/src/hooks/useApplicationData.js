@@ -61,7 +61,6 @@ export default function useApplicationData() {
 
   const loginUser = async (id) => {
     axios.get(`api/users/${id}`).then((user) => {
-      console.log("in login: ", user.data);
       if (user.data) {
         dispatch({ type: SET_USER, value: user.data });
       }

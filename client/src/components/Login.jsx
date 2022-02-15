@@ -12,8 +12,7 @@ const Login = (props) => {
         autoComplete="off"
         onSubmit={(e) => {
           e.preventDefault();
-          console.log(e.target[0].value);
-          loginUser(e.target[0].value);
+          loginUser(value);
         }}
       >
         <input
@@ -23,9 +22,6 @@ const Login = (props) => {
           value={value}
           placeholder="Enter user id to login"
           onChange={(e) => setValue(e.target.value)}
-          onSubmit={(e) => {
-            console.log(e.target.value);
-          }}
         />
       </form>
     </div>
