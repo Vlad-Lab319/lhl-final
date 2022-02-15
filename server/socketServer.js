@@ -1,5 +1,6 @@
 const socketio = require("socket.io");
 const users = {};
+const SET_MESSAGES = "SET_MESSAGES";
 
 const getUserSocketId = (userid) => {
   return users[userid].socketID;
@@ -27,6 +28,10 @@ const listen = function (httpServer) {
       } else {
         console.log(user, " is already connected");
       }
+    });
+
+    socket.on("message", (message) => {
+      socket.emit("message", { type: SET_MESSAGES, value: message });
     });
 
     socket.on("disconnect", (event) => {

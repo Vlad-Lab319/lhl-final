@@ -5,7 +5,7 @@ import io from "socket.io-client";
 export default function useApplicationData() {
   // Establishing state structure for app
   const initialState = {
-    user: { id: 1, name: "Test", avatar: "" },
+    user: null,
     room: {},
     channel: {},
     rooms: [],
@@ -29,7 +29,7 @@ export default function useApplicationData() {
       case SET_USER:
         return {
           ...state,
-          user: action.value.user,
+          user: action.value,
         };
       case SET_ROOM:
         return {
@@ -64,8 +64,12 @@ export default function useApplicationData() {
     }
   }
 
-  const setUser = (user) => {
-    dispatch({ type: SET_USER, value: user });
+  const loginUser = async (id) => {
+    axios.get(`api/users/${id}`).then((user) => {
+      if (user.data) {
+        dispatch({ type: SET_USER, value: user.data });
+      }
+    });
   };
 
   const setChannel = (channel) => {
@@ -91,47 +95,54 @@ export default function useApplicationData() {
   useEffect(() => {
     // in client/.env, set REACT_APP_WEBSOCKET_URL=localhost:[port that the server is running on, currently 8080]
     const socket = io(process.env.REACT_APP_WEBSOCKET_URL);
+    if (state.user) {
+      socket.on("connect", () => {
+        // Sends the user object to the server, the server tracks connected users by their unique socket.id
+        socket.emit("user", state.user);
 
-    socket.on("connect", () => {
-      // Sends the user object to the server, the server tracks connected users by their unique socket.id
-      socket.emit("user", state.user);
+        socket.on("user", (event) => {
+          console.log(event);
+        });
 
-      socket.on("user", (event) => {
-        console.log(event);
+        socket.on("message", (message) => {
+          dispatch({ type: message.type, value: message.value });
+        });
       });
-    });
+    }
 
     return () => {
       socket.disconnect();
     };
-  }, []);
+  });
 
   // Retrieves data from the server database to populate state
   useEffect(() => {
-    Promise.all([
-      axios.get(`/api/rooms/${state.user.id}`),
-      axios.get(`/api/channels/${state.user.id}`),
-      axios.get(`/api/messages/${state.user.id}`),
-      // TODO: Needs route for getting all users who are in the same rooms as the currently signed in user
-      // axios.get(`/api/users/${state.user.id}`),
-    ]).then((all) => {
-      const [rooms, channels, messages] = all;
-      dispatch({
-        type: SET_APPLICATION_DATA,
-        value: {
-          rooms: rooms.data,
-          channels: channels.data,
-          messages: messages.data,
-        },
+    if (state.user) {
+      Promise.all([
+        axios.get(`/api/rooms/${state.user.id}`),
+        axios.get(`/api/channels/${state.user.id}`),
+        axios.get(`/api/messages/${state.user.id}`),
+        // TODO: Needs route for getting all users who are in the same rooms as the currently signed in user
+        // axios.get(`/api/users/${state.user.id}`),
+      ]).then((all) => {
+        const [rooms, channels, messages] = all;
+        dispatch({
+          type: SET_APPLICATION_DATA,
+          value: {
+            rooms: rooms.data,
+            channels: channels.data,
+            messages: messages.data,
+          },
+        });
       });
-    });
-  }, [state.user.id]);
+    }
+  }, [state.user]);
 
   return {
     state,
     setChannel,
     setRoom,
-    setUser,
+    loginUser,
     sendMessage,
   };
 }

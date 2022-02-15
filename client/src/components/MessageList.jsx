@@ -8,7 +8,7 @@ import MessageListItem from "./MessageListItem";
 // TODO: Message time needs to be formatted, maybe checkout the timeago library or something similar (format should be something like "Today at 12:00pm")
 
 const MessageList = (props) => {
-  const { messageList, channel } = props;
+  const { messageList } = props;
   const messageClass = classNames();
   const messages = messageList.map((message) => {
     return (
@@ -21,7 +21,11 @@ const MessageList = (props) => {
       />
     );
   });
-  return <li className="message-container">{messages}</li>;
+  return (
+    <section>
+      <li className="message-container">{messages}</li>
+    </section>
+  );
 };
 
 export default MessageList;

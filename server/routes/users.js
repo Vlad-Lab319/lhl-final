@@ -9,12 +9,13 @@ router.get("/", (req, res) => {
 });
 
 // get single user
-router.get("/:email", (req, res) => {
-  db.query(`SELECT * FROM users WHERE email = $1;`, [req.params.email]).then(
-    ({ rows: users }) => {
-      res.json(users);
-    }
-  );
+router.get("/:id", (req, res) => {
+  db.query(
+    `SELECT id, username AS name, avatar_url AS avatar FROM users WHERE id = $1;`,
+    [req.params.id]
+  ).then(({ rows: users }) => {
+    res.json(users[0]);
+  });
 });
 
 // get friends
