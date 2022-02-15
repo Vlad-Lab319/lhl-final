@@ -13,7 +13,7 @@ const MessageList = (props) => {
   const messages = messageList.map((message) => {
     return (
       <MessageListItem
-        // key={message.id}
+        key={message.id}
         id={message.id}
         content={message.message}
         time={message.created_at}

@@ -74,12 +74,14 @@ export default function useApplicationData() {
 
   // Websocket
   useEffect(() => {
+    // in client/.env, set REACT_APP_WEBSOCKET_URL=localhost:[port that the server is running on, currently 8080]
     const socket = io(process.env.REACT_APP_WEBSOCKET_URL);
 
     socket.on("connect", () => {
+      // Sends the user object to the server, the server tracks connected users by their unique socket.id
       socket.emit("user", state.user);
-      socket.on("message", (event) => {
-        // const { type, value } = JSON.parse(event.data);
+
+      socket.on("user", (event) => {
         console.log(event);
       });
     });
@@ -87,7 +89,7 @@ export default function useApplicationData() {
     return () => {
       socket.disconnect();
     };
-  });
+  }, []);
 
   // Retrieves data from the server database to populate state
   useEffect(() => {
