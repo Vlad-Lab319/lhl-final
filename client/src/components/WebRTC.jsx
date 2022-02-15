@@ -12,12 +12,7 @@ const WebRtc = (props) => {
   const remoteCam = useRef();
 
   const firebaseConfig = {
-    apiKey: "AIzaSyAJ8IqOFiPI2duV_wvRv0oVTL9a6SMs31U",
-    authDomain: "webrtc-lhl-final.firebaseapp.com",
-    projectId: "webrtc-lhl-final",
-    storageBucket: "webrtc-lhl-final.appspot.com",
-    messagingSenderId: "860225798938",
-    appId: "1:860225798938:web:78fd53032b7826583da2a3"
+   // Firebase stuff goes here
   };
 
   if (!firebase.apps.length) {
@@ -84,21 +79,7 @@ const WebRtc = (props) => {
     webCam.current.srcObject = localStream;
     remoteCam.current.srcObject = remoteStream;
   }
-  
-  
-  // useEffect(()=> {
-  //   pc.ontrack = (event) => {
-  //     console.log("Remote tracks...", event)
-  //     event.streams[0].getTracks()
-  //     .then((tracks) => {
-  //       tracks.forEach((track) => {
-  //         console.log("Track ...")
-  //         remoteStream.addTrack(track);
-  //     })
-  //     });
-  //   };
-  // }, [pc]);
-
+    
   useEffect(()=> {
     pc.ontrack = (event) => {
       console.log("Remote tracks...", event);
