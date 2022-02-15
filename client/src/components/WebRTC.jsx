@@ -1,9 +1,10 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
 import { useRef, useState, useEffect } from "react";
+import "../styles/WebRTC.scss";
 
 const WebRtc = (props) => {
-  const {} = props;
+  const { } = props;
 
   const [meetingId, setOffer] = useState("waiting...");
   const [input, setInput] = useState("");
@@ -12,12 +13,7 @@ const WebRtc = (props) => {
   const remoteCam = useRef();
 
   const firebaseConfig = {
-    apiKey: "AIzaSyAJ8IqOFiPI2duV_wvRv0oVTL9a6SMs31U",
-    authDomain: "webrtc-lhl-final.firebaseapp.com",
-    projectId: "webrtc-lhl-final",
-    storageBucket: "webrtc-lhl-final.appspot.com",
-    messagingSenderId: "860225798938",
-    appId: "1:860225798938:web:78fd53032b7826583da2a3"
+   // Firebase stuff goes here
   };
 
   if (!firebase.apps.length) {
@@ -42,26 +38,26 @@ const WebRtc = (props) => {
   let localStream = null;
   let remoteStream = null;
 
-  // useEffect(()=> {
-
-  // }, [remoteStream]);
-
-
+  
+  
   // Setup media sources
 
+  // useEffect(()=> {
+
+  
   async function getLocalStream() {
     console.log("WebCam");
     // localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
     localStream = await navigator.mediaDevices.getUserMedia({ video: true });
     remoteStream = new MediaStream();
     // setRemoteStream(new MediaStream());
-
+    
     // Push tracks from local stream to peer connection
     localStream.getTracks().forEach((track) => {
       console.log("Local stream track...", track);
       pc.addTrack(track, localStream);
     });
-
+    
     // Pull tracks from remote stream, add to video stream
     pc.ontrack = (event) => {
       console.log("Remote tracks...", event)
@@ -70,10 +66,48 @@ const WebRtc = (props) => {
         remoteStream.addTrack(track);
       });
     };
+    // pc.ontrack = (event) => {
+    //   console.log("Remote tracks...", event);
+    //   if (event.streams && event.streams[0]) {
+    //     remoteCam.current.srcObject = event.streams[0];
+    //   } else {
+    //     if (!remoteStream) {
+    //       remoteStream = new MediaStream();
+    //       remoteCam.current.srcObject = remoteStream;
+    //     }
+    //     remoteStream.addTrack(event.track);
+    //   }
+    // };
 
+    
     webCam.current.srcObject = localStream;
     remoteCam.current.srcObject = remoteStream;
   }
+    
+  // useEffect(()=> {
+    // Push tracks from local stream to peer connection
+    // localStream.getTracks().forEach((track) => {
+    //   console.log("Local stream track...", track);
+    //   pc.addTrack(track, localStream);
+    // });
+
+    pc.ontrack = (event) => {
+      console.log("Remote tracks...", event);
+      if (event.streams && event.streams[0]) {
+        console.log("Get remote stream! ", event.streams[0])
+        remoteCam.current.srcObject = event.streams[0];
+      } else {
+        if (!remoteStream) {
+          console.log("No stream...");
+          // remoteStream = new MediaStream();
+          // remoteCam.current.srcObject = remoteStream;
+        }
+        console.log("Add remote track...");
+        remoteStream.addTrack(event.track);
+
+      }
+    };
+  // }, [pc]);
 
   // Create an offer
 
@@ -158,14 +192,16 @@ const WebRtc = (props) => {
 
     offerCandidates.onSnapshot((snapshot) => {
       snapshot.docChanges().forEach((change) => {
-        console.log(change);
         if (change.type === "added") {
+          console.log(change);
           let data = change.doc.data();
           pc.addIceCandidate(new RTCIceCandidate(data));
         }
       });
     });
   }
+
+  // }, [pc]);
 
 
 
@@ -177,8 +213,8 @@ const WebRtc = (props) => {
 
   return (
     <div>
-      <div className="container">
-        <div>WebRTC</div>
+      <div className="webrtc-container">
+        <h2>Video meeting</h2>
         <div className="videos">
           <span>
             <h3>Local Stream</h3>
@@ -190,9 +226,9 @@ const WebRtc = (props) => {
           </span>
         </div>
       </div>
-      <div className="container">
-        <button onClick={getLocalStream}>Start stream</button>
-        <button onClick={startMeeting}>Host meeting</button>
+      <div className="webrtc-buttons-container">
+        <button className="stream-button" onClick={getLocalStream}>Start stream</button>
+        <button className="stream-button" onClick={startMeeting}>Host meeting</button>
         <span>{meetingId}</span>
         <form onSubmit={(e) => e.preventDefault()} autoComplete="off">
           <input
@@ -204,7 +240,7 @@ const WebRtc = (props) => {
             onChange={(e) => setInput(e.target.value)}
           />
         </form>
-        <button onClick={joinMeeting}>Join meeting</button>
+        <button className="stream-button" onClick={joinMeeting}>Join meeting</button>
         {/* <button onClick={() => joinMeeting()}>Join meeting</button> */}
         {/* <button onClick={hangup}>Hangup</button> */}
       </div>
@@ -213,3 +249,4 @@ const WebRtc = (props) => {
 };
 
 export default WebRtc;
+
