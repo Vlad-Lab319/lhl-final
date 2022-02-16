@@ -26,9 +26,7 @@ const App = () => {
     useApplicationData();
   const channelList = getChannelsForRoom(state.room, state);
   const messageList = getMessagesForChannel(state.channel, state);
-  console.log(messageList);
   const userMessageList = attachUsersToMessages(messageList, state)
-  console.log(userMessageList);
   const memberList = [];
   return (
     <main className="layout">

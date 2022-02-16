@@ -2,11 +2,6 @@ import classNames from "classnames";
 import "../styles/MessageList.scss";
 import MessageListItem from "./MessageListItem";
 import { useRef,useEffect } from "react";
-// import {addUserToMessage} from '../helpers/selectors'
-
-// TODO: Message objects will need to attach a user object by user id which provides the user name and avatar
-
-// TODO: Message time needs to be formatted, maybe checkout the timeago library or something similar (format should be something like "Today at 12:00pm")
 
 const MessageList = (props) => {
   const { messageList,channel } = props;
