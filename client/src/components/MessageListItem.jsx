@@ -11,12 +11,18 @@ const MessageListItem = (props) => {
 
   return (
     <ul className={messageClass}>
-      <section>
         {/* <img src={user.avatar} alt={(user.name, " avatar")} /> */}
-        <h2>{user}</h2>
-        <ReactTimeAgo date={time} locale="en-US"/>
-      </section>
-      <article>{content}</article>
+        <div className="message-icon"></div>
+
+        <div className="message-content">
+        <div className="message-header">
+
+        <span className="message-user">{user} USERNAME </span>
+        <ReactTimeAgo className="message-time" date={time} locale="en-US"/>
+      </div>
+
+      <article className="message">{content}</article>
+        </div>
     </ul>
   );
 };
