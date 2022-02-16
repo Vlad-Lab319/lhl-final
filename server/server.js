@@ -65,8 +65,8 @@ io.on("connection", (socket) => {
     server.emit("update", updateDispatch(action, socket));
   });
 
-  socket.on("message", (message) => {
-    socket.emit("message", { type: SET_MESSAGES, value: message });
+  socket.on("message", (messageData) => {
+    socket.emit("message", { type: SET_MESSAGES, value: messageData });
   });
 
   socket.on("disconnect", () => {
