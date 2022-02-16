@@ -111,6 +111,9 @@ export default function useApplicationData() {
 
   const logoutUser = () => {
     dispatch({ type: SET_USER, value: null });
+    if (state.socket) {
+      state.socket.disconnect();
+    }
   };
 
   const setRoom = (room) => {
