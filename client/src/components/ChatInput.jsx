@@ -13,6 +13,7 @@ const ChatInput = (props) => {
     const messageData = {
       userID,
       channelID,
+      // channel,
       message,
     };
 
