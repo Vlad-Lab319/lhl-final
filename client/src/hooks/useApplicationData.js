@@ -157,6 +157,11 @@ export default function useApplicationData() {
         socketUpdate(action);
       });
 
+      socket.on("message", (action) => {
+        console.log(action);
+        socketUpdate(action);
+      });
+
       return () => socket.disconnect();
     }
   }, [state.user]);
