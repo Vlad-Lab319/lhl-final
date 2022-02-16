@@ -17,8 +17,10 @@ const Login = (props) => {
             e.preventDefault();
             loginUser(value);
           }}
-          >
-          {/* <span className="input-item">
+      >
+
+
+          <span className="input-item">
             <label className='input-label' htmlFor="id">User ID:</label>
             <input
               className="login-input"
@@ -28,9 +30,9 @@ const Login = (props) => {
               placeholder="USER ID"
               onChange={(e) => setValue(e.target.value)}
               />
-          </span> */}
+          </span>
 
-          <span className="input-item">
+          {/* <span className="input-item">
 
             <label className='input-label' htmlFor="email">Email: </label>
             <input
@@ -51,7 +53,7 @@ const Login = (props) => {
               placeholder="Password"
               onChange={(e) => setPassword(e.target.value)}
               />
-          </span>
+          </span> */}
           <button type="submit" className="login-btn">LOGIN</button>
         </form>
         <section className="separator-box">
