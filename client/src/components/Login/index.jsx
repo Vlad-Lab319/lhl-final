@@ -5,18 +5,10 @@ import "../../styles/Login.scss";
 
 const UserForm = (props) => {
   const {  loginUser } = props;
-  const [value, setValue] = useState(1);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+
   const [login, setLogin] = useState(true);
 
-  const reset = () => {
-    setEmail('')
-    setPassword('')
-  }
-
   const clickRegister = () => {
-    reset()
     setLogin(!login)
   }
 
@@ -25,16 +17,12 @@ const UserForm = (props) => {
       {login
       ?
         <Login
-          loginUser={() => loginUser(value)}
-          setValue={setValue}
+          loginUser={loginUser}
           setLogin={() => setLogin(!login)}
           clickRegister={() => clickRegister()}
-          value={value}
-          email={email}
-          password={password}
         />
       :
-        <Register />
+        <Register clickRegister={() => clickRegister()} />
       }
     </div>
   );

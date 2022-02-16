@@ -1,7 +1,12 @@
 import "../../styles/Login.scss";
-
+import { useState } from "react";
 const Login = (props) => {
-  const { value,email,password,setEmail,setPassword,setValue,loginUser,clickRegister } = props;
+
+  const {loginUser, clickRegister } = props;
+  const [value, setValue] = useState(1);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   return (
       <div className="login">
         <span className="login-message">Looks like you're not logged in...</span>
@@ -13,7 +18,7 @@ const Login = (props) => {
             loginUser(value);
           }}
           >
-          <span className="input-item">
+          {/* <span className="input-item">
             <label className='input-label' htmlFor="id">User ID:</label>
             <input
               className="login-input"
@@ -23,7 +28,7 @@ const Login = (props) => {
               placeholder="USER ID"
               onChange={(e) => setValue(e.target.value)}
               />
-          </span>
+          </span> */}
 
           <span className="input-item">
 
