@@ -103,6 +103,7 @@ export default function useApplicationData() {
 
   const setChannel = (channel) => {
     dispatch({ type: SET_CHANNEL, value: channel });
+    //TODO: SOCKET - socket.emit("channel", state.channel.id)
   };
 
   const setRecipient = (recipient) => {
@@ -119,6 +120,7 @@ export default function useApplicationData() {
   const setRoom = (room) => {
     dispatch({ type: SET_ROOM, value: room });
     dispatch({ type: SET_CHANNEL, value: {} });
+    //TODO: SOCKET - socket.emit("room", state.room.id)
   };
 
   const setSocket = (socket) => {

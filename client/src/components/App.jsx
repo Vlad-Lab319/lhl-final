@@ -59,63 +59,65 @@ const App = () => {
 
   return (
     <main className="layout">
-      <header className="header">
-        <Header user={state.user} logoutUser={() => logoutUser()} />
-      </header>
       {state.user ? (
-        <div className="main-container">
-          <RoomList
-            setRoom={setRoom}
-            roomList={state.rooms}
-            value={state.room}
-          />
-          <ChannelList
-            setChannel={setChannel}
-            channelList={channelList}
-            value={state.channel}
-            room={state.room}
-          />
-          {/* <FriendList
+        <>
+          <header className="header">
+            <Header user={state.user} logoutUser={() => logoutUser()} />
+          </header>
+          <div className="main-container">
+            <RoomList
+              setRoom={setRoom}
+              roomList={state.rooms}
+              value={state.room}
+            />
+            <ChannelList
+              setChannel={setChannel}
+              channelList={channelList}
+              value={state.channel}
+              room={state.room}
+            />
+            {/* <FriendList
             friendList={friendList}
             value={state.recipient.id}
             setRecipient={setRecipient}
           /> */}
-          <div className="messages">
-            {state.channel.id && (
-              <>
-                <MessageList
-                  messageList={messageListWithUsers}
-                  channel={state.channel}
-                  user={state.user}
-                />
-                <ChatInput
-                  channel={state.channel}
-                  user={state.user}
-                  sendMessage={sendMessage}
-                />
-              </>
-            )}
-            {/* <>
+            <div className="messages">
+              {state.channel.id && (
+                <>
+                  <MessageList
+                    messageList={messageListWithUsers}
+                    channel={state.channel}
+                    user={state.user}
+                  />
+                  <ChatInput
+                    channel={state.channel}
+                    user={state.user}
+                    sendMessage={sendMessage}
+                  />
+                </>
+              )}
+              {/* <>
               <DirectMessagesList messageList={directMessagesList}
 
               />
               <ChatInput
-                channel={null}
-                user={state.user}
-                recipient={state.recipient}
-                sendMessage={sendMessage}
+              channel={null}
+              user={state.user}
+              recipient={state.recipient}
+              sendMessage={sendMessage}
               />
 
             </> */}
-          </div>
+            </div>
 
-          <div className="sidebar sidebar--friends">
-            <RoomMembersList memberList={memberList} />
-          </div>
-          {/* <div className="webrtc">
+            <div className="sidebar sidebar--friends">
+              <RoomMembersList memberList={memberList} />
+            </div>
+            {/* <div className="webrtc">
             <WebRtc />
           </div> */}
-        </div>
+          </div>
+        </>
       ) : (
         <div className="main-container">
           <UserForm loginUser={loginUser} registerUser={registerUser} />
