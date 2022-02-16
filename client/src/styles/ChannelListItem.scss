@@ -1,3 +1,5 @@
+@import "./variables.scss";
+
 .channel-title {
   margin: 1rem;
   text-align: center;
@@ -25,7 +27,7 @@
   width: 2rem;
   height: 2rem;
   &--selected {
-    color: rgb(125, 0, 184);
+    color: $sig-color;
   }
 }
 

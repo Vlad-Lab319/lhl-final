@@ -1,5 +1,5 @@
 @import "./variables.scss";
-.login {
+.login-page {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,11 +9,78 @@
   height: 100%;
   background-color: $dark-background;
 
+  .login {
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    width: 40rem;
+  }
+
   .login-message {
     margin: 1rem;
   }
 
   .login-input {
+    margin: 0.5rem;
+    background-color: lighten($dark-background, 10);
+    border: 0px;
+    line-height: 2rem;
+    width: 12rem;
+    color: white;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+  }
+
+  .input-label {
+    // width: 5rem;
+  }
+
+  .input-item {
+    width: fit-content;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  .login-btn {
+    color: white;
+    background-color: $sig-color;
+    height: 2.5rem;
+    width: 8rem;
+    border: 2px solid darken($sig-color, 10);
+    box-shadow: 0px 0px 10px rgb(49, 49, 49);
+    border-radius: 5px;
+    font-weight: 700;
+    align-self: center;
+    margin: 1rem;
+
+    &--register {
+      background-color: rgb(0, 58, 182);
+      border: 2px solid darken(rgb(0, 58, 182), 10);
+    }
+  }
+
+  .separator-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+  }
+
+  .separator {
+    height: 5px;
+    width: 13rem;
+    border: 2px solid lighten($dark-background, 10);
+    border-radius: 2.5px;
+    background-color: lighten($dark-background, 10);
     margin: 1rem;
   }
 }

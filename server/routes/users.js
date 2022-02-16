@@ -1,6 +1,12 @@
 const express = require("express");
 const db = require("../db/index");
 const router = express.Router();
+const bcrypt = require("bcryptjs");
+// Encrypt
+
+// Decrypt
+// bcrypt.compareSync("plaintextpassword", hashedPassword);
+// returns true
 
 router.get("/", (req, res) => {
   db.query(
@@ -27,6 +33,22 @@ router.get("/friends/:userID", (req, res) => {
   ]).then(({ rows: friends }) => {
     res.json(friends);
   });
+});
+
+router.post("/", (req, res) => {
+  const { name, email, password } = req.body;
+  console.log(req.body);
+  db.query(
+    `INSERT INTO users (username, email, password, avatar_url)
+    VALUES ($1, $2, $3, 'https://i.pinimg.com/736x/f5/23/3a/f5233afc4af9c7be02cc1c673c7c93e9.jpg') RETURNING id, username AS name, avatar_url AS avatar;`,
+    [name, email, bcrypt.hashSync(password, 10)]
+  )
+    .then(({ rows: user }) => {
+      res.json(user);
+    })
+    .catch((err) => {
+      res.json(err.detail);
+    });
 });
 
 // TODO: get all distinct users from the users table that are in the same rooms as the current logged in user

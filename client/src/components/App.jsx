@@ -12,7 +12,7 @@ import "../styles/App.scss";
 import ChannelList from "./ChannelList";
 import ChatInput from "./ChatInput";
 import Header from "./Header";
-import Login from "./Login";
+import UserForm from "./Login/index";
 import MessageList from "./MessageList";
 import DirectMessagesList from "./DirectMessagesList";
 import RoomList from "./RoomList";
@@ -26,7 +26,7 @@ import WebRtc from "./WebRTC";
 //TODO: div messages needs to be refactored as a separate component to handle different channel types
 
 const App = () => {
-  const { state, setChannel, setRoom, loginUser, sendMessage, setRecipient } =
+  const { state, setChannel, setRoom, loginUser, sendMessage, setRecipient, registerUser } =
     useApplicationData();
   const channelList = getChannelsForRoom(state.room, state);
   const messageList = getMessagesForChannel(state.channel, state);
@@ -48,11 +48,11 @@ const App = () => {
 
   const messageListWithUsers = attachUsersToMessages(messageList, state)
   const memberList = [];
-  
+
   return (
     <main className="layout">
       <header className="header">
-        <Header />
+        <Header user={state.user}/>
       </header>
       {state.user ? (
         <div className="main-container">
@@ -89,7 +89,7 @@ const App = () => {
             )}
             {/* <>
               <DirectMessagesList messageList={directMessagesList}
-              
+
               />
               <ChatInput
                 channel={null}
@@ -111,7 +111,7 @@ const App = () => {
         </div>
       ) : (
         <div className="main-container">
-          <Login loginUser={loginUser} />
+          <UserForm loginUser={loginUser} registerUser={registerUser} />
         </div>
       )}
     </main>
