@@ -91,6 +91,7 @@ export default function useApplicationData() {
 
   const setRoom = (room) => {
     dispatch({ type: SET_ROOM, value: room });
+    dispatch({ type: SET_CHANNEL, value: {} });
   };
 
   const setSocket = (socket) => {
