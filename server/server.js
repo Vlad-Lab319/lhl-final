@@ -66,7 +66,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("message", (messageData) => {
-    socket.emit("message", { type: SET_MESSAGES, value: messageData });
+    socket.broadcast.emit("message", messageData);
   });
 
   socket.on("disconnect", () => {
