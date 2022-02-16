@@ -146,7 +146,7 @@ export default function useApplicationData() {
       Promise.all([
         axios.get(`/api/rooms/${state.user.id}`),
         axios.get(`/api/channels/${state.user.id}`),
-        axios.get(`/api/messages/${state.user.id}`),
+        axios.get(`/api/messages/all`),
         // TODO: Needs route for getting all users who are in the same rooms as the currently signed in user
         // axios.get(`/api/users/${state.user.id}`),
       ]).then((all) => {

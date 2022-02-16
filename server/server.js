@@ -71,8 +71,10 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     const user = getUserBySocket(socket.id);
-    delete users[user.id];
-    server.emit("update", { type: SET_USERS, value: users });
+    if (user) {
+      delete users[user.id];
+      server.emit("update", { type: SET_USERS, value: users });
+    }
   });
 });
 
