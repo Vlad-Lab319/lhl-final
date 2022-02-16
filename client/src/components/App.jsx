@@ -18,6 +18,7 @@ import DirectMessagesList from "./DirectMessagesList";
 import RoomList from "./RoomList";
 import FriendList from "./FriendList";
 import RoomMembersList from "./RoomMembersList";
+import WebRtc from "./WebRTC";
 
 // TODO: Create a private chat Component, the friends list can replace the channels bar, and should we replace the RoomMembersList side bar with something else while in private chats?
 
