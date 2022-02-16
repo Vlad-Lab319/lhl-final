@@ -1,9 +1,9 @@
 // Helpers
 import {
-  getChannelsForRoom,
-  getMessagesForChannel,
-  getDirectMessages,
   attachUsersToMessages,
+  getChannelsForRoom,
+  getDirectMessages,
+  getMessagesForChannel,
 } from "../helpers/selectors";
 // State
 import useApplicationData from "../hooks/useApplicationData";
@@ -14,11 +14,8 @@ import ChatInput from "./ChatInput";
 import Header from "./Header";
 import UserForm from "./Login/index";
 import MessageList from "./MessageList";
-import DirectMessagesList from "./DirectMessagesList";
 import RoomList from "./RoomList";
-import FriendList from "./FriendList";
 import RoomMembersList from "./RoomMembersList";
-import WebRtc from "./WebRTC";
 
 // TODO: Create a private chat Component, the friends list can replace the channels bar, and should we replace the RoomMembersList side bar with something else while in private chats?
 
@@ -26,8 +23,17 @@ import WebRtc from "./WebRTC";
 //TODO: div messages needs to be refactored as a separate component to handle different channel types
 
 const App = () => {
-  const { state, setChannel, setRoom, loginUser, sendMessage, setRecipient, registerUser } =
-    useApplicationData();
+  const {
+    state,
+    setChannel,
+    setRoom,
+    loginUser,
+    logoutUser,
+    sendMessage,
+    setRecipient,
+    registerUser,
+    setUser,
+  } = useApplicationData();
   const channelList = getChannelsForRoom(state.room, state);
   const messageList = getMessagesForChannel(state.channel, state);
   const directMessagesList = getDirectMessages(state);
@@ -35,24 +41,26 @@ const App = () => {
   //dummy friends
   const friendList = [
     {
-      "id": 1,
-      "username": "Alice",
-      "avatar_url": "https://i.pinimg.com/736x/f5/23/3a/f5233afc4af9c7be02cc1c673c7c93e9.jpg"
+      id: 1,
+      username: "Alice",
+      avatar_url:
+        "https://i.pinimg.com/736x/f5/23/3a/f5233afc4af9c7be02cc1c673c7c93e9.jpg",
     },
     {
-      "id": 2,
-      "username": "Kira",
-      "avatar_url": "https://i.pinimg.com/736x/f5/23/3a/f5233afc4af9c7be02cc1c673c7c93e9.jpg"
-    }
+      id: 2,
+      username: "Kira",
+      avatar_url:
+        "https://i.pinimg.com/736x/f5/23/3a/f5233afc4af9c7be02cc1c673c7c93e9.jpg",
+    },
   ];
 
-  const messageListWithUsers = attachUsersToMessages(messageList, state)
+  const messageListWithUsers = attachUsersToMessages(messageList, state);
   const memberList = [];
 
   return (
     <main className="layout">
       <header className="header">
-        <Header user={state.user}/>
+        <Header user={state.user} logoutUser={() => logoutUser()} />
       </header>
       {state.user ? (
         <div className="main-container">
@@ -100,7 +108,6 @@ const App = () => {
 
             </> */}
           </div>
-
 
           <div className="sidebar sidebar--friends">
             <RoomMembersList memberList={memberList} />

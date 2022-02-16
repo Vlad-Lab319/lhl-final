@@ -109,6 +109,10 @@ export default function useApplicationData() {
     dispatch({ type: SET_RECIPIENT, value: recipient });
   };
 
+  const logoutUser = () => {
+    dispatch({ type: SET_USER, value: null });
+  };
+
   const setRoom = (room) => {
     dispatch({ type: SET_ROOM, value: room });
     dispatch({ type: SET_CHANNEL, value: {} });
@@ -192,6 +196,7 @@ export default function useApplicationData() {
     setChannel,
     setRoom,
     loginUser,
+    logoutUser,
     sendMessage,
     setRecipient,
     registerUser,
