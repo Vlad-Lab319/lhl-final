@@ -20,15 +20,22 @@
     }
 
     &--gear {
+      background-color: transparent;
+      color: lighten($dark-background, 20);
       @include icon-vars;
     }
 
     &--avatar {
+      color: lighten($dark-background, 10);
       @include icon-vars;
     }
 
     &--logo {
       @include icon-vars;
+    }
+    :hover {
+      color: lighten($dark-background, 40);
+      cursor: pointer;
     }
   }
 }

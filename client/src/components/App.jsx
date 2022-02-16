@@ -47,11 +47,11 @@ const App = () => {
 
   const messageListWithUsers = attachUsersToMessages(messageList, state)
   const memberList = [];
-  
+
   return (
     <main className="layout">
       <header className="header">
-        <Header />
+        <Header user={state.user}/>
       </header>
       {state.user ? (
         <div className="main-container">
@@ -88,7 +88,7 @@ const App = () => {
             )}
             {/* <>
               <DirectMessagesList messageList={directMessagesList}
-              
+
               />
               <ChatInput
                 channel={null}

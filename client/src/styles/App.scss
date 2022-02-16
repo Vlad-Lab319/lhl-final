@@ -26,13 +26,14 @@
 
   &--rooms {
     width: $sidebar-width;
+    min-width: $sidebar-width;
     background-color: lighten($dark-background, 5);
     margin: 0;
   }
 
   &--channels {
-    padding: 1rem;
-    width: $sidebar-width * 3;
+    width: $sidebar-width * 2.5;
+    min-width: $sidebar-width * 2.5;
     background-color: lighten($dark-background, 10);
   }
 
@@ -40,7 +41,8 @@
     position: relative;
     padding: 1rem;
     right: 0rem;
-    width: $sidebar-width * 3;
+    min-width: $sidebar-width * 2.5;
+    width: $sidebar-width * 2.5;
     background-color: lighten($dark-background, 10);
   }
 }
@@ -52,8 +54,9 @@
   align-items: center;
   top: 0;
   bottom: 0;
+  left: 0;
+  right: 0;
   background-color: lighten($dark-background, 5);
   width: 100%;
-  align-items: stretch;
+  align-items: flex-start;
 }
-
