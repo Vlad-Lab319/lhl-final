@@ -14,6 +14,9 @@ const UserForm = (props) => {
 
   return (
     <div className="login-page">
+      <div className="login-logo">
+        <div className="logo-text">BIG ASS LOGO</div>
+      </div>
       {view ? (
         <Login
           loginUser={loginUser}
