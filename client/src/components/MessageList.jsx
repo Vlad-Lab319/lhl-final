@@ -9,7 +9,7 @@ import { useRef,useEffect } from "react";
 // TODO: Message time needs to be formatted, maybe checkout the timeago library or something similar (format should be something like "Today at 12:00pm")
 
 const MessageList = (props) => {
-  const { messageList } = props;
+  const { messageList,channel } = props;
   const messageClass = classNames();
   const messagesEndRef = useRef(null)
 
@@ -33,7 +33,7 @@ const MessageList = (props) => {
 
     useEffect(() => {
     scrollToBottom()
-  }, [messages]);
+  }, [channel]);
 
 
   return (
