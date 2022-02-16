@@ -28,9 +28,14 @@ router.get("/:id", (req, res) => {
 
 // get friends
 router.get("/friends/:userID", (req, res) => {
-  db.query(`SELECT * FROM friends WHERE user_id = $1;`, [
-    req.params.userID,
-  ]).then(({ rows: friends }) => {
+  db.query(
+    `
+    SELECT users.* FROM friends
+    JOIN users ON friend_id = users.id
+    WHERE user_id = $1
+    ;`,
+    [req.params.userID]
+  ).then(({ rows: friends }) => {
     res.json(friends);
   });
 });
