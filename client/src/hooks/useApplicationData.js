@@ -59,12 +59,12 @@ export default function useApplicationData() {
       case SET_FRIENDS:
         return {
           ...state,
-          friends: action.value  // changed from channel
+          friends: action.value, // changed from channel
         };
       case SET_RECIPIENT:
         return {
           ...state,
-          recipient: action.value 
+          recipient: action.value,
         };
       case SET_MESSAGES:
         return {
@@ -166,7 +166,7 @@ export default function useApplicationData() {
         // TODO: Needs route for getting all users who are in the same rooms as the currently signed in user
         // axios.get(`/api/users/${state.user.id}`),
       ]).then((all) => {
-        const [users, rooms, channels, messages, friends, messages] = all;
+        const [users, rooms, channels, messages, friends] = all;
         dispatch({
           type: SET_APPLICATION_DATA,
           value: {
@@ -187,7 +187,7 @@ export default function useApplicationData() {
     setRoom,
     loginUser,
     sendMessage,
-    setRecipient
+    setRecipient,
   };
 }
 
