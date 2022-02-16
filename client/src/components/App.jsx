@@ -12,7 +12,7 @@ import "../styles/App.scss";
 import ChannelList from "./ChannelList";
 import ChatInput from "./ChatInput";
 import Header from "./Header";
-import Login from "./Login";
+import UserForm from "./Login/index";
 import MessageList from "./MessageList";
 import DirectMessagesList from "./DirectMessagesList";
 import RoomList from "./RoomList";
@@ -110,7 +110,7 @@ const App = () => {
         </div>
       ) : (
         <div className="main-container">
-          <Login loginUser={loginUser} />
+          <UserForm loginUser={loginUser} />
         </div>
       )}
     </main>

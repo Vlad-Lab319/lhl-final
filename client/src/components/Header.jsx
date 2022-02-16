@@ -5,7 +5,6 @@ import SettingsIcon from '@mui/icons-material/Settings';
 
 const Header = (props) => {
   const { user } = props;
-  console.log(user);
   return (
     <div className="container">
       <div className="user-options user-options--logo">LOGO</div>
@@ -17,7 +16,6 @@ const Header = (props) => {
           :
           <AccountCircleIcon className="user-options user-options--avatar" />
         }
-
       </div>
     </div>
   );
