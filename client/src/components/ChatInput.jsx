@@ -1,8 +1,6 @@
 import { useState } from "react";
 import "../styles/ChatInput.scss";
 
-// TODO: ChatInput needs to post to the database and also update state, checkout the useReducer function in "../hooks/useApplicationDat"
-
 const ChatInput = (props) => {
   const [message, setMessage] = useState("");
   const { channel, user, sendMessage } = props;
@@ -13,7 +11,6 @@ const ChatInput = (props) => {
     const messageData = {
       userID,
       channelID,
-      // channel,
       message,
     };
 

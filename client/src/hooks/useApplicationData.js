@@ -137,7 +137,6 @@ export default function useApplicationData() {
       });
 
       socket.on("message", (message) => {
-        console.log(message);
         dispatch({
           type: SET_MESSAGES,
           value: message,
@@ -145,7 +144,6 @@ export default function useApplicationData() {
       });
 
       socket.on("update", (action) => {
-        console.log(action);
         socketUpdate(action);
       });
 
@@ -190,36 +188,3 @@ export default function useApplicationData() {
     setRecipient,
   };
 }
-
-// TODO: Websocket for updating new messages, new channels, and active users in a channel
-
-// This app makes a websocket connection immediately
-// useEffect(() => {
-//   // Connect to server
-//   const socket = io("/");
-//   setSocket(socket);
-
-//   // All This stuff should be a Custom Hook, right?
-//   socket.on("connect", (event) => {
-//     console.log("connected");
-//   });
-
-//   socket.on("notify", (msg) => {
-//     setNotify(msg);
-//   });
-
-//   socket.on("status", (msg) => {
-//     setStatus(msg);
-//   });
-
-//   socket.on("public", (msg) => {
-//     setMessages((prev) => ["Broadcast: " + msg.text, ...prev]);
-//   });
-
-//   socket.on("private", (msg) => {
-//     setMessages((prev) => [`${msg.from} says: ${msg.text}`, ...prev]);
-//   });
-
-//   // ensures we disconnect to avoid memory leaks
-//   return () => socket.disconnect();
-// }, []);
