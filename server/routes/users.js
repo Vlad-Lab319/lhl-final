@@ -3,7 +3,9 @@ const db = require("../db/index");
 const router = express.Router();
 
 router.get("/", (req, res) => {
-  db.query(`SELECT * FROM users;`).then(({ rows: users }) => {
+  db.query(
+    `SELECT id, username AS name, avatar_url AS avatar FROM users;`
+  ).then(({ rows: users }) => {
     res.json(users);
   });
 });

@@ -67,6 +67,7 @@ export default function useApplicationData() {
       case SET_APPLICATION_DATA:
         return {
           ...state,
+          users: action.value.users,
           rooms: action.value.rooms,
           channels: action.value.channels,
           friends: action.value.friends,
@@ -145,16 +146,18 @@ export default function useApplicationData() {
   useEffect(() => {
     if (state.user) {
       Promise.all([
+        axios.get(`/api/users/`),
         axios.get(`/api/rooms/${state.user.id}`),
         axios.get(`/api/channels/${state.user.id}`),
-        axios.get(`/api/messages/all`),
+        axios.get(`/api/messages/`),
         // TODO: Needs route for getting all users who are in the same rooms as the currently signed in user
         // axios.get(`/api/users/${state.user.id}`),
       ]).then((all) => {
-        const [rooms, channels, messages] = all;
+        const [users, rooms, channels, messages] = all;
         dispatch({
           type: SET_APPLICATION_DATA,
           value: {
+            users: users.data,
             rooms: rooms.data,
             channels: channels.data,
             messages: messages.data,

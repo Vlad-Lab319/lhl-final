@@ -2,6 +2,7 @@
 import {
   getChannelsForRoom,
   getMessagesForChannel,
+  attachUsersToMessages
 } from "../helpers/selectors";
 // State
 import useApplicationData from "../hooks/useApplicationData";
@@ -25,6 +26,9 @@ const App = () => {
     useApplicationData();
   const channelList = getChannelsForRoom(state.room, state);
   const messageList = getMessagesForChannel(state.channel, state);
+  console.log(messageList);
+  const userMessageList = attachUsersToMessages(messageList, state)
+  console.log(userMessageList);
   const memberList = [];
   return (
     <main className="layout">
@@ -48,7 +52,7 @@ const App = () => {
             {state.channel.id && (
               <>
                 <MessageList
-                  messageList={messageList}
+                  messageList={userMessageList}
                   channel={state.channel}
                   user={state.user}
                 />

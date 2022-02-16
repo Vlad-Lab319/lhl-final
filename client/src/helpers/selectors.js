@@ -8,4 +8,13 @@ const getMessagesForChannel = (channel, state) => {
   return state.messages.filter((message) => message.channel_id === channel.id);
 };
 
-export { getChannelsForRoom, getMessagesForChannel };
+const attachUsersToMessages = (messages, state) => {
+  return messages.map((msg) => {
+    return {
+      ...msg,
+      user: state.users.find((user) => user.id === msg.user_id),
+    };
+  });
+};
+
+export { getChannelsForRoom, getMessagesForChannel, attachUsersToMessages };

@@ -17,7 +17,8 @@ const MessageList = (props) => {
         id={message.id}
         content={message.message}
         time={message.created_at}
-        user={message.user}
+        name={message.user.name}
+        avatar={message.user.avatar}
       />
     );
   });

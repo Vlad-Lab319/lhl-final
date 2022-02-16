@@ -19,12 +19,12 @@ const router = express.Router();
 //   });
 // });
 
-router.get("/all", (req, res) => {
-  db.query(
-    `SELECT DISTINCT(messages.*) FROM messages ORDER BY messages.created_at;`
-  ).then(({ rows: messages }) => {
-    res.json(messages);
-  });
+router.get("/", (req, res) => {
+  db.query(`SELECT * FROM messages ORDER BY messages.created_at;`).then(
+    ({ rows: messages }) => {
+      res.json(messages);
+    }
+  );
 });
 
 router.post("/:userID", (req, res) => {
