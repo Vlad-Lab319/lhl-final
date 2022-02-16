@@ -6,12 +6,6 @@ import { useRef,useEffect } from "react";
 const MessageList = (props) => {
   const { messageList,channel } = props;
   const messageClass = classNames();
-  const messagesEndRef = useRef(null)
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView()
-  }
-
 
   const messages = messageList.map((message) => {
     return (
@@ -26,10 +20,15 @@ const MessageList = (props) => {
     );
   });
 
+  // ----- Handle auto scroll behaviour ------
+  const messagesEndRef = useRef(null)
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView()
+  }
     useEffect(() => {
     scrollToBottom()
   }, [channel,messages]);
-
+  // -----------------------------------------
 
   return (
     <section>

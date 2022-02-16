@@ -26,7 +26,7 @@ const App = () => {
     useApplicationData();
   const channelList = getChannelsForRoom(state.room, state);
   const messageList = getMessagesForChannel(state.channel, state);
-  const userMessageList = attachUsersToMessages(messageList, state)
+  const messageListWithUsers = attachUsersToMessages(messageList, state)
   const memberList = [];
   return (
     <main className="layout">
@@ -50,7 +50,7 @@ const App = () => {
             {state.channel.id && (
               <>
                 <MessageList
-                  messageList={userMessageList}
+                  messageList={messageListWithUsers}
                   channel={state.channel}
                   user={state.user}
                 />
