@@ -25,7 +25,7 @@ import RoomMembersList from "./RoomMembersList";
 //TODO: div messages needs to be refactored as a separate component to handle different channel types
 
 const App = () => {
-  const { state, setChannel, setRoom, loginUser, sendMessage, setRecipient } =
+  const { state, setChannel, setRoom, loginUser, sendMessage, setRecipient, registerUser } =
     useApplicationData();
   const channelList = getChannelsForRoom(state.room, state);
   const messageList = getMessagesForChannel(state.channel, state);
@@ -110,7 +110,7 @@ const App = () => {
         </div>
       ) : (
         <div className="main-container">
-          <UserForm loginUser={loginUser} />
+          <UserForm loginUser={loginUser} registerUser={registerUser} />
         </div>
       )}
     </main>

@@ -42,6 +42,7 @@ export default function useApplicationData() {
           user: action.value,
         };
       case SET_USERS:
+        console.log(action.value);
         return {
           ...state,
           users: action.value,
@@ -85,12 +86,19 @@ export default function useApplicationData() {
     }
   }
 
-  const loginUser = async (id) => {
+  const loginUser = (id) => {
     axios.get(`api/users/${id}`).then((user) => {
       if (user.data) {
         dispatch({ type: SET_USER, value: user.data });
       }
     });
+  };
+
+  const registerUser = (name, email, password) => {
+    axios
+      .post(`api/users/`, { name: name, email: email, password: password })
+      .then((user) => dispatch({ type: SET_USER, value: user.data[0] }))
+      .catch((err) => console.log(err.message));
   };
 
   const setChannel = (channel) => {
@@ -186,5 +194,6 @@ export default function useApplicationData() {
     loginUser,
     sendMessage,
     setRecipient,
+    registerUser,
   };
 }

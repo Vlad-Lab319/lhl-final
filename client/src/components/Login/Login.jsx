@@ -2,7 +2,7 @@ import "../../styles/Login.scss";
 import { useState } from "react";
 const Login = (props) => {
 
-  const {loginUser, clickRegister } = props;
+  const {loginUser,  toggleView } = props;
   const [value, setValue] = useState(1);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -61,7 +61,7 @@ const Login = (props) => {
           or
           <span className="separator"></span>
         </section>
-        <button onClick={clickRegister} className="login-btn login-btn--register">REGISTER</button>
+        <button onClick={toggleView} className="login-btn login-btn--register">REGISTER</button>
       </div>
   );
 };

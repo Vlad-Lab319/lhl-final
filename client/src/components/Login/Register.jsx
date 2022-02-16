@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 const Register = (props) => {
-  const { registerUser, clickRegister } = props;
+  const { registerUser,  toggleView } = props;
   const [name,setName] = useState('')
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -14,7 +14,7 @@ const Register = (props) => {
           autoComplete="off"
           onSubmit={(e) => {
             e.preventDefault();
-            registerUser(name,email);
+            registerUser(name, email, password);
           }}
           >
           <span className="input-item">
@@ -55,7 +55,7 @@ const Register = (props) => {
           or
           <span className="separator"></span>
         </section>
-        <button onClick={clickRegister} className="login-btn login-btn--register">BACK</button>
+        <button onClick={toggleView} className="login-btn login-btn--register">BACK</button>
     </div>
   )
 }

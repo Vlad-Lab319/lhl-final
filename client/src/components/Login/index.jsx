@@ -4,25 +4,28 @@ import Register from './Register'
 import "../../styles/Login.scss";
 
 const UserForm = (props) => {
-  const {  loginUser } = props;
+  const {  loginUser,registerUser } = props;
 
-  const [login, setLogin] = useState(true);
+  const [view, setView] = useState(true);
 
-  const clickRegister = () => {
-    setLogin(!login)
+  const toggleView = () => {
+    setView(!view)
   }
 
   return (
     <div className="login-page">
-      {login
+      {view
       ?
         <Login
           loginUser={loginUser}
-          setLogin={() => setLogin(!login)}
-          clickRegister={() => clickRegister()}
+          setLogin={() => setView(!view)}
+          toggleView={() => toggleView()}
         />
       :
-        <Register clickRegister={() => clickRegister()} />
+        <Register
+          registerUser={registerUser}
+          toggleView={() => toggleView()}
+        />
       }
     </div>
   );
