@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import "../styles/MessageList.scss";
 import MessageListItem from "./MessageListItem";
+import { useRef,useEffect } from "react";
 // import {addUserToMessage} from '../helpers/selectors'
 
 // TODO: Message objects will need to attach a user object by user id which provides the user name and avatar
@@ -10,6 +11,13 @@ import MessageListItem from "./MessageListItem";
 const MessageList = (props) => {
   const { messageList } = props;
   const messageClass = classNames();
+  const messagesEndRef = useRef(null)
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
+
+
   const messages = messageList.map((message) => {
     return (
       <MessageListItem
@@ -22,10 +30,20 @@ const MessageList = (props) => {
       />
     );
   });
+
+    useEffect(() => {
+    scrollToBottom()
+  }, [messages]);
+
+
   return (
     <section>
-      <li className="message-container">{messages}</li>
+      <li className="message-container">
+        {messages}
+        <ul ref={messagesEndRef} />
+      </li>
     </section>
+
   );
 };
 

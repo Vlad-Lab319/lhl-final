@@ -10,6 +10,7 @@ const MessageListItem = (props) => {
   // console.log(user);
   const messageClass = classNames("message-item");
 
+
   return (
     <ul className={messageClass}>
 
@@ -24,6 +25,7 @@ const MessageListItem = (props) => {
 
       <article className="message">{content}</article>
         </div>
+
     </ul>
   );
 };
