@@ -5,7 +5,7 @@ import "../styles/ChatInput.scss";
 
 const ChatInput = (props) => {
   const [message, setMessage] = useState("");
-  const { sendMessage, channel, user } = props;
+  const { channel, user, sendMessage } = props;
 
   const send = () => {
     const userID = user.id;
@@ -17,12 +17,12 @@ const ChatInput = (props) => {
       message,
     };
 
-    sendMessage(userID, messageData);
+    sendMessage(messageData);
+    setMessage("");
   };
 
   return (
     <form
-      // action=""
       className="input-form"
       onSubmit={(event) => {
         event.preventDefault();

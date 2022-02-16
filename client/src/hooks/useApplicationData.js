@@ -74,6 +74,7 @@ export default function useApplicationData() {
       case SET_APPLICATION_DATA:
         return {
           ...state,
+          users: action.value.users,
           rooms: action.value.rooms,
           channels: action.value.channels,
           friends: action.value.friends,
@@ -102,53 +103,25 @@ export default function useApplicationData() {
 
   const setRoom = (room) => {
     dispatch({ type: SET_ROOM, value: room });
+    dispatch({ type: SET_CHANNEL, value: {} });
   };
 
   const setSocket = (socket) => {
     dispatch({ type: SET_SOCKET, value: socket });
   };
 
-  const sendMessage = (userID, messageData) => {
-    return axios.post(`/api/messages/${userID}`, messageData).then(() => {
-      dispatch({
-        type: SET_MESSAGES,
-        value: messageData,
+  const sendMessage = (messageData) => {
+    return axios
+      .post(`/api/messages/${messageData.userID}`, messageData)
+      .then((message) => {
+        dispatch({
+          type: SET_MESSAGES,
+          value: message.data[0],
+        });
+        state.socket.emit("message", message.data[0]);
       });
-    });
   };
 
-  // TODO: Websocket for updating new messages, new channels, and active users in a channel
-
-  // This app makes a websocket connection immediately
-  // useEffect(() => {
-  //   // Connect to server
-  //   const socket = io("/");
-  //   setSocket(socket);
-
-  //   // All This stuff should be a Custom Hook, right?
-  //   socket.on("connect", (event) => {
-  //     console.log("connected");
-  //   });
-
-  //   socket.on("notify", (msg) => {
-  //     setNotify(msg);
-  //   });
-
-  //   socket.on("status", (msg) => {
-  //     setStatus(msg);
-  //   });
-
-  //   socket.on("public", (msg) => {
-  //     setMessages((prev) => ["Broadcast: " + msg.text, ...prev]);
-  //   });
-
-  //   socket.on("private", (msg) => {
-  //     setMessages((prev) => [`${msg.from} says: ${msg.text}`, ...prev]);
-  //   });
-
-  //   // ensures we disconnect to avoid memory leaks
-  //   return () => socket.disconnect();
-  // }, []);
   const socketUpdate = (action) => {
     dispatch({ type: action.type, value: action.value });
   };
@@ -161,6 +134,14 @@ export default function useApplicationData() {
 
       socket.on("connect", () => {
         socket.emit("update", { type: SET_USERS, value: state.user });
+      });
+
+      socket.on("message", (message) => {
+        console.log(message);
+        dispatch({
+          type: SET_MESSAGES,
+          value: message,
+        });
       });
 
       socket.on("update", (action) => {
@@ -176,17 +157,20 @@ export default function useApplicationData() {
   useEffect(() => {
     if (state.user) {
       Promise.all([
+        axios.get(`/api/users/`),
         axios.get(`/api/rooms/${state.user.id}`),
         axios.get(`/api/channels/${state.user.id}`),
-        axios.get(`/api/messages/${state.user.id}`),
+        // axios.get(`/api/messages/${state.user.id}`),
+        axios.get(`/api/messages/`),
         axios.get(`/api/users/friends/${state.user.id}`),
         // TODO: Needs route for getting all users who are in the same rooms as the currently signed in user
         // axios.get(`/api/users/${state.user.id}`),
       ]).then((all) => {
-        const [rooms, channels, messages, friends] = all;
+        const [users, rooms, channels, messages, friends, messages] = all;
         dispatch({
           type: SET_APPLICATION_DATA,
           value: {
+            users: users.data,
             rooms: rooms.data,
             channels: channels.data,
             messages: messages.data,
@@ -206,3 +190,36 @@ export default function useApplicationData() {
     setRecipient
   };
 }
+
+// TODO: Websocket for updating new messages, new channels, and active users in a channel
+
+// This app makes a websocket connection immediately
+// useEffect(() => {
+//   // Connect to server
+//   const socket = io("/");
+//   setSocket(socket);
+
+//   // All This stuff should be a Custom Hook, right?
+//   socket.on("connect", (event) => {
+//     console.log("connected");
+//   });
+
+//   socket.on("notify", (msg) => {
+//     setNotify(msg);
+//   });
+
+//   socket.on("status", (msg) => {
+//     setStatus(msg);
+//   });
+
+//   socket.on("public", (msg) => {
+//     setMessages((prev) => ["Broadcast: " + msg.text, ...prev]);
+//   });
+
+//   socket.on("private", (msg) => {
+//     setMessages((prev) => [`${msg.from} says: ${msg.text}`, ...prev]);
+//   });
+
+//   // ensures we disconnect to avoid memory leaks
+//   return () => socket.disconnect();
+// }, []);

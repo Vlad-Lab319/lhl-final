@@ -1,15 +1,12 @@
 import classNames from "classnames";
 import "../styles/MessageList.scss";
 import MessageListItem from "./MessageListItem";
-// import {addUserToMessage} from '../helpers/selectors'
-
-// TODO: Message objects will need to attach a user object by user id which provides the user name and avatar
-
-// TODO: Message time needs to be formatted, maybe checkout the timeago library or something similar (format should be something like "Today at 12:00pm")
+import { useRef,useEffect } from "react";
 
 const MessageList = (props) => {
-  const { messageList } = props;
+  const { messageList,channel } = props;
   const messageClass = classNames();
+
   const messages = messageList.map((message) => {
     return (
       <MessageListItem
@@ -17,14 +14,30 @@ const MessageList = (props) => {
         id={message.id}
         content={message.message}
         time={message.created_at}
-        user={message.user}
+        name={message.user.name}
+        avatar={message.user.avatar}
       />
     );
   });
+
+  // ----- Handle auto scroll behaviour ------
+  const messagesEndRef = useRef(null)
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView()
+  }
+    useEffect(() => {
+    scrollToBottom()
+  }, [channel,messages]);
+  // -----------------------------------------
+
   return (
     <section>
-      <li className="message-container">{messages}</li>
+      <li className="message-container">
+        {messages}
+        <ul ref={messagesEndRef} />
+      </li>
     </section>
+
   );
 };
 
