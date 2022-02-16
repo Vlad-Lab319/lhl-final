@@ -1,0 +1,26 @@
+@import "variables.scss";
+
+.recipient {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 2rem 0.5rem 0.5rem 0.5rem;
+  color: rgb(100, 100, 100);
+  &--selected {
+    color: white;
+    font-weight: 700;
+  }
+}
+
+.recipient:hover {
+  font-weight: 900;
+}
+
+.avatar {
+  height: 2.5rem;
+  width: 2.5rem;
+  border: 2px solid black;
+  border-radius: 1.5rem;
+  background-color: $dark-background;
+}

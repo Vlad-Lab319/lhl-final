@@ -13,6 +13,7 @@ export default function useApplicationData() {
     rooms: [],
     channels: [],
     friends: [],
+    recipient: {},
     members: [],
     messages: [],
   };
@@ -22,6 +23,7 @@ export default function useApplicationData() {
   const SET_ROOM = "SET_ROOM";
   const SET_CHANNEL = "SET_CHANNEL";
   const SET_FRIENDS = "SET_FRIENDS";
+  const SET_RECIPIENT = "SET_RECIPIENT";
   const SET_MESSAGES = "SET_MESSAGES";
   const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
 
@@ -57,7 +59,12 @@ export default function useApplicationData() {
       case SET_FRIENDS:
         return {
           ...state,
-          channel: action.value,
+          friends: action.value  // changed from channel
+        };
+      case SET_RECIPIENT:
+        return {
+          ...state,
+          recipient: action.value 
         };
       case SET_MESSAGES:
         return {
@@ -88,6 +95,10 @@ export default function useApplicationData() {
 
   const setChannel = (channel) => {
     dispatch({ type: SET_CHANNEL, value: channel });
+  };
+
+  const setRecipient = (recipient) => {
+    dispatch({ type: SET_RECIPIENT, value: recipient });
   };
 
   const setRoom = (room) => {
@@ -149,11 +160,13 @@ export default function useApplicationData() {
         axios.get(`/api/users/`),
         axios.get(`/api/rooms/${state.user.id}`),
         axios.get(`/api/channels/${state.user.id}`),
+        // axios.get(`/api/messages/${state.user.id}`),
         axios.get(`/api/messages/`),
+        axios.get(`/api/users/friends/${state.user.id}`),
         // TODO: Needs route for getting all users who are in the same rooms as the currently signed in user
         // axios.get(`/api/users/${state.user.id}`),
       ]).then((all) => {
-        const [users, rooms, channels, messages] = all;
+        const [users, rooms, channels, messages, friends, messages] = all;
         dispatch({
           type: SET_APPLICATION_DATA,
           value: {
@@ -161,6 +174,7 @@ export default function useApplicationData() {
             rooms: rooms.data,
             channels: channels.data,
             messages: messages.data,
+            friends: friends.data,
           },
         });
       });
@@ -173,6 +187,7 @@ export default function useApplicationData() {
     setRoom,
     loginUser,
     sendMessage,
+    setRecipient
   };
 }
 

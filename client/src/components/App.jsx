@@ -2,7 +2,8 @@
 import {
   getChannelsForRoom,
   getMessagesForChannel,
-  attachUsersToMessages
+  getDirectMessages,
+  attachUsersToMessages,
 } from "../helpers/selectors";
 // State
 import useApplicationData from "../hooks/useApplicationData";
@@ -13,7 +14,9 @@ import ChatInput from "./ChatInput";
 import Header from "./Header";
 import Login from "./Login";
 import MessageList from "./MessageList";
+import DirectMessagesList from "./DirectMessagesList";
 import RoomList from "./RoomList";
+import FriendList from "./FriendList";
 import RoomMembersList from "./RoomMembersList";
 
 // TODO: Create a private chat Component, the friends list can replace the channels bar, and should we replace the RoomMembersList side bar with something else while in private chats?
@@ -22,12 +25,29 @@ import RoomMembersList from "./RoomMembersList";
 //TODO: div messages needs to be refactored as a separate component to handle different channel types
 
 const App = () => {
-  const { state, setChannel, setRoom, loginUser, sendMessage } =
+  const { state, setChannel, setRoom, loginUser, sendMessage, setRecipient } =
     useApplicationData();
   const channelList = getChannelsForRoom(state.room, state);
   const messageList = getMessagesForChannel(state.channel, state);
+  const directMessagesList = getDirectMessages(state);
+
+  //dummy friends
+  const friendList = [
+    {
+      "id": 1,
+      "username": "Alice",
+      "avatar_url": "https://i.pinimg.com/736x/f5/23/3a/f5233afc4af9c7be02cc1c673c7c93e9.jpg"
+    },
+    {
+      "id": 2,
+      "username": "Kira",
+      "avatar_url": "https://i.pinimg.com/736x/f5/23/3a/f5233afc4af9c7be02cc1c673c7c93e9.jpg"
+    }
+  ];
+
   const messageListWithUsers = attachUsersToMessages(messageList, state)
   const memberList = [];
+  
   return (
     <main className="layout">
       <header className="header">
@@ -46,6 +66,11 @@ const App = () => {
             value={state.channel}
             room={state.room}
           />
+          {/* <FriendList
+            friendList={friendList}
+            value={state.recipient.id}
+            setRecipient={setRecipient}
+          /> */}
           <div className="messages">
             {state.channel.id && (
               <>
@@ -61,9 +86,22 @@ const App = () => {
                 />
               </>
             )}
+            {/* <>
+              <DirectMessagesList messageList={directMessagesList}
+              
+              />
+              <ChatInput
+                channel={null}
+                user={state.user}
+                recipient={state.recipient}
+                sendMessage={sendMessage}
+              />
+
+            </> */}
           </div>
+
+
           <div className="sidebar sidebar--friends">
-            {/* <FriendList /> */}
             <RoomMembersList memberList={memberList} />
           </div>
           {/* <div className="webrtc">
