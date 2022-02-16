@@ -31,11 +31,13 @@
 //       server.emit("update", updateDispatch(action, socket));
 //     });
 
-//     socket.on("disconnect", () => {
-//       const user = getUserBySocket(socket.id);
-//       delete users[user.id];
-//       server.emit("update", { type: SET_USERS, value: users });
-//     });
+// socket.on("disconnect", () => {
+//   const user = getUserBySocket(socket.id);
+//   if (user) {
+//     delete users[user.id];
+//     server.emit("update", { type: SET_USERS, value: users });
+//   }
+// });
 
 //     socket.on("message", (message) => {
 //       socket.emit("message", { type: SET_MESSAGES, value: message });

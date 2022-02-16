@@ -1,5 +1,7 @@
 import classNames from "classnames";
 import "../styles/MessageListItem.scss";
+import ReactTimeAgo from 'react-time-ago'
+
 
 // TODO: MessageListItem needs the proper user object
 
@@ -9,12 +11,18 @@ const MessageListItem = (props) => {
 
   return (
     <ul className={messageClass}>
-      <section>
         {/* <img src={user.avatar} alt={(user.name, " avatar")} /> */}
-        <h2>{user}</h2>
-        <span>{time}</span>
-      </section>
-      <article>{content}</article>
+        <div className="message-icon"></div>
+
+        <div className="message-content">
+        <div className="message-header">
+
+        <span className="message-user">{user} USERNAME </span>
+        <ReactTimeAgo className="message-time" date={time} locale="en-US"/>
+      </div>
+
+      <article className="message">{content}</article>
+        </div>
     </ul>
   );
 };
