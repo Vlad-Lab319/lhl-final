@@ -23,12 +23,12 @@ router.post("/:userID", (req, res) => {
   const { userID, channelID, message } = req.body;
   db.query(
     `
-      INSERT INTO messages (user_id, channel_id, message) VALUES ($1, $2, $3);
+      INSERT INTO messages (user_id, channel_id, message) VALUES ($1, $2, $3) RETURNING *;
     `,
     [userID, channelID, message]
   )
-    .then(() => {
-      res.status(204).json({});
+    .then(({ rows: messages }) => {
+      res.json(messages);
     })
     .catch((error) => console.log(error));
 });
