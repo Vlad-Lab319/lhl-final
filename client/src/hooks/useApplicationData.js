@@ -107,12 +107,14 @@ export default function useApplicationData() {
   }
 
   const loginUser = (email, password) => {
+    clearErrors();
     axios.post(`api/users/login`, { email, password }).then((user) => {
       dispatch(user.data.action);
     });
   };
 
   const registerUser = (name, email, password) => {
+    clearErrors();
     axios
       .post(`api/users/register`, {
         name,
@@ -120,7 +122,6 @@ export default function useApplicationData() {
         password,
       })
       .then((user) => {
-        console.log("registerUser: ", user.data);
         dispatch(user.data.action);
       });
   };
@@ -179,6 +180,10 @@ export default function useApplicationData() {
       });
       state.socket.emit("channel", channel.data[0]);
     });
+  };
+
+  const clearErrors = () => {
+    dispatch({ type: SET_ERRORS, value: null });
   };
 
   const socketUpdate = (action) => {
@@ -263,5 +268,6 @@ export default function useApplicationData() {
     registerUser,
     createRoom,
     createChannel,
+    clearErrors,
   };
 }

@@ -63,7 +63,11 @@ router.post("/register", (req, res) => {
     })
     .catch((err) => {
       res.json({
-        action: { type: "SET_ERRORS", value: err.detail },
+        action: {
+          type: "SET_ERRORS",
+          value:
+            "Someone has already registered with that email, try a different one",
+        },
       });
     });
 });
@@ -85,7 +89,7 @@ router.post("/login", (req, res) => {
       });
     } else {
       res.json({
-        action: { type: "SET_ERRORS", value: "Incorrect Login" },
+        action: { type: "SET_ERRORS", value: "Email/Password is incorrect" },
       });
     }
   });

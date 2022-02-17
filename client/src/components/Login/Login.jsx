@@ -1,14 +1,16 @@
 import { useState } from "react";
 import "../../styles/Login.scss";
 const Login = (props) => {
-  const { loginUser, toggleView } = props;
+  const { loginUser, toggleView, errors, clearErrors } = props;
   const [value, setValue] = useState(1);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   return (
     <div className="login">
-      <span className="login-message">Looks like you're not logged in...</span>
+      <span className="login-message">
+        {errors ? errors : "Looks like you're not logged in..."}
+      </span>
       <form
         className="login-form"
         autoComplete="off"
@@ -41,7 +43,11 @@ const Login = (props) => {
             type="email"
             value={email}
             placeholder="example@email.com"
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              clearErrors();
+            }}
+            required
           />
           <label className="input-label" htmlFor="password">
             Password:
@@ -52,7 +58,11 @@ const Login = (props) => {
             type="password"
             value={password}
             placeholder="Password"
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              clearErrors();
+            }}
+            required
           />
         </span>
         <button type="submit" className="login-btn">

@@ -1,14 +1,16 @@
 import { useState } from "react";
 
 const Register = (props) => {
-  const { registerUser, toggleView } = props;
+  const { registerUser, toggleView, errors, clearErrors } = props;
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   return (
     <div className="login">
-      <span className="login-message">Enter your information to sign up!</span>
+      <span className="login-message">
+        {errors ? errors : "Enter your information to sign up!"}
+      </span>
       <form
         className="login-form"
         autoComplete="off"
@@ -27,7 +29,11 @@ const Register = (props) => {
             type="text"
             value={name}
             placeholder="Username"
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => {
+              clearErrors();
+              setName(e.target.value);
+            }}
+            required
           />
 
           <label className="input-label" htmlFor="email">
@@ -39,7 +45,11 @@ const Register = (props) => {
             type="email"
             value={email}
             placeholder="example@email.com"
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              clearErrors();
+              setEmail(e.target.value);
+            }}
+            required
           />
 
           <label className="input-label" htmlFor="password">
@@ -51,7 +61,11 @@ const Register = (props) => {
             type="password"
             value={password}
             placeholder="Password"
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              clearErrors();
+              setPassword(e.target.value);
+            }}
+            required
           />
         </span>
         <button type="submit" className="login-btn">

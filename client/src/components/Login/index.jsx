@@ -4,11 +4,12 @@ import Login from "./Login";
 import Register from "./Register";
 
 const UserForm = (props) => {
-  const { loginUser, registerUser } = props;
+  const { loginUser, registerUser, errors, clearErrors } = props;
 
   const [view, setView] = useState(true);
 
   const toggleView = () => {
+    clearErrors();
     setView(!view);
   };
 
@@ -22,9 +23,16 @@ const UserForm = (props) => {
           loginUser={loginUser}
           setLogin={() => setView(!view)}
           toggleView={() => toggleView()}
+          errors={errors}
+          clearErrors={clearErrors}
         />
       ) : (
-        <Register registerUser={registerUser} toggleView={() => toggleView()} />
+        <Register
+          registerUser={registerUser}
+          toggleView={() => toggleView()}
+          errors={errors}
+          clearErrors={clearErrors}
+        />
       )}
     </div>
   );

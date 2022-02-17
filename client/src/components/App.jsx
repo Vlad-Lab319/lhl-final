@@ -33,6 +33,7 @@ const App = () => {
     setRecipient,
     registerUser,
     createRoom,
+    clearErrors,
   } = useApplicationData();
   const channelList = getChannelsForRoom(state.room, state);
   const messageList = getMessagesForChannel(state.channel, state);
@@ -119,7 +120,12 @@ const App = () => {
         </>
       ) : (
         <div className="main-container">
-          <UserForm loginUser={loginUser} registerUser={registerUser} />
+          <UserForm
+            loginUser={loginUser}
+            registerUser={registerUser}
+            errors={state.errors}
+            clearErrors={() => clearErrors()}
+          />
         </div>
       )}
     </main>
