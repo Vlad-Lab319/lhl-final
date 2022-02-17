@@ -35,7 +35,6 @@ const App = () => {
     createRoom,
     createChannel,
     clearErrors,
-
   } = useApplicationData();
   const channelList = getChannelsForRoom(state.room, state);
   const messageList = getMessagesForChannel(state.channel, state);
@@ -63,28 +62,30 @@ const App = () => {
   return (
     <main className="layout">
       {state.user ? (
-
-        <div className="main-container">
-          <RoomList
-            setRoom={setRoom}
-            roomList={state.rooms}
-            value={state.room}
-            createRoom={createRoom}
-            userID={state.user.id}
-          />
-          <ChannelList
-            setChannel={setChannel}
-            channelList={channelList}
-            value={state.channel}
-            room={state.room}
-            createChannel={createChannel}
-          />
-          {/* <FriendList
-
         <>
           <header className="header">
             <Header user={state.user} logoutUser={() => logoutUser()} />
           </header>
+          <div className="main-container">
+            <RoomList
+              setRoom={setRoom}
+              roomList={state.rooms}
+              value={state.room}
+              createRoom={createRoom}
+              userID={state.user.id}
+            />
+            <ChannelList
+              setChannel={setChannel}
+              channelList={channelList}
+              value={state.channel}
+              room={state.room}
+              createChannel={createChannel}
+            />
+
+            {/* <FriendList
+
+
+
           <div className="main-container">
             <RoomList
               setRoom={setRoom}
@@ -118,7 +119,8 @@ const App = () => {
                     sendMessage={sendMessage}
                   />
                 </>
-             
+              )}
+
               {/* <>
               <DirectMessagesList messageList={directMessagesList}
 
