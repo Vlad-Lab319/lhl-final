@@ -2,6 +2,7 @@ import { useState } from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import AddFriend from "./AddFriend";
 
 export default function MenuList(props) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -15,8 +16,17 @@ export default function MenuList(props) {
 
   return (
     <div>
-      <Button onClick={handleClick}>{props.children}</Button>
+      <Button
+        id="basic-button"
+        aria-controls={open ? "basic-menu" : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? "true" : undefined}
+        onClick={handleClick}
+      >
+        {props.children}
+      </Button>
       <Menu
+        id="basic-menu"
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
@@ -24,7 +34,7 @@ export default function MenuList(props) {
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem onClick={handleClose}>Add User</MenuItem>
+        <AddFriend close={handleClose} />
         <MenuItem onClick={handleClose}>Rename</MenuItem>
         <MenuItem onClick={handleClose}>Delete Room</MenuItem>
       </Menu>
