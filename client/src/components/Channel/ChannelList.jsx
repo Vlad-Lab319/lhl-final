@@ -11,6 +11,7 @@ import { useState } from "react";
 import "./ChannelList.scss";
 import ChannelListItem from "./ChannelListItem";
 import { IconButton } from "@mui/material";
+import MenuList from "./Menu/MenuList";
 
 const ChannelList = (props) => {
   const { channelList, setChannel, value, room, createChannel } = props;
@@ -80,7 +81,9 @@ const ChannelList = (props) => {
 
   return (
     <div className="sidebar sidebar--channels">
-      <h3 className="channel-title">{room.name && `${room.name}`}</h3>
+      <h3 className="channel-title">
+        <MenuList>{room.name && `${room.name}`}</MenuList>
+      </h3>
       {channels}
       {addButton}
     </div>
