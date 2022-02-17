@@ -1,8 +1,8 @@
 import Avatar from "@mui/material/Avatar";
 import classNames from "classnames";
 import ReactTimeAgo from "react-time-ago";
-import stringAvatar from "../helpers/helpers";
-import "../styles/MessageListItem.scss";
+import stringAvatar from "../../helpers/helpers.js";
+import "./MessageListItem.scss";
 
 const MessageListItem = (props) => {
   const { content, time, name, avatar } = props;

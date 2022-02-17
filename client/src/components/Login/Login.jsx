@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../../styles/Login.scss";
+import "./Login.scss";
 const Login = (props) => {
   const { loginUser, toggleView, errors, clearErrors } = props;
   const [value, setValue] = useState(1);

@@ -1,17 +1,15 @@
-import { useState } from "react";
-import "../styles/ChannelList.scss";
-import ChannelListItem from "./ChannelListItem";
-import AddBoxIcon from '@mui/icons-material/AddBox';
-
+import AddBoxIcon from "@mui/icons-material/AddBox";
 //mui material
 import Button from "@mui/material/Button";
-import Input from "@mui/material/Input";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-
+import Input from "@mui/material/Input";
+import { useState } from "react";
+import "./ChannelList.scss";
+import ChannelListItem from "./ChannelListItem";
 
 const ChannelList = (props) => {
   const { userID, channelList, setChannel, value, room, createChannel } = props;
@@ -59,30 +57,28 @@ const ChannelList = (props) => {
       </h3>
       {channels}
       <div className="channel-add-button">
-          <AddBoxIcon onClick={handleClickOpen} />
-          <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>Create new channel</DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                Create new channel
-              </DialogContentText>
-              <Input
-                autoFocus
-                margin="dense"
-                type="text"
-                fullWidth
-                variant="standard"
-                id="room_id"
-                value={newChannelName}
-                onChange={(event) => setNewChannelName(event.target.value)}
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose}>Cancel</Button>
-              <Button onClick={create}>Create</Button>
-            </DialogActions>
-          </Dialog>
-        </div>
+        <AddBoxIcon onClick={handleClickOpen} />
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>Create new channel</DialogTitle>
+          <DialogContent>
+            <DialogContentText>Create new channel</DialogContentText>
+            <Input
+              autoFocus
+              margin="dense"
+              type="text"
+              fullWidth
+              variant="standard"
+              id="room_id"
+              value={newChannelName}
+              onChange={(event) => setNewChannelName(event.target.value)}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
+            <Button onClick={create}>Create</Button>
+          </DialogActions>
+        </Dialog>
+      </div>
     </div>
   );
 };

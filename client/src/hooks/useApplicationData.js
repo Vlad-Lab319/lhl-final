@@ -85,7 +85,7 @@ export default function useApplicationData() {
       case ADD_CHANNELS:
         return {
           ...state,
-          rooms: [...state.channels, action.value],
+          channels: [...state.channels, action.value],
         };
       case SET_APPLICATION_DATA:
         return {
