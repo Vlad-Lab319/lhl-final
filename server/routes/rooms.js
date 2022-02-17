@@ -25,6 +25,12 @@ router.post("/", (req, res) => {
   )
     .then(({ rows: rooms }) => {
       res.json(rooms);
+      db.query(
+        `
+          INSERT INTO room_users (user_id, room_id) VALUES ($1, $2);
+        `,
+        [userID, rooms[0].id]
+      );
     })
     .catch((error) => console.log(error));
 });
