@@ -42,23 +42,37 @@ router.get("/friends/:userID", (req, res) => {
 
 router.post("/register", (req, res) => {
   const { name, email, password } = req.body;
-  console.log("Body: ", req.body);
   db.query(
     `INSERT INTO users (username, email, password, avatar_url)
-    VALUES ($1, $2, $3, 'https://i.pinimg.com/736x/f5/23/3a/f5233afc4af9c7be02cc1c673c7c93e9.jpg') RETURNING id, username AS name, avatar_url AS avatar;`,
+    VALUES ($1, $2, $3, 'https://i.pinimg.com/736x/f5/23/3a/f5233afc4af9c7be02cc1c673c7c93e9.jpg') RETURNING id, username, avatar_url;`,
     [name, email, bcrypt.hashSync(password, 10)]
-  ).then(({ rows: user }) => {
-    res.json(user);
-  });
+  )
+    .then((data) => {
+      const dbResponse = data.rows[0];
+      console.log(dbResponse);
+      res.json({
+        action: {
+          type: "SET_USER",
+          value: {
+            id: dbResponse.id,
+            name: dbResponse.username,
+            avatar: dbResponse.avatar_url,
+          },
+        },
+      });
+    })
+    .catch((err) => {
+      res.json({
+        action: { type: "SET_ERRORS", value: err.detail },
+      });
+    });
 });
 
 router.post("/login", (req, res) => {
   const { email, password } = req.body;
   db.query(`SELECT * FROM users WHERE email = $1;`, [email]).then((data) => {
     const dbResponse = data.rows[0];
-    console.log("post /login: ", dbResponse);
     if (dbResponse && bcrypt.compareSync(password, dbResponse.password)) {
-      console.log("post /login after if: ");
       res.json({
         action: {
           type: "SET_USER",

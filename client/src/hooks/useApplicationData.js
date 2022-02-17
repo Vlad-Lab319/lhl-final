@@ -107,32 +107,21 @@ export default function useApplicationData() {
   }
 
   const loginUser = (email, password) => {
-    // axios.get(`api/users/${id}`).then((user) => {
-    //   if (user.data) {
-    //     dispatch({ type: SET_USER, value: user.data });
-    //   }
-    // });
-    axios
-      .post(`api/users/login`, { email, password })
-      .then((user) => {
-        // console.log("User in loginUser", user);
-        console.log("loginUser: ", user.data);
-        dispatch(user.data);
-        console.log(state.errors);
-      })
-      .catch((err) => console.log);
+    axios.post(`api/users/login`, { email, password }).then((user) => {
+      dispatch(user.data.action);
+    });
   };
 
   const registerUser = (name, email, password) => {
     axios
       .post(`api/users/register`, {
-        name: name,
-        email: email,
-        password: password,
+        name,
+        email,
+        password,
       })
       .then((user) => {
         console.log("registerUser: ", user.data);
-        dispatch(user.data);
+        dispatch(user.data.action);
       });
   };
 
