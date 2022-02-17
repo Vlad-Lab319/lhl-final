@@ -16,10 +16,11 @@ const Login = (props) => {
         autoComplete="off"
         onSubmit={(e) => {
           e.preventDefault();
-          loginUser(email, password);
+          // loginUser(email, password);
+          loginUser(value);
         }}
       >
-        {/* <span className="input-item">
+        <span className="input-item">
           <label className="input-label" htmlFor="id">
             User ID:
           </label>
@@ -31,9 +32,9 @@ const Login = (props) => {
             placeholder="USER ID"
             onChange={(e) => setValue(e.target.value)}
           />
-        </span> */}
+        </span>
 
-        <span className="input-item">
+        {/* <span className="input-item">
           <label className="input-label" htmlFor="email">
             Email:
           </label>
@@ -64,7 +65,7 @@ const Login = (props) => {
             }}
             required
           />
-        </span>
+        </span> */}
         <button type="submit" className="login-btn">
           LOGIN
         </button>

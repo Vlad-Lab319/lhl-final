@@ -106,9 +106,17 @@ export default function useApplicationData() {
     }
   }
 
-  const loginUser = (email, password) => {
+  // TODO: UNCOMMENT - uncomment for deploy
+  // const loginUser = (email, password) => {
+  //   clearErrors();
+  //   axios.post(`api/users/login`, { email, password }).then((user) => {
+  //     dispatch(user.data.action);
+  //   });
+  // };
+
+  const loginUser = (id) => {
     clearErrors();
-    axios.post(`api/users/login`, { email, password }).then((user) => {
+    axios.get(`api/users/${id}`).then((user) => {
       dispatch(user.data.action);
     });
   };

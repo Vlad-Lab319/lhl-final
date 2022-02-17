@@ -16,13 +16,20 @@ router.get("/", (req, res) => {
   });
 });
 
+// TODO: REMOVE - Remove for deploy
 // get single user
 router.get("/:id", (req, res) => {
   db.query(
     `SELECT id, username AS name, avatar_url AS avatar FROM users WHERE id = $1;`,
     [req.params.id]
   ).then(({ rows: users }) => {
-    res.json(users[0]);
+    const user = users[0];
+    res.json({
+      action: {
+        type: "SET_USER",
+        value: { id: user.id, name: user.name, avatar: user.avatar },
+      },
+    });
   });
 });
 
