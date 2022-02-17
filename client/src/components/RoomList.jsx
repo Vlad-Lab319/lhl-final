@@ -1,22 +1,19 @@
 import { useState } from "react";
 import "../styles/RoomList.scss";
 import RoomListItem from "./RoomListItem";
-import AddCircleIcon from '@mui/icons-material/AddCircle';
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
-//mui material 
-import Button from '@mui/material/Button';
-import Input from '@mui/material/Input';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-
-
-
+//mui material
+import Button from "@mui/material/Button";
+import Input from "@mui/material/Input";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
 const RoomList = (props) => {
-  const { roomList, setRoom, value } = props;
+  const { userID, roomList, setRoom, value, createRoom } = props;
 
   const [open, setOpen] = useState(false);
   const [newRoomName, setNewRoomName] = useState("");
@@ -30,8 +27,6 @@ const RoomList = (props) => {
     setNewRoomName("");
   };
 
-
-
   const rooms = roomList.map((room) => {
     return (
       <RoomListItem
@@ -42,12 +37,17 @@ const RoomList = (props) => {
         setRoom={() => setRoom(room)}
         selected={room.id === value.id}
       />
-
     );
   });
 
-  function createRoom() {
+  function create() {
     console.log(`Create room ${newRoomName}`);
+    const roomData = {
+      userID,
+      newRoomName,
+      icon: "https://i.pinimg.com/736x/f5/23/3a/f5233afc4af9c7be02cc1c673c7c93e9.jpg",
+    };
+    createRoom(roomData);
     handleClose();
   }
 
@@ -76,10 +76,9 @@ const RoomList = (props) => {
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose}>Cancel</Button>
-              <Button onClick={createRoom}>Create</Button>
+              <Button onClick={create}>Create</Button>
             </DialogActions>
           </Dialog>
-
         </div>
       </div>
     </>

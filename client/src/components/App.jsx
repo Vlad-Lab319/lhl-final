@@ -32,7 +32,7 @@ const App = () => {
     sendMessage,
     setRecipient,
     registerUser,
-    setUser,
+    createRoom,
   } = useApplicationData();
   const channelList = getChannelsForRoom(state.room, state);
   const messageList = getMessagesForChannel(state.channel, state);
@@ -109,7 +109,6 @@ const App = () => {
 
             </> */}
             </div>
-
             <div className="sidebar sidebar--friends">
               <RoomMembersList memberList={memberList} />
             </div>
