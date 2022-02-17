@@ -70,6 +70,7 @@ const App = () => {
               setRoom={setRoom}
               roomList={state.rooms}
               value={state.room}
+              createRoom={createRoom}
             />
             <ChannelList
               setChannel={setChannel}
