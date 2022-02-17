@@ -40,7 +40,6 @@ const io = new Server(server, {
 });
 
 const users = {};
-const SET_MESSAGES = "SET_MESSAGES";
 const SET_USERS = "SET_USERS";
 
 const getUserBySocket = (socketID) => {
@@ -53,8 +52,6 @@ const updateDispatch = (action, socket) => {
       users[action.value.id] = { ...action.value, socketID: socket.id };
       console.log(users);
       return { type: action.type, value: users };
-    case SET_MESSAGES: {
-    }
   }
 };
 
@@ -71,6 +68,10 @@ io.on("connection", (socket) => {
 
   socket.on("room", (messageData) => {
     socket.broadcast.emit("room", messageData);
+  });
+
+  socket.on("channel", (channelData) => {
+    socket.broadcast.emit("channel", channelData);
   });
 
   socket.on("disconnect", () => {

@@ -27,6 +27,7 @@ export default function useApplicationData() {
   const SET_RECIPIENT = "SET_RECIPIENT";
   const ADD_MESSAGES = "ADD_MESSAGES";
   const ADD_ROOMS = "ADD_ROOMS";
+  const ADD_CHANNELS = "ADD_CHANNELS";
   const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
 
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -78,6 +79,11 @@ export default function useApplicationData() {
         return {
           ...state,
           rooms: [...state.rooms, action.value],
+        };
+      case ADD_CHANNELS:
+        return {
+          ...state,
+          rooms: [...state.channels, action.value],
         };
       case SET_APPLICATION_DATA:
         return {
@@ -145,6 +151,16 @@ export default function useApplicationData() {
     });
   };
 
+  const createChannel = (channelData) => {
+    return axios.post(`/api/channels`, channelData).then((channel) => {
+      dispatch({
+        type: ADD_CHANNELS,
+        value: channel.data[0],
+      });
+      state.socket.emit("channel", channel.data[0]);
+    });
+  };
+
   const socketUpdate = (action) => {
     dispatch({ type: action.type, value: action.value });
   };
@@ -170,6 +186,13 @@ export default function useApplicationData() {
         dispatch({
           type: ADD_ROOMS,
           value: room,
+        });
+      });
+
+      socket.on("channel", (channel) => {
+        dispatch({
+          type: ADD_CHANNELS,
+          value: channel,
         });
       });
 
@@ -218,5 +241,6 @@ export default function useApplicationData() {
     setRecipient,
     registerUser,
     createRoom,
+    createChannel,
   };
 }

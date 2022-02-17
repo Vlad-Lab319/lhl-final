@@ -11,4 +11,18 @@ router.get("/:userID", (req, res) => {
   });
 });
 
+router.post("/", (req, res) => {
+  const { roomID, name } = req.body;
+  db.query(
+    `
+      INSERT INTO rooms (room_id, name) VALUES ($1, $2) RETURNING *;
+    `,
+    [roomID, name]
+  )
+    .then(({ rows: channels }) => {
+      res.json(channels);
+    })
+    .catch((error) => console.log(error));
+});
+
 module.exports = router;
