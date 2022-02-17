@@ -1,9 +1,9 @@
 // Helpers
 import {
-  getChannelsForRoom,
-  getMessagesForChannel,
-  getDirectMessages,
   attachUsersToMessages,
+  getChannelsForRoom,
+  getDirectMessages,
+  getMessagesForChannel,
 } from "../helpers/selectors";
 // State
 import useApplicationData from "../hooks/useApplicationData";
@@ -14,11 +14,8 @@ import ChatInput from "./ChatInput";
 import Header from "./Header";
 import UserForm from "./Login/index";
 import MessageList from "./MessageList";
-import DirectMessagesList from "./DirectMessagesList";
 import RoomList from "./RoomList";
-import FriendList from "./FriendList";
 import RoomMembersList from "./RoomMembersList";
-import WebRtc from "./WebRTC";
 
 // TODO: Create a private chat Component, the friends list can replace the channels bar, and should we replace the RoomMembersList side bar with something else while in private chats?
 
@@ -31,13 +28,15 @@ const App = () => {
     setChannel,
     setRoom,
     loginUser,
+    logoutUser,
     sendMessage,
     setRecipient,
     registerUser,
     createRoom,
     createChannel,
-  } = useApplicationData();
+    clearErrors,
 
+  } = useApplicationData();
   const channelList = getChannelsForRoom(state.room, state);
   const messageList = getMessagesForChannel(state.channel, state);
   const directMessagesList = getDirectMessages(state);
@@ -63,10 +62,8 @@ const App = () => {
 
   return (
     <main className="layout">
-      <header className="header">
-        <Header user={state.user} />
-      </header>
       {state.user ? (
+
         <div className="main-container">
           <RoomList
             setRoom={setRoom}
@@ -83,49 +80,74 @@ const App = () => {
             createChannel={createChannel}
           />
           {/* <FriendList
+
+        <>
+          <header className="header">
+            <Header user={state.user} logoutUser={() => logoutUser()} />
+          </header>
+          <div className="main-container">
+            <RoomList
+              setRoom={setRoom}
+              roomList={state.rooms}
+              value={state.room}
+              createRoom={createRoom}
+              userID={state.user.id}
+            />
+            <ChannelList
+              setChannel={setChannel}
+              channelList={channelList}
+              value={state.channel}
+              room={state.room}
+            />
+            {/* <FriendList
             friendList={friendList}
             value={state.recipient.id}
             setRecipient={setRecipient}
           /> */}
-          <div className="messages">
-            {state.channel.id && (
-              <>
-                <MessageList
-                  messageList={messageListWithUsers}
-                  channel={state.channel}
-                  user={state.user}
-                />
-                <ChatInput
-                  channel={state.channel}
-                  user={state.user}
-                  sendMessage={sendMessage}
-                />
-              </>
-            )}
-            {/* <>
+            <div className="messages">
+              {state.channel.id && (
+                <>
+                  <MessageList
+                    messageList={messageListWithUsers}
+                    channel={state.channel}
+                    user={state.user}
+                  />
+                  <ChatInput
+                    channel={state.channel}
+                    user={state.user}
+                    sendMessage={sendMessage}
+                  />
+                </>
+             
+              {/* <>
               <DirectMessagesList messageList={directMessagesList}
 
               />
               <ChatInput
-                channel={null}
-                user={state.user}
-                recipient={state.recipient}
-                sendMessage={sendMessage}
+              channel={null}
+              user={state.user}
+              recipient={state.recipient}
+              sendMessage={sendMessage}
               />
 
             </> */}
-          </div>
-
-          <div className="sidebar sidebar--friends">
-            <RoomMembersList memberList={memberList} />
-          </div>
-          {/* <div className="webrtc">
+            </div>
+            <div className="sidebar sidebar--friends">
+              <RoomMembersList memberList={memberList} />
+            </div>
+            {/* <div className="webrtc">
             <WebRtc />
           </div> */}
-        </div>
+          </div>
+        </>
       ) : (
         <div className="main-container">
-          <UserForm loginUser={loginUser} registerUser={registerUser} />
+          <UserForm
+            loginUser={loginUser}
+            registerUser={registerUser}
+            errors={state.errors}
+            clearErrors={() => clearErrors()}
+          />
         </div>
       )}
     </main>

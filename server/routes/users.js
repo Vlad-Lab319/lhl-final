@@ -16,13 +16,20 @@ router.get("/", (req, res) => {
   });
 });
 
+// TODO: REMOVE - Remove for deploy
 // get single user
 router.get("/:id", (req, res) => {
   db.query(
     `SELECT id, username AS name, avatar_url AS avatar FROM users WHERE id = $1;`,
     [req.params.id]
   ).then(({ rows: users }) => {
-    res.json(users[0]);
+    const user = users[0];
+    res.json({
+      action: {
+        type: "SET_USER",
+        value: { id: user.id, name: user.name, avatar: user.avatar },
+      },
+    });
   });
 });
 
@@ -40,20 +47,59 @@ router.get("/friends/:userID", (req, res) => {
   });
 });
 
-router.post("/", (req, res) => {
+router.post("/register", (req, res) => {
   const { name, email, password } = req.body;
-  console.log(req.body);
   db.query(
     `INSERT INTO users (username, email, password, avatar_url)
-    VALUES ($1, $2, $3, 'https://i.pinimg.com/736x/f5/23/3a/f5233afc4af9c7be02cc1c673c7c93e9.jpg') RETURNING id, username AS name, avatar_url AS avatar;`,
+    VALUES ($1, $2, $3, 'https://i.pinimg.com/736x/f5/23/3a/f5233afc4af9c7be02cc1c673c7c93e9.jpg') RETURNING id, username, avatar_url;`,
     [name, email, bcrypt.hashSync(password, 10)]
   )
-    .then(({ rows: user }) => {
-      res.json(user);
+    .then((data) => {
+      const dbResponse = data.rows[0];
+      console.log(dbResponse);
+      res.json({
+        action: {
+          type: "SET_USER",
+          value: {
+            id: dbResponse.id,
+            name: dbResponse.username,
+            avatar: dbResponse.avatar_url,
+          },
+        },
+      });
     })
     .catch((err) => {
-      res.json(err.detail);
+      res.json({
+        action: {
+          type: "SET_ERRORS",
+          value:
+            "Someone has already registered with that email, try a different one",
+        },
+      });
     });
+});
+
+router.post("/login", (req, res) => {
+  const { email, password } = req.body;
+  db.query(`SELECT * FROM users WHERE email = $1;`, [email]).then((data) => {
+    const dbResponse = data.rows[0];
+    if (dbResponse && bcrypt.compareSync(password, dbResponse.password)) {
+      res.json({
+        action: {
+          type: "SET_USER",
+          value: {
+            id: dbResponse.id,
+            name: dbResponse.username,
+            avatar: dbResponse.avatar_url,
+          },
+        },
+      });
+    } else {
+      res.json({
+        action: { type: "SET_ERRORS", value: "Email/Password is incorrect" },
+      });
+    }
+  });
 });
 
 // TODO: get all distinct users from the users table that are in the same rooms as the current logged in user

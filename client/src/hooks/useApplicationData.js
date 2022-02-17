@@ -16,6 +16,7 @@ export default function useApplicationData() {
     recipient: {},
     members: [],
     messages: [],
+    errors: null,
   };
 
   const SET_SOCKET = "SET_SOCKET";
@@ -29,6 +30,7 @@ export default function useApplicationData() {
   const ADD_ROOMS = "ADD_ROOMS";
   const ADD_CHANNELS = "ADD_CHANNELS";
   const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
+  const SET_ERRORS = "SET_ERRORS";
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -94,37 +96,64 @@ export default function useApplicationData() {
           friends: action.value.friends,
           messages: action.value.messages,
         };
+      case SET_ERRORS:
+        return {
+          ...state,
+          errors: action.value,
+        };
       default:
         return { ...state };
     }
   }
 
+  // TODO: UNCOMMENT - uncomment for deploy
+  // const loginUser = (email, password) => {
+  //   clearErrors();
+  //   axios.post(`api/users/login`, { email, password }).then((user) => {
+  //     dispatch(user.data.action);
+  //   });
+  // };
+
   const loginUser = (id) => {
+    clearErrors();
     axios.get(`api/users/${id}`).then((user) => {
-      if (user.data) {
-        dispatch({ type: SET_USER, value: user.data });
-      }
+      dispatch(user.data.action);
     });
   };
 
   const registerUser = (name, email, password) => {
+    clearErrors();
     axios
-      .post(`api/users/`, { name: name, email: email, password: password })
-      .then((user) => dispatch({ type: SET_USER, value: user.data[0] }))
-      .catch((err) => console.log(err.message));
+      .post(`api/users/register`, {
+        name,
+        email,
+        password,
+      })
+      .then((user) => {
+        dispatch(user.data.action);
+      });
   };
 
   const setChannel = (channel) => {
     dispatch({ type: SET_CHANNEL, value: channel });
+    //TODO: SOCKET - socket.emit("channel", state.channel.id)
   };
 
   const setRecipient = (recipient) => {
     dispatch({ type: SET_RECIPIENT, value: recipient });
   };
 
+  const logoutUser = () => {
+    dispatch({ type: SET_USER, value: null });
+    if (state.socket) {
+      state.socket.disconnect();
+    }
+  };
+
   const setRoom = (room) => {
     dispatch({ type: SET_ROOM, value: room });
     dispatch({ type: SET_CHANNEL, value: {} });
+    //TODO: SOCKET - socket.emit("room", state.room.id)
   };
 
   const setSocket = (socket) => {
@@ -159,6 +188,10 @@ export default function useApplicationData() {
       });
       state.socket.emit("channel", channel.data[0]);
     });
+  };
+
+  const clearErrors = () => {
+    dispatch({ type: SET_ERRORS, value: null });
   };
 
   const socketUpdate = (action) => {
@@ -237,10 +270,12 @@ export default function useApplicationData() {
     setChannel,
     setRoom,
     loginUser,
+    logoutUser,
     sendMessage,
     setRecipient,
     registerUser,
     createRoom,
     createChannel,
+    clearErrors,
   };
 }
