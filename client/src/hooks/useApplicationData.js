@@ -16,7 +16,9 @@ export default function useApplicationData() {
     recipient: {},
     members: [],
     messages: [],
+    errors: null,
   };
+
   const SET_SOCKET = "SET_SOCKET";
   const SET_USER = "SET_USER";
   const SET_USERS = "SET_USERS";
@@ -26,6 +28,7 @@ export default function useApplicationData() {
   const SET_RECIPIENT = "SET_RECIPIENT";
   const SET_MESSAGES = "SET_MESSAGES";
   const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
+  const SET_ERRORS = "SET_ERRORS";
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -81,24 +84,44 @@ export default function useApplicationData() {
           friends: action.value.friends,
           messages: action.value.messages,
         };
+      case SET_ERRORS:
+        return {
+          ...state,
+          errors: action.value,
+        };
       default:
         return { ...state };
     }
   }
 
-  const loginUser = (id) => {
-    axios.get(`api/users/${id}`).then((user) => {
-      if (user.data) {
-        dispatch({ type: SET_USER, value: user.data });
-      }
-    });
+  const loginUser = (email, password) => {
+    // axios.get(`api/users/${id}`).then((user) => {
+    //   if (user.data) {
+    //     dispatch({ type: SET_USER, value: user.data });
+    //   }
+    // });
+    axios
+      .post(`api/users/login`, { email, password })
+      .then((user) => {
+        // console.log("User in loginUser", user);
+        console.log("loginUser: ", user.data);
+        dispatch(user.data);
+        console.log(state.errors);
+      })
+      .catch((err) => console.log);
   };
 
   const registerUser = (name, email, password) => {
     axios
-      .post(`api/users/`, { name: name, email: email, password: password })
-      .then((user) => dispatch({ type: SET_USER, value: user.data[0] }))
-      .catch((err) => console.log(err.message));
+      .post(`api/users/register`, {
+        name: name,
+        email: email,
+        password: password,
+      })
+      .then((user) => {
+        console.log("registerUser: ", user.data);
+        dispatch(user.data);
+      });
   };
 
   const setChannel = (channel) => {
