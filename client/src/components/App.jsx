@@ -26,8 +26,17 @@ import WebRtc from "./WebRTC";
 //TODO: div messages needs to be refactored as a separate component to handle different channel types
 
 const App = () => {
-  const { state, setChannel, setRoom, loginUser, sendMessage, setRecipient, registerUser } =
-    useApplicationData();
+  const {
+    state,
+    setChannel,
+    setRoom,
+    loginUser,
+    sendMessage,
+    setRecipient,
+    registerUser,
+    createRoom,
+  } = useApplicationData();
+
   const channelList = getChannelsForRoom(state.room, state);
   const messageList = getMessagesForChannel(state.channel, state);
   const directMessagesList = getDirectMessages(state);
@@ -35,24 +44,26 @@ const App = () => {
   //dummy friends
   const friendList = [
     {
-      "id": 1,
-      "username": "Alice",
-      "avatar_url": "https://i.pinimg.com/736x/f5/23/3a/f5233afc4af9c7be02cc1c673c7c93e9.jpg"
+      id: 1,
+      username: "Alice",
+      avatar_url:
+        "https://i.pinimg.com/736x/f5/23/3a/f5233afc4af9c7be02cc1c673c7c93e9.jpg",
     },
     {
-      "id": 2,
-      "username": "Kira",
-      "avatar_url": "https://i.pinimg.com/736x/f5/23/3a/f5233afc4af9c7be02cc1c673c7c93e9.jpg"
-    }
+      id: 2,
+      username: "Kira",
+      avatar_url:
+        "https://i.pinimg.com/736x/f5/23/3a/f5233afc4af9c7be02cc1c673c7c93e9.jpg",
+    },
   ];
 
-  const messageListWithUsers = attachUsersToMessages(messageList, state)
+  const messageListWithUsers = attachUsersToMessages(messageList, state);
   const memberList = [];
 
   return (
     <main className="layout">
       <header className="header">
-        <Header user={state.user}/>
+        <Header user={state.user} />
       </header>
       {state.user ? (
         <div className="main-container">
@@ -60,6 +71,8 @@ const App = () => {
             setRoom={setRoom}
             roomList={state.rooms}
             value={state.room}
+            createRoom={createRoom}
+            userID={state.user.id}
           />
           <ChannelList
             setChannel={setChannel}
@@ -100,7 +113,6 @@ const App = () => {
 
             </> */}
           </div>
-
 
           <div className="sidebar sidebar--friends">
             <RoomMembersList memberList={memberList} />

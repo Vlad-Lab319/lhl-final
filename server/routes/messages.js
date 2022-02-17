@@ -27,7 +27,7 @@ router.get("/", (req, res) => {
   );
 });
 
-router.post("/:userID", (req, res) => {
+router.post("/", (req, res) => {
   const { userID, channelID, message } = req.body;
   db.query(
     `

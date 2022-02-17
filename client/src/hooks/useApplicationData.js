@@ -17,6 +17,7 @@ export default function useApplicationData() {
     members: [],
     messages: [],
   };
+
   const SET_SOCKET = "SET_SOCKET";
   const SET_USER = "SET_USER";
   const SET_USERS = "SET_USERS";
@@ -24,7 +25,9 @@ export default function useApplicationData() {
   const SET_CHANNEL = "SET_CHANNEL";
   const SET_FRIENDS = "SET_FRIENDS";
   const SET_RECIPIENT = "SET_RECIPIENT";
-  const SET_MESSAGES = "SET_MESSAGES";
+  const ADD_MESSAGES = "ADD_MESSAGES";
+  const ADD_ROOMS = "ADD_ROOMS";
+  const ADD_CHANNELS = "ADD_CHANNELS";
   const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
 
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -67,10 +70,20 @@ export default function useApplicationData() {
           ...state,
           recipient: action.value,
         };
-      case SET_MESSAGES:
+      case ADD_MESSAGES:
         return {
           ...state,
           messages: [...state.messages, action.value],
+        };
+      case ADD_ROOMS:
+        return {
+          ...state,
+          rooms: [...state.rooms, action.value],
+        };
+      case ADD_CHANNELS:
+        return {
+          ...state,
+          rooms: [...state.channels, action.value],
         };
       case SET_APPLICATION_DATA:
         return {
@@ -119,15 +132,33 @@ export default function useApplicationData() {
   };
 
   const sendMessage = (messageData) => {
-    return axios
-      .post(`/api/messages/${messageData.userID}`, messageData)
-      .then((message) => {
-        dispatch({
-          type: SET_MESSAGES,
-          value: message.data[0],
-        });
-        state.socket.emit("message", message.data[0]);
+    return axios.post(`/api/messages`, messageData).then((message) => {
+      dispatch({
+        type: ADD_MESSAGES,
+        value: message.data[0],
       });
+      state.socket.emit("message", message.data[0]);
+    });
+  };
+
+  const createRoom = (roomData) => {
+    return axios.post(`/api/rooms`, roomData).then((room) => {
+      dispatch({
+        type: ADD_ROOMS,
+        value: room.data[0],
+      });
+      state.socket.emit("room", room.data[0]);
+    });
+  };
+
+  const createChannel = (channelData) => {
+    return axios.post(`/api/channels`, channelData).then((channel) => {
+      dispatch({
+        type: ADD_CHANNELS,
+        value: channel.data[0],
+      });
+      state.socket.emit("channel", channel.data[0]);
+    });
   };
 
   const socketUpdate = (action) => {
@@ -146,8 +177,22 @@ export default function useApplicationData() {
 
       socket.on("message", (message) => {
         dispatch({
-          type: SET_MESSAGES,
+          type: ADD_MESSAGES,
           value: message,
+        });
+      });
+
+      socket.on("room", (room) => {
+        dispatch({
+          type: ADD_ROOMS,
+          value: room,
+        });
+      });
+
+      socket.on("channel", (channel) => {
+        dispatch({
+          type: ADD_CHANNELS,
+          value: channel,
         });
       });
 
@@ -195,5 +240,7 @@ export default function useApplicationData() {
     sendMessage,
     setRecipient,
     registerUser,
+    createRoom,
+    createChannel,
   };
 }
