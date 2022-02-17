@@ -69,6 +69,10 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("message", messageData);
   });
 
+  socket.on("room", (messageData) => {
+    socket.broadcast.emit("room", messageData);
+  });
+
   socket.on("disconnect", () => {
     const user = getUserBySocket(socket.id);
     if (user) {

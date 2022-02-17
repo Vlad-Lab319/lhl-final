@@ -15,4 +15,18 @@ router.get("/:userID", (req, res) => {
   });
 });
 
+router.post("/", (req, res) => {
+  const { userID, newRoomName, icon } = req.body;
+  db.query(
+    `
+      INSERT INTO rooms (user_id, name, icon_url) VALUES ($1, $2, $3) RETURNING *;
+    `,
+    [userID, newRoomName, icon]
+  )
+    .then(({ rows: rooms }) => {
+      res.json(rooms);
+    })
+    .catch((error) => console.log(error));
+});
+
 module.exports = router;
