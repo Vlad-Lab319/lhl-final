@@ -5,21 +5,35 @@ import useStateManager from "./useStateManager";
 
 export default function useApplicationData() {
   const { state, dispatch, r } = useStateManager();
-  // TODO: UNCOMMENT - uncomment for deploy
-  // const loginUser = (email, password) => {
-  //   clearErrors();
-  //   axios.post(`api/users/login`, { email, password }).then((user) => {
-  //     dispatch(user.data.action);
-  //   });
-  // };
+  // --------------------------INITIALIZE DATA----------------------------------
+  useEffect(() => {
+    if (state.user) {
+      Promise.all([
+        axios.get(`/api/users/`),
+        axios.get(`/api/rooms/${state.user.id}`),
+        axios.get(`/api/channels/${state.user.id}`),
+        // axios.get(`/api/messages/${state.user.id}`),
+        axios.get(`/api/messages/`),
+        axios.get(`/api/users/friends/${state.user.id}`),
+        // TODO: Needs route for getting all users who are in the same rooms as the currently signed in user
+        // axios.get(`/api/users/${state.user.id}`),
+      ]).then((all) => {
+        const [users, rooms, channels, messages, friends] = all;
+        dispatch({
+          type: r.SET_APPLICATION_DATA,
+          value: {
+            users: users.data,
+            rooms: rooms.data,
+            channels: channels.data,
+            messages: messages.data,
+            friends: friends.data,
+          },
+        });
+      });
+    }
+  }, [state.user]);
 
-  const loginUser = (id) => {
-    clearErrors();
-    axios.get(`api/users/${id}`).then((user) => {
-      dispatch(user.data.action);
-    });
-  };
-
+  //-------------------------LOGIN/LOGOUT---------------------------------------
   const registerUser = (name, email, password) => {
     clearErrors();
     axios
@@ -32,7 +46,30 @@ export default function useApplicationData() {
         dispatch(user.data.action);
       });
   };
+  // TODO: UNCOMMENT - uncomment for deploy
+  const loginUser = (id) => {
+    clearErrors();
+    axios.get(`api/users/${id}`).then((user) => {
+      dispatch(user.data.action);
+    });
+  };
+  // const loginUser = (email, password) => {
+  //   clearErrors();
+  //   axios.post(`api/users/login`, { email, password }).then((user) => {
+  //     dispatch(user.data.action);
+  //   });
+  // };
+  const logoutUser = () => {
+    dispatch({ type: r.SET_USER, value: null });
+    if (state.socket) {
+      state.socket.disconnect();
+    }
+  };
+  const clearErrors = () => {
+    dispatch({ type: r.SET_ERRORS, value: null });
+  };
 
+  // ---------------------------STATE SETTERS-----------------------------------
   const setChannel = (channel) => {
     dispatch({ type: r.SET_CHANNEL, value: channel });
     //TODO: SOCKET - socket.emit("channel", state.channel.id)
@@ -40,13 +77,6 @@ export default function useApplicationData() {
 
   const setRecipient = (recipient) => {
     dispatch({ type: r.SET_RECIPIENT, value: recipient });
-  };
-
-  const logoutUser = () => {
-    dispatch({ type: r.SET_USER, value: null });
-    if (state.socket) {
-      state.socket.disconnect();
-    }
   };
 
   const setRoom = (room) => {
@@ -58,6 +88,7 @@ export default function useApplicationData() {
   const setSocket = (socket) => {
     dispatch({ type: r.SET_SOCKET, value: socket });
   };
+  // -----------------------------WEBSOCKET-------------------------------------
 
   const sendMessage = (messageData) => {
     return axios.post(`/api/messages`, messageData).then((message) => {
@@ -89,16 +120,7 @@ export default function useApplicationData() {
     });
   };
 
-  const clearErrors = () => {
-    dispatch({ type: r.SET_ERRORS, value: null });
-  };
-
-  const socketUpdate = (action) => {
-    dispatch({ type: action.type, value: action.value });
-  };
-  // Websocket
   useEffect(() => {
-    // in client/.env, set REACT_APP_WEBSOCKET_URL=localhost:[port that the server is running on, currently 8080]
     if (state.user !== null) {
       const socket = io(process.env.REACT_APP_WEBSOCKET_URL);
       setSocket(socket);
@@ -129,38 +151,10 @@ export default function useApplicationData() {
       });
 
       socket.on("update", (action) => {
-        socketUpdate(action);
+        dispatch({ type: action.type, value: action.value });
       });
 
       return () => socket.disconnect();
-    }
-  }, [state.user]);
-
-  // Retrieves data from the server database to populate state
-  useEffect(() => {
-    if (state.user) {
-      Promise.all([
-        axios.get(`/api/users/`),
-        axios.get(`/api/rooms/${state.user.id}`),
-        axios.get(`/api/channels/${state.user.id}`),
-        // axios.get(`/api/messages/${state.user.id}`),
-        axios.get(`/api/messages/`),
-        axios.get(`/api/users/friends/${state.user.id}`),
-        // TODO: Needs route for getting all users who are in the same rooms as the currently signed in user
-        // axios.get(`/api/users/${state.user.id}`),
-      ]).then((all) => {
-        const [users, rooms, channels, messages, friends] = all;
-        dispatch({
-          type: r.SET_APPLICATION_DATA,
-          value: {
-            users: users.data,
-            rooms: rooms.data,
-            channels: channels.data,
-            messages: messages.data,
-            friends: friends.data,
-          },
-        });
-      });
     }
   }, [state.user]);
 
