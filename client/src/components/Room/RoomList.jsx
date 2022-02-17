@@ -1,4 +1,3 @@
-import AddCircleIcon from "@mui/icons-material/AddCircle";
 //mui material
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -7,9 +6,12 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Input from "@mui/material/Input";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useState } from "react";
 import "./RoomList.scss";
 import RoomListItem from "./RoomListItem";
+import { IconButton } from "@mui/material";
+import GroupIcon from "@mui/icons-material/Group";
 
 const RoomList = (props) => {
   const { userID, roomList, setRoom, value, createRoom } = props;
@@ -40,7 +42,6 @@ const RoomList = (props) => {
   });
 
   function create() {
-    console.log(`Create room ${newRoomName}`);
     const roomData = {
       userID,
       newRoomName,
@@ -50,37 +51,48 @@ const RoomList = (props) => {
     handleClose();
   }
 
+  const addButton = (
+    <div className="room-container">
+      <IconButton color="inherit">
+        <AddCircleIcon onClick={handleClickOpen} />
+      </IconButton>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Create new room</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Create your amazing new room!</DialogContentText>
+          <Input
+            autoFocus
+            margin="dense"
+            type="text"
+            fullWidth
+            variant="standard"
+            id="room_id"
+            value={newRoomName}
+            onChange={(event) => setNewRoomName(event.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={create}>Create</Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+
+  const friendButton = (
+    <div className="room-container">
+      <IconButton color="inherit">
+        <GroupIcon />
+      </IconButton>
+    </div>
+  );
+
   return (
-    <>
-      <div className="sidebar sidebar--rooms">
-        {rooms}
-        <div className="room-container">
-          <AddCircleIcon onClick={handleClickOpen} />
-          <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>Create new room</DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                Create your amazing new room!
-              </DialogContentText>
-              <Input
-                autoFocus
-                margin="dense"
-                type="text"
-                fullWidth
-                variant="standard"
-                id="room_id"
-                value={newRoomName}
-                onChange={(event) => setNewRoomName(event.target.value)}
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose}>Cancel</Button>
-              <Button onClick={create}>Create</Button>
-            </DialogActions>
-          </Dialog>
-        </div>
-      </div>
-    </>
+    <div className="sidebar sidebar--rooms">
+      {friendButton}
+      {rooms}
+      {addButton}
+    </div>
   );
 };
 
