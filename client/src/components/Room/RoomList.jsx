@@ -11,6 +11,7 @@ import { useState } from "react";
 import "./RoomList.scss";
 import RoomListItem from "./RoomListItem";
 import { IconButton } from "@mui/material";
+import GroupIcon from "@mui/icons-material/Group";
 
 const RoomList = (props) => {
   const { userID, roomList, setRoom, value, createRoom } = props;
@@ -78,8 +79,17 @@ const RoomList = (props) => {
     </div>
   );
 
+  const friendButton = (
+    <div className="room-container">
+      <IconButton color="inherit">
+        <GroupIcon />
+      </IconButton>
+    </div>
+  );
+
   return (
     <div className="sidebar sidebar--rooms">
+      {friendButton}
       {rooms}
       {addButton}
     </div>
