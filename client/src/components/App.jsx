@@ -71,6 +71,7 @@ const App = () => {
               roomList={state.rooms}
               value={state.room}
               createRoom={createRoom}
+              userID={state.user.id}
             />
             <ChannelList
               setChannel={setChannel}
