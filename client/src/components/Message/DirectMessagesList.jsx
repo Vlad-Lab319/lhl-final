@@ -1,7 +1,6 @@
 // import classNames from "classnames";
-import "../styles/MessageList.scss";
-import MessageListItem from "./MessageListItem";
-
+import MessageListItem from "../MessageListItem";
+import "./MessageList.scss";
 
 const DirectMessagesList = (props) => {
   const { messageList } = props;

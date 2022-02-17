@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import "../styles/FriendListItem.scss";
+import "./FriendListItem.scss";
 
 // TODO: Add avatar
 
@@ -11,14 +11,12 @@ const FriendListItem = (props) => {
     selected && "recipient--selected"
   );
 
-  const avatarClass = classNames(
-    "avatar",
-  );
+  const avatarClass = classNames("avatar");
 
   return (
     <div className={friendListClass} onClick={setRecipient}>
-    {/* <div className={friendListClass}> */}
-      <span >
+      {/* <div className={friendListClass}> */}
+      <span>
         <img className={avatarClass} src={avatar} alt={(username, " avatar")} />
         {username}
       </span>

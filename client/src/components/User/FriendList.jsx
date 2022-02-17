@@ -1,11 +1,9 @@
-import classNames from "classnames";
-import "../styles/FriendList.scss";
+import "./FriendList.scss";
 import FriendListItem from "./FriendListItem";
 
 // TODO: FriendList needs to be implemented
 
 const FriendList = (props) => {
-
   const { friendList, setRecipient, value } = props;
 
   const friends = friendList.map((friend) => {
@@ -22,14 +20,10 @@ const FriendList = (props) => {
 
   return (
     <div className="sidebar sidebar--friends">
-      <h3>
-        Friends
-      </h3>
+      <h3>Friends</h3>
       {friends}
     </div>
   );
-
-
 };
 
 export default FriendList;

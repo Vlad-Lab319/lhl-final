@@ -1,6 +1,6 @@
 import TextsmsIcon from "@mui/icons-material/Textsms";
 import classNames from "classnames";
-import "../styles/ChannelListItem.scss";
+import "./ChannelListItem.scss";
 
 const ChannelListItem = (props) => {
   const { name, setChannel, selected, type } = props;

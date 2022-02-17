@@ -2,7 +2,7 @@
 
 // TODO: RoomMembersList needs the users present in the room that the user is currently in
 
-import "../styles/RoomMembersList.scss";
+import "./RoomMembersList.scss";
 const RoomMembersList = (props) => {
   const { memberList } = props;
   return (

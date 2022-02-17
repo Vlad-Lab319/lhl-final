@@ -1,6 +1,6 @@
 import { useState } from "react";
-import "../../styles/Login.scss";
 import Login from "./Login";
+import "./Login.scss";
 import Register from "./Register";
 
 const UserForm = (props) => {

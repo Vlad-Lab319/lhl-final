@@ -1,4 +1,5 @@
 // Helpers
+// Styles - scss
 import {
   attachUsersToMessages,
   getChannelsForRoom,
@@ -7,15 +8,14 @@ import {
 } from "../helpers/selectors";
 // State
 import useApplicationData from "../hooks/useApplicationData";
-// Styles - scss
-import "../styles/App.scss";
-import ChannelList from "./ChannelList";
-import ChatInput from "./ChatInput";
-import Header from "./Header";
+import "./App.scss";
+import ChannelList from "./Channel/ChannelList";
+import Header from "./Login/Header";
 import UserForm from "./Login/index";
-import MessageList from "./MessageList";
-import RoomList from "./RoomList";
-import RoomMembersList from "./RoomMembersList";
+import ChatInput from "./Message/ChatInput";
+import MessageList from "./Message/MessageList";
+import RoomList from "./Room/RoomList";
+import RoomMembersList from "./User/RoomMembersList";
 
 // TODO: Create a private chat Component, the friends list can replace the channels bar, and should we replace the RoomMembersList side bar with something else while in private chats?
 

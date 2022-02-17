@@ -1,10 +1,10 @@
 import classNames from "classnames";
-import "../styles/MessageList.scss";
+import { useEffect, useRef } from "react";
+import "./MessageList.scss";
 import MessageListItem from "./MessageListItem";
-import { useRef,useEffect } from "react";
 
 const MessageList = (props) => {
-  const { messageList,channel } = props;
+  const { messageList, channel } = props;
   const messageClass = classNames();
 
   const messages = messageList.map((message) => {
@@ -21,13 +21,13 @@ const MessageList = (props) => {
   });
 
   // ----- Handle auto scroll behaviour ------
-  const messagesEndRef = useRef(null)
+  const messagesEndRef = useRef(null);
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView()
-  }
-    useEffect(() => {
-    scrollToBottom()
-  }, [channel,messages]);
+    messagesEndRef.current?.scrollIntoView();
+  };
+  useEffect(() => {
+    scrollToBottom();
+  }, [channel, messages]);
   // -----------------------------------------
 
   return (
@@ -37,7 +37,6 @@ const MessageList = (props) => {
         <ul ref={messagesEndRef} />
       </li>
     </section>
-
   );
 };
 
