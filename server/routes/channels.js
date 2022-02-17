@@ -12,12 +12,12 @@ router.get("/:userID", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-  const { roomID, name } = req.body;
+  const { roomID, newChannelName } = req.body;
   db.query(
     `
-      INSERT INTO rooms (room_id, name) VALUES ($1, $2) RETURNING *;
+      INSERT INTO channels (room_id, name) VALUES ($1, $2) RETURNING *;
     `,
-    [roomID, name]
+    [roomID, newChannelName]
   )
     .then(({ rows: channels }) => {
       res.json(channels);

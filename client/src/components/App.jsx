@@ -35,6 +35,7 @@ const App = () => {
     setRecipient,
     registerUser,
     createRoom,
+    createChannel,
   } = useApplicationData();
 
   const channelList = getChannelsForRoom(state.room, state);
@@ -79,6 +80,7 @@ const App = () => {
             channelList={channelList}
             value={state.channel}
             room={state.room}
+            createChannel={createChannel}
           />
           {/* <FriendList
             friendList={friendList}
