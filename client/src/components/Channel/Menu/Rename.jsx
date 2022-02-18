@@ -8,7 +8,7 @@ import DialogContent from "@mui/material/DialogContent";
 import { useState } from "react";
 
 const AddFriend = (props) => {
-  const { room, edit } = props;
+  const { room, editRoom } = props;
 
   const [open, setOpen] = useState(false);
   const [newRoomName, setNewRoomName] = useState(room.name);
@@ -16,6 +16,11 @@ const AddFriend = (props) => {
   const toggleOpen = () => {
     setOpen(!open);
   };
+
+  function edit() {
+    editRoom(newRoomName);
+    toggleOpen();
+  }
 
   return (
     <>
