@@ -35,6 +35,7 @@
     width: $sidebar-width * 2.5;
     min-width: $sidebar-width * 2.5;
     background-color: lighten($dark-background, 10);
+    padding-left: 1rem;
   }
 
   &--friends {
