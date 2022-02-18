@@ -18,6 +18,8 @@ const UserForm = (props) => {
     <div className="login-page">
       <div className="login-logo">
         <ClarionLogo className="clarion" />
+        <div className="logo-text">CLARION</div>
+        <span className="logo-subscript">Hear the call</span>
       </div>
       {view ? (
         <Login
