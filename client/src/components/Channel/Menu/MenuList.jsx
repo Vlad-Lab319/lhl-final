@@ -1,6 +1,4 @@
-import Button from "@mui/material/Button";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
+import { Box, Button, Menu, MenuItem } from "@mui/material";
 import { useState } from "react";
 import AddFriend from "./AddFriend";
 
@@ -17,13 +15,16 @@ export default function MenuList(props) {
   };
 
   return (
-    <div>
+    <Box>
       <Button
         id="basic-button"
         aria-controls={open ? "basic-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
+        sx={{
+          color: "white",
+        }}
       >
         {props.children}
       </Button>
@@ -44,6 +45,6 @@ export default function MenuList(props) {
         <MenuItem onClick={handleClose}>Rename</MenuItem>
         <MenuItem onClick={handleClose}>Delete Room</MenuItem>
       </Menu>
-    </div>
+    </Box>
   );
 }
