@@ -12,13 +12,13 @@
   border-radius: 1rem;
 }
 
-.add-channel-title {
+h2.add-channel-title {
   text-align: center;
   font-weight: bold;
   background-color: $sig-color;
 }
 
-.add-channel-content {
+div.add-channel-content {
   background-color: lighten($dark-background, 5);
   height: $sidebar-width * 2;
   display: flex;
@@ -27,7 +27,7 @@
   align-items: center;
 }
 
-.add-channel-text {
+p.add-channel-text {
   color: white;
   font-weight: bold;
 }
