@@ -1,4 +1,8 @@
 //mui material
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
+import GroupIcon from "@mui/icons-material/Group";
+import { IconButton } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -6,13 +10,9 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Input from "@mui/material/Input";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useState } from "react";
 import "./RoomList.scss";
 import RoomListItem from "./RoomListItem";
-import { IconButton } from "@mui/material";
-import GroupIcon from "@mui/icons-material/Group";
-
 const RoomList = (props) => {
   const { userID, roomList, setRoom, value, createRoom } = props;
 
@@ -92,6 +92,7 @@ const RoomList = (props) => {
       {friendButton}
       {rooms}
       {addButton}
+      <ArrowDropDownOutlinedIcon />
     </div>
   );
 };
