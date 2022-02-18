@@ -41,7 +41,7 @@ const App = () => {
   } = useApplicationData();
 
   // theme stuff
-  const [mode, setMode] = useState("light");
+  const [mode, setMode] = useState("dark");
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
@@ -55,6 +55,9 @@ const App = () => {
       createTheme({
         palette: {
           mode,
+          primary: {
+            main: "#af6fcd",
+          },
         },
       }),
     [mode]

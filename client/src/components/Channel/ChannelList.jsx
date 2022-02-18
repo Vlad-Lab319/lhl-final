@@ -99,7 +99,11 @@ const ChannelList = (props) => {
       {room.name && (
         <>
           <h3 className="channel-title">
-            <MenuList friends={friends} addUserToRoom={addUserToRoom}>
+            <MenuList
+              friends={friends}
+              addUserToRoom={addUserToRoom}
+              room={room}
+            >
               {room.name}
               <SettingsIcon className="room-options" />
             </MenuList>
