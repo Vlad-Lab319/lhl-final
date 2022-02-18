@@ -24,6 +24,9 @@ export default function MenuList(props) {
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
+        sx={{
+          color: "white",
+        }}
       >
         {props.children}
       </Button>
