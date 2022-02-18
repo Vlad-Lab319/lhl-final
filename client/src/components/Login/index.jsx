@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ClarionLogo from "../ClarionLogo";
 import Login from "./Login";
 import "./Login.scss";
 import Register from "./Register";
@@ -16,7 +17,9 @@ const UserForm = (props) => {
   return (
     <div className="login-page">
       <div className="login-logo">
-        <div className="logo-text">BIG ASS LOGO</div>
+        <ClarionLogo className="clarion" />
+        <div className="logo-text">CLARION</div>
+        <span className="logo-subscript">Hear the call</span>
       </div>
       {view ? (
         <Login
