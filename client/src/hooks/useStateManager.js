@@ -23,7 +23,7 @@ export default function useStateManager() {
   const initialState = {
     user: { id: null },
     users: {},
-    activeUsers: [],
+    activeUsers: {},
     socket: null,
     room: {},
     channel: {},
@@ -39,7 +39,6 @@ export default function useStateManager() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   function reducer(state, action) {
-    console.log("Action: ", action);
     switch (action.type) {
       case r.SET_SOCKET:
         return {

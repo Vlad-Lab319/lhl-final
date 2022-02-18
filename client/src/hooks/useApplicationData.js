@@ -65,7 +65,7 @@ export default function useApplicationData() {
   //   });
   // };
   const logoutUser = () => {
-    dispatch({ type: r.SET_USER, value: null });
+    dispatch({ type: r.SET_USER, value: { id: null } });
     if (state.socket) {
       state.socket.disconnect();
     }
