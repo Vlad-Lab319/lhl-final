@@ -1,1 +1,51 @@
 @import "../App.scss";
+
+.add-channel {
+  font-size: 1rem;
+  margin-left: 1rem;
+  color: rgb(100, 100, 100);
+  padding: 0;
+}
+
+.add-channel-box {
+  border: 2px solid black;
+  border-radius: 1rem;
+}
+
+h2.add-channel-title {
+  text-align: center;
+  font-weight: bold;
+  background-color: $sig-color;
+  text-transform: capitalize;
+}
+
+div.add-channel-content {
+  background-color: lighten($dark-background, 5);
+  height: $sidebar-width * 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+p.add-channel-text {
+  color: white;
+  font-weight: bold;
+}
+
+.add-channel-btn-container {
+  display: flex;
+  flex-direction: row;
+  background-color: darken($dark-background, 5);
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.add-channel-btn {
+  width: 50%;
+  padding: 0.5rem;
+  font-weight: bold;
+  color: white;
+  background-color: $dark-background;
+  border: 1px solid black;
+}
