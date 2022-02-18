@@ -34,7 +34,7 @@ export default function MenuList(props) {
           "aria-labelledby": "basic-button",
         }}
       >
-        <AddFriend close={handleClose} />
+        <AddFriend close={handleClose} friends={props.friends} />
         <MenuItem onClick={handleClose}>Rename</MenuItem>
         <MenuItem onClick={handleClose}>Delete Room</MenuItem>
       </Menu>

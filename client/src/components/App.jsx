@@ -80,6 +80,7 @@ const App = () => {
               value={state.channel}
               room={state.room}
               createChannel={createChannel}
+              friends={state.friends}
             />
 
             {/* <FriendList
