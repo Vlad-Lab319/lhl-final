@@ -1,5 +1,4 @@
 // Helpers
-// Styles - scss
 import {
   attachUsersToMessages,
   getChannelsForRoom,
@@ -16,11 +15,14 @@ import ChatInput from "./Message/ChatInput";
 import MessageList from "./Message/MessageList";
 import RoomList from "./Room/RoomList";
 import RoomMembersList from "./User/RoomMembersList";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { createContext, useMemo, useState } from "react";
 
 // TODO: Create a private chat Component, the friends list can replace the channels bar, and should we replace the RoomMembersList side bar with something else while in private chats?
-
 // TODO: WebRTC needs to be integrated into the app, likely we'll need to put it in the private chat component
 //TODO: div messages needs to be refactored as a separate component to handle different channel types
+
+const ColorModeContext = createContext({ toggleColorMode: () => {} });
 
 const App = () => {
   const {
@@ -38,55 +40,65 @@ const App = () => {
     addUserToRoom,
   } = useApplicationData();
 
+  // theme stuff
+  const [mode, setMode] = useState("light");
+  const colorMode = useMemo(
+    () => ({
+      toggleColorMode: () => {
+        setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+      },
+    }),
+    []
+  );
+  const theme = useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode,
+        },
+      }),
+    [mode]
+  );
+
   const channelList = getChannelsForRoom(state.room, state);
   const messageList = getMessagesForChannel(state.channel, state);
   const directMessagesList = getDirectMessages(state);
-
-  //dummy friends
-  const friendList = [
-    {
-      id: 1,
-      username: "Alice",
-      avatar_url:
-        "https://i.pinimg.com/736x/f5/23/3a/f5233afc4af9c7be02cc1c673c7c93e9.jpg",
-    },
-    {
-      id: 2,
-      username: "Kira",
-      avatar_url:
-        "https://i.pinimg.com/736x/f5/23/3a/f5233afc4af9c7be02cc1c673c7c93e9.jpg",
-    },
-  ];
-
   const messageListWithUsers = attachUsersToMessages(messageList, state);
   const memberList = [];
 
   return (
-    <main className="layout">
-      {state.user ? (
-        <>
-          <header className="header">
-            <Header user={state.user} logoutUser={() => logoutUser()} />
-          </header>
-          <div className="main-container">
-            <RoomList
-              setRoom={setRoom}
-              roomList={state.rooms}
-              value={state.room}
-              createRoom={createRoom}
-              userID={state.user.id}
-            />
-            <ChannelList
-              setChannel={setChannel}
-              channelList={channelList}
-              value={state.channel}
-              room={state.room}
-              createChannel={createChannel}
-              friends={state.friends}
-              addUserToRoom={addUserToRoom}
-            />
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+        <main className="layout">
+          {state.user ? (
+            <>
+              <header className="header">
+                <Header
+                  user={state.user}
+                  logoutUser={() => logoutUser()}
+                  toggle={colorMode.toggleColorMode}
+                  theme={theme}
+                />
+              </header>
+              <div className="main-container">
+                <RoomList
+                  setRoom={setRoom}
+                  roomList={state.rooms}
+                  value={state.room}
+                  createRoom={createRoom}
+                  userID={state.user.id}
+                />
+                <ChannelList
+                  setChannel={setChannel}
+                  channelList={channelList}
+                  value={state.channel}
+                  room={state.room}
+                  createChannel={createChannel}
+                  friends={state.friends}
+                  addUserToRoom={addUserToRoom}
+                />
 
-            {/* <FriendList
+                {/* <FriendList
 
 
 
@@ -109,23 +121,23 @@ const App = () => {
             value={state.recipient.id}
             setRecipient={setRecipient}
           /> */}
-            <div className="messages">
-              {state.channel.id && (
-                <>
-                  <MessageList
-                    messageList={messageListWithUsers}
-                    channel={state.channel}
-                    user={state.user}
-                  />
-                  <ChatInput
-                    channel={state.channel}
-                    user={state.user}
-                    sendMessage={sendMessage}
-                  />
-                </>
-              )}
+                <div className="messages">
+                  {state.channel.id && (
+                    <>
+                      <MessageList
+                        messageList={messageListWithUsers}
+                        channel={state.channel}
+                        user={state.user}
+                      />
+                      <ChatInput
+                        channel={state.channel}
+                        user={state.user}
+                        sendMessage={sendMessage}
+                      />
+                    </>
+                  )}
 
-              {/* <>
+                  {/* <>
               <DirectMessagesList messageList={directMessagesList}
 
               />
@@ -137,26 +149,28 @@ const App = () => {
               />
 
             </> */}
-            </div>
-            <div className="sidebar sidebar--friends">
-              <RoomMembersList memberList={memberList} />
-            </div>
-            {/* <div className="webrtc">
+                </div>
+                <div className="sidebar sidebar--friends">
+                  <RoomMembersList memberList={memberList} />
+                </div>
+                {/* <div className="webrtc">
             <WebRtc />
           </div> */}
-          </div>
-        </>
-      ) : (
-        <div className="main-container">
-          <UserForm
-            loginUser={loginUser}
-            registerUser={registerUser}
-            errors={state.errors}
-            clearErrors={() => clearErrors()}
-          />
-        </div>
-      )}
-    </main>
+              </div>
+            </>
+          ) : (
+            <div className="main-container">
+              <UserForm
+                loginUser={loginUser}
+                registerUser={registerUser}
+                errors={state.errors}
+                clearErrors={() => clearErrors()}
+              />
+            </div>
+          )}
+        </main>
+      </ThemeProvider>
+    </ColorModeContext.Provider>
   );
 };
 
