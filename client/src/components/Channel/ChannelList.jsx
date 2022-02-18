@@ -106,7 +106,7 @@ const ChannelList = (props) => {
           </h3>
           <div className="channel-separator"></div>
           {channels}
-          <div className="channel-separator"></div>
+          {channels.length !== 0 && <div className="channel-separator"></div>}
           {addButton}
         </>
       )}

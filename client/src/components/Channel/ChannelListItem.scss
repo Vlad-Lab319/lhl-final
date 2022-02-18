@@ -1,13 +1,11 @@
 @import "../../styles/variables.scss";
 
 .channel-title {
-  // margin: 1rem;
   text-align: center;
 }
 
 .channel-item {
-  font-size: 1rem;
-  font-size: inherit;
+  margin-left: 1rem;
   font-family: inherit;
   display: flex;
   flex-direction: row;
