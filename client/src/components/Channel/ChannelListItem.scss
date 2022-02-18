@@ -6,6 +6,9 @@
 }
 
 .channel-item {
+  font-size: 1rem;
+  font-size: inherit;
+  font-family: inherit;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -27,7 +30,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 1rem 0.5rem 1rem 0.5rem;
+  margin: 1rem 0 1rem 0;
   text-align: center;
   width: 2rem;
   height: 2rem;
@@ -38,4 +41,5 @@
 
 .channel-item:hover {
   font-weight: 700;
+  box-shadow: 0px 0px 0px none;
 }
