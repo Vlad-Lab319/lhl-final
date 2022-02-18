@@ -62,12 +62,12 @@ io.on("connection", (socket) => {
     server.emit("update", updateDispatch(action, socket));
   });
 
-  socket.on("message", (messageData) => {
-    socket.broadcast.emit("message", messageData);
+  socket.on("updateRooms", () => {
+    socket.broadcast.emit("updateRooms");
   });
 
-  socket.on("room", (messageData) => {
-    socket.broadcast.emit("room", messageData);
+  socket.on("message", (messageData) => {
+    socket.broadcast.emit("message", messageData);
   });
 
   socket.on("channel", (channelData) => {
