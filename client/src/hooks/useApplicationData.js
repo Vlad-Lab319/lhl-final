@@ -120,6 +120,10 @@ export default function useApplicationData() {
     });
   };
 
+  const addUserToRoom = (id) => {
+    return axios.post(`/api/rooms/user`, { userID: id, roomID: state.room.id });
+  };
+
   useEffect(() => {
     if (state.user !== null) {
       const socket = io(process.env.REACT_APP_WEBSOCKET_URL);
@@ -170,5 +174,6 @@ export default function useApplicationData() {
     createRoom,
     createChannel,
     clearErrors,
+    addUserToRoom,
   };
 }

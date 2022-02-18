@@ -10,6 +10,8 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { useState } from "react";
 
 const AddFriend = (props) => {
+  const { close, friends, addUserToRoom } = props;
+
   const [open, setOpen] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState([]);
 
@@ -19,14 +21,17 @@ const AddFriend = (props) => {
 
   const closeDialog = () => {
     setOpen(false);
-    props.close();
+    close();
   };
 
   const handleChange = (event, value) => setSelectedOptions(value);
 
-  const handleSubmit = () => console.log(selectedOptions);
+  const handleSubmit = () => {
+    addUserToRoom(selectedOptions.id);
+    closeDialog();
+  };
 
-  const friends = props.friends.map((friend) => {
+  const newFriends = friends.map((friend) => {
     const newObj = {};
     newObj["label"] = friend.username;
     newObj["id"] = friend.id;
@@ -41,7 +46,7 @@ const AddFriend = (props) => {
         <DialogContent>
           <Autocomplete
             id="combo-box-demo"
-            options={friends}
+            options={newFriends}
             onChange={handleChange}
             sx={{ width: 300 }}
             renderInput={(params) => <TextField {...params} label="Friends" />}

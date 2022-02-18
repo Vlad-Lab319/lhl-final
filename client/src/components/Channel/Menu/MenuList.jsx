@@ -5,6 +5,8 @@ import MenuItem from "@mui/material/MenuItem";
 import AddFriend from "./AddFriend";
 
 export default function MenuList(props) {
+  const { friends, addUserToRoom } = props;
+
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -34,7 +36,11 @@ export default function MenuList(props) {
           "aria-labelledby": "basic-button",
         }}
       >
-        <AddFriend close={handleClose} friends={props.friends} />
+        <AddFriend
+          close={handleClose}
+          friends={friends}
+          addUserToRoom={addUserToRoom}
+        />
         <MenuItem onClick={handleClose}>Rename</MenuItem>
         <MenuItem onClick={handleClose}>Delete Room</MenuItem>
       </Menu>
