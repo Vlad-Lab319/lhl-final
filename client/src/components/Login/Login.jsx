@@ -1,3 +1,4 @@
+import classnames from "classnames";
 import { useState } from "react";
 import "./Login.scss";
 const Login = (props) => {
@@ -6,9 +7,13 @@ const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const messageClass = classnames(
+    "login-message",
+    errors && "login-message--error"
+  );
   return (
     <div className="login">
-      <span className="login-message">
+      <span className={messageClass}>
         {errors ? errors : "Looks like you're not logged in..."}
       </span>
       <form
