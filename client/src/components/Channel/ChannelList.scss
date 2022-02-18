@@ -49,3 +49,15 @@ p.add-channel-text {
   background-color: $dark-background;
   border: 1px solid black;
 }
+
+.room-options {
+  color: grey;
+  margin: 0.5rem;
+}
+
+.channel-separator {
+  height: 4px;
+  border: 2px solid lighten($dark-background, 20);
+  border-radius: 2.5px;
+  margin-right: 1rem;
+}

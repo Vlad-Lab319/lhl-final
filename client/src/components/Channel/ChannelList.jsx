@@ -1,5 +1,6 @@
 //mui material
 import AddBoxIcon from "@mui/icons-material/AddBox";
+import SettingsIcon from "@mui/icons-material/Settings";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
@@ -96,14 +97,19 @@ const ChannelList = (props) => {
   return (
     <div className="sidebar sidebar--channels">
       {room.name && (
-        <h3 className="channel-title">
-          <MenuList friends={friends} addUserToRoom={addUserToRoom}>
-            {room.name}
-          </MenuList>
-        </h3>
+        <>
+          <h3 className="channel-title">
+            <MenuList friends={friends} addUserToRoom={addUserToRoom}>
+              {room.name}
+              <SettingsIcon className="room-options" />
+            </MenuList>
+          </h3>
+          <div className="channel-separator"></div>
+          {channels}
+          <div className="channel-separator"></div>
+          {addButton}
+        </>
       )}
-      {room.name && channels}
-      {room.name && addButton}
     </div>
   );
 };
