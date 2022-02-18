@@ -13,7 +13,8 @@ import { useState } from "react";
 import "./RoomList.scss";
 import RoomListItem from "./RoomListItem";
 const RoomList = (props) => {
-  const { userID, roomList, setRoom, value, createRoom } = props;
+  const { user, roomList, setRoom, value, createRoom, channel } = props;
+  const userID = user.id;
 
   const [open, setOpen] = useState(false);
   const [newRoomName, setNewRoomName] = useState("");
@@ -30,7 +31,7 @@ const RoomList = (props) => {
         id={room.id}
         name={room.name}
         icon={room.icon_url}
-        setRoom={() => setRoom(room)}
+        setRoom={() => setRoom(channel, room, user)}
         selected={room.id === value.id}
       />
     );
