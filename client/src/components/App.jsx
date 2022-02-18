@@ -35,7 +35,9 @@ const App = () => {
     createRoom,
     createChannel,
     clearErrors,
+    addUserToRoom,
   } = useApplicationData();
+
   const channelList = getChannelsForRoom(state.room, state);
   const messageList = getMessagesForChannel(state.channel, state);
   const directMessagesList = getDirectMessages(state);
@@ -80,6 +82,8 @@ const App = () => {
               value={state.channel}
               room={state.room}
               createChannel={createChannel}
+              friends={state.friends}
+              addUserToRoom={addUserToRoom}
             />
 
             {/* <FriendList
