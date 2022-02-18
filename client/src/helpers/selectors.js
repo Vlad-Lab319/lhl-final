@@ -12,7 +12,7 @@ const getMessagesForChannel = (channel, state) => {
 const getDirectMessages = (state) => {
   // return state.messages.filter((message) => message.channel_id === null && message.recipient_id === recipient.id);
   return state.messages.filter((message) => message.channel_id === null);
-}
+};
 
 const attachUsersToMessages = (messages, state) => {
   return messages.map((msg) => {
@@ -23,5 +23,16 @@ const attachUsersToMessages = (messages, state) => {
   });
 };
 
-export { getChannelsForRoom, getMessagesForChannel, attachUsersToMessages, getDirectMessages };
+const getUsersForRoom = (room, state) => {
+  return Object.values(state.activeUsers).filter(
+    (user) => user.room_id === room.id
+  );
+};
 
+export {
+  getChannelsForRoom,
+  getMessagesForChannel,
+  attachUsersToMessages,
+  getDirectMessages,
+  getUsersForRoom,
+};

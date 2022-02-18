@@ -1,9 +1,12 @@
 // Helpers
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { createContext, useMemo, useState } from "react";
 import {
   attachUsersToMessages,
   getChannelsForRoom,
   getDirectMessages,
   getMessagesForChannel,
+  getUsersForRoom,
 } from "../helpers/selectors";
 // State
 import useApplicationData from "../hooks/useApplicationData";
@@ -15,8 +18,6 @@ import ChatInput from "./Message/ChatInput";
 import MessageList from "./Message/MessageList";
 import RoomList from "./Room/RoomList";
 import RoomMembersList from "./User/RoomMembersList";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { createContext, useMemo, useState } from "react";
 
 // TODO: Create a private chat Component, the friends list can replace the channels bar, and should we replace the RoomMembersList side bar with something else while in private chats?
 // TODO: WebRTC needs to be integrated into the app, likely we'll need to put it in the private chat component
@@ -67,13 +68,13 @@ const App = () => {
   const messageList = getMessagesForChannel(state.channel, state);
   const directMessagesList = getDirectMessages(state);
   const messageListWithUsers = attachUsersToMessages(messageList, state);
-  const memberList = [];
+  const memberList = getUsersForRoom(state.room, state);
 
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <main className="layout">
-          {state.user ? (
+          {state.user.id ? (
             <>
               <header className="header">
                 <Header
@@ -89,13 +90,15 @@ const App = () => {
                   roomList={state.rooms}
                   value={state.room}
                   createRoom={createRoom}
-                  userID={state.user.id}
+                  user={state.user}
+                  channel={state.channel}
                 />
                 <ChannelList
                   setChannel={setChannel}
                   channelList={channelList}
                   value={state.channel}
                   room={state.room}
+                  user={state.user}
                   createChannel={createChannel}
                   friends={state.friends}
                   addUserToRoom={addUserToRoom}

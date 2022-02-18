@@ -12,7 +12,10 @@ router.get("/", (req, res) => {
   db.query(
     `SELECT id, username AS name, avatar_url AS avatar FROM users;`
   ).then(({ rows: users }) => {
-    res.json(users);
+    const updatedUsers = users.map((user) => {
+      return { ...user, room_id: null, channel_id: null };
+    });
+    res.json(updatedUsers);
   });
 });
 
@@ -27,7 +30,13 @@ router.get("/:id", (req, res) => {
     res.json({
       action: {
         type: "SET_USER",
-        value: { id: user.id, name: user.name, avatar: user.avatar },
+        value: {
+          id: user.id,
+          name: user.name,
+          avatar: user.avatar,
+          room_id: null,
+          channel_id: null,
+        },
       },
     });
   });
@@ -56,7 +65,6 @@ router.post("/register", (req, res) => {
   )
     .then((data) => {
       const dbResponse = data.rows[0];
-      console.log(dbResponse);
       res.json({
         action: {
           type: "SET_USER",
