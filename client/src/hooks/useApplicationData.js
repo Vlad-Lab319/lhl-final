@@ -6,15 +6,16 @@ import useStateManager from "./useStateManager";
 export default function useApplicationData() {
   const { state, dispatch, r } = useStateManager();
   // --------------------------INITIALIZE DATA----------------------------------
-  useEffect(() => {
-    if (state.user) {
+
+  const initialFetch = (user) => {
+    if (user.id) {
       Promise.all([
         axios.get(`/api/users/`),
-        axios.get(`/api/rooms/${state.user.id}`),
-        axios.get(`/api/channels/${state.user.id}`),
-        // axios.get(`/api/messages/${state.user.id}`),
+        axios.get(`/api/rooms/${user.id}`),
+        axios.get(`/api/channels/${user.id}`),
+        // axios.get(`/api/messages/${user.id}`),
         axios.get(`/api/messages/`),
-        axios.get(`/api/users/friends/${state.user.id}`),
+        axios.get(`/api/users/friends/${user.id}`),
         // TODO: Needs route for getting all users who are in the same rooms as the currently signed in user
         // axios.get(`/api/users/${state.user.id}`),
       ]).then((all) => {
@@ -31,7 +32,11 @@ export default function useApplicationData() {
         });
       });
     }
-  }, [state.user]);
+  };
+
+  useEffect(() => {
+    initialFetch(state.user);
+  }, [state.user.id]);
 
   //-------------------------LOGIN/LOGOUT---------------------------------------
   const registerUser = (name, email, password) => {
@@ -70,19 +75,41 @@ export default function useApplicationData() {
   };
 
   // ---------------------------STATE SETTERS-----------------------------------
-  const setChannel = (channel) => {
+  const setChannel = (channel, room, user) => {
     dispatch({ type: r.SET_CHANNEL, value: channel });
-    //TODO: SOCKET - socket.emit("channel", state.channel.id)
+    dispatch({
+      type: r.SET_USER,
+      value: { ...user, room_id: room.id, channel_id: channel.id },
+    });
+    state.socket.emit("updateActiveUsers", {
+      type: r.SET_ACTIVE_USERS,
+      value: {
+        ...user,
+        room_id: room.id,
+        channel_id: channel.id,
+      },
+    });
   };
 
   const setRecipient = (recipient) => {
     dispatch({ type: r.SET_RECIPIENT, value: recipient });
   };
 
-  const setRoom = (room) => {
+  const setRoom = (channel, room, user) => {
     dispatch({ type: r.SET_ROOM, value: room });
     dispatch({ type: r.SET_CHANNEL, value: {} });
-    //TODO: SOCKET - socket.emit("room", state.room.id)
+    dispatch({
+      type: r.SET_USER,
+      value: { ...user, room_id: room.id, channel_id: channel.id },
+    });
+    state.socket.emit("updateActiveUsers", {
+      type: r.SET_ACTIVE_USERS,
+      value: {
+        ...user,
+        room_id: room.id,
+        channel_id: channel.id,
+      },
+    });
   };
 
   const setSocket = (socket) => {
@@ -126,12 +153,15 @@ export default function useApplicationData() {
   };
 
   useEffect(() => {
-    if (state.user !== null) {
+    if (state.user.id) {
       const socket = io(process.env.REACT_APP_WEBSOCKET_URL);
       setSocket(socket);
 
       socket.on("connect", () => {
-        socket.emit("update", { type: r.SET_USERS, value: state.user });
+        socket.emit("updateActiveUsers", {
+          type: r.SET_ACTIVE_USERS,
+          value: state.user,
+        });
       });
 
       socket.on("updateRooms", () => {
@@ -157,13 +187,17 @@ export default function useApplicationData() {
         });
       });
 
-      socket.on("update", (action) => {
-        dispatch({ type: action.type, value: action.value });
+      socket.on("updateActiveUsers", (action) => {
+        console.log("Update: ", action);
+        dispatch({
+          type: action.type,
+          value: action.value,
+        });
       });
 
-      return () => socket.disconnect();
+      // return () => socket.disconnect();
     }
-  }, [state.user]);
+  }, [state.user.id]);
 
   return {
     state,

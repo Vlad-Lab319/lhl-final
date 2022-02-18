@@ -15,13 +15,15 @@ export default function useStateManager() {
     ADD_CHANNELS: "ADD_CHANNELS",
     SET_APPLICATION_DATA: "SET_APPLICATION_DATA",
     SET_ERRORS: "SET_ERRORS",
+    SET_ACTIVE_USERS: "SET_ACTIVE_USERS",
   };
 
   const r = reducerVariables;
 
   const initialState = {
-    user: null,
+    user: { id: null },
     users: {},
+    activeUsers: [],
     socket: null,
     room: {},
     channel: {},
@@ -37,6 +39,7 @@ export default function useStateManager() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   function reducer(state, action) {
+    console.log("Action: ", action);
     switch (action.type) {
       case r.SET_SOCKET:
         return {
@@ -48,8 +51,12 @@ export default function useStateManager() {
           ...state,
           user: action.value,
         };
+      case r.SET_ACTIVE_USERS:
+        return {
+          ...state,
+          activeUsers: action.value,
+        };
       case r.SET_USERS:
-        console.log(action.value);
         return {
           ...state,
           users: action.value,

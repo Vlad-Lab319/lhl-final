@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs");
 const bodyParser = require("body-parser");
 const http = require("http");
 const cors = require("cors");
-const { Server } = require("socket.io");
+const { Server, Socket } = require("socket.io");
 
 const app = express();
 app.use(cors());
@@ -40,26 +40,23 @@ const io = new Server(server, {
 });
 
 const users = {};
-const SET_USERS = "SET_USERS";
+const SET_ACTIVE_USERS = "SET_ACTIVE_USERS";
 
 const getUserBySocket = (socketID) => {
   return Object.values(users).find((user) => user.socketID === socketID);
 };
 
-const updateDispatch = (action, socket) => {
-  switch (action.type) {
-    case SET_USERS:
-      users[action.value.id] = { ...action.value, socketID: socket.id };
-      console.log(users);
-      return { type: action.type, value: users };
-  }
-};
-
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
 
-  socket.on("update", (action) => {
-    server.emit("update", updateDispatch(action, socket));
+  socket.on("updateActiveUsers", (action) => {
+    users[action.value.id] = { ...action.value, socketID: socket.id };
+
+    console.log("CONNECTED USERS: ", users);
+    socket.broadcast.emit("updateActiveUsers", {
+      type: SET_ACTIVE_USERS,
+      value: users,
+    });
   });
 
   socket.on("updateRooms", () => {
@@ -75,10 +72,16 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
+    console.log(socket.id);
     const user = getUserBySocket(socket.id);
+    console.log("Disconnect: ", user);
     if (user) {
       delete users[user.id];
-      server.emit("update", { type: SET_USERS, value: users });
+      socket.broadcast.emit("updateActiveUsers", {
+        type: SET_ACTIVE_USERS,
+        value: users,
+      });
+      console.log("CONNECTED USERS: ", users);
     }
   });
 });

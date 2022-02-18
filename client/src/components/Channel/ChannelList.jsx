@@ -14,6 +14,7 @@ import MenuList from "./Menu/MenuList";
 
 const ChannelList = (props) => {
   const {
+    user,
     channelList,
     setChannel,
     value,
@@ -40,7 +41,7 @@ const ChannelList = (props) => {
       <ChannelListItem
         key={channel.id}
         name={channel.name}
-        setChannel={() => setChannel(channel)}
+        setChannel={() => setChannel(channel, room, user)}
         selected={channel.id === value.id}
         type={channel.type}
       />

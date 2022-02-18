@@ -24,7 +24,9 @@ const attachUsersToMessages = (messages, state) => {
 };
 
 const getUsersForRoom = (room, state) => {
-  return state.users.filter((user) => user.room_id === room.id);
+  return Object.values(state.activeUsers).filter(
+    (user) => user.room_id === room.id
+  );
 };
 
 export {
