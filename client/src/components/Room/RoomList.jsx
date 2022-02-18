@@ -1,4 +1,7 @@
 //mui material
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import GroupIcon from "@mui/icons-material/Group";
+import { IconButton } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -6,26 +9,18 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Input from "@mui/material/Input";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useState } from "react";
 import "./RoomList.scss";
 import RoomListItem from "./RoomListItem";
-import { IconButton } from "@mui/material";
-import GroupIcon from "@mui/icons-material/Group";
-
 const RoomList = (props) => {
   const { userID, roomList, setRoom, value, createRoom } = props;
 
   const [open, setOpen] = useState(false);
   const [newRoomName, setNewRoomName] = useState("");
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
+  const toggleOpen = () => {
     setNewRoomName("");
+    setOpen(!open);
   };
 
   const rooms = roomList.map((room) => {
@@ -48,15 +43,15 @@ const RoomList = (props) => {
       icon: "https://i.pinimg.com/736x/f5/23/3a/f5233afc4af9c7be02cc1c673c7c93e9.jpg",
     };
     createRoom(roomData);
-    handleClose();
+    toggleOpen();
   }
 
   const addButton = (
     <div className="room-container">
       <IconButton color="inherit">
-        <AddCircleIcon onClick={handleClickOpen} />
+        <AddCircleIcon onClick={toggleOpen} />
       </IconButton>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={open} onClose={toggleOpen}>
         <DialogTitle>Create new room</DialogTitle>
         <DialogContent>
           <DialogContentText>Create your amazing new room!</DialogContentText>
@@ -72,7 +67,7 @@ const RoomList = (props) => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={toggleOpen}>Cancel</Button>
           <Button onClick={create}>Create</Button>
         </DialogActions>
       </Dialog>
@@ -92,6 +87,7 @@ const RoomList = (props) => {
       {friendButton}
       {rooms}
       {addButton}
+      {/* <ArrowDropDownOutlinedIcon /> */}
     </div>
   );
 };

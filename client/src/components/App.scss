@@ -23,6 +23,9 @@
   flex-direction: column;
   top: 0;
   bottom: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  cursor: pointer;
 
   &--rooms {
     width: $sidebar-width;
@@ -35,7 +38,6 @@
     width: $sidebar-width * 2.5;
     min-width: $sidebar-width * 2.5;
     background-color: lighten($dark-background, 10);
-    padding-left: 1rem;
   }
 
   &--friends {
@@ -45,6 +47,12 @@
     min-width: $sidebar-width * 2.5;
     width: $sidebar-width * 2.5;
     background-color: lighten($dark-background, 10);
+  }
+  &:hover {
+    box-shadow: 0 0 10px black inset;
+  }
+  &::-webkit-scrollbar {
+    width: 0px;
   }
 }
 
