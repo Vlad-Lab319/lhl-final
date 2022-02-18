@@ -18,7 +18,7 @@ const AddFriend = (props) => {
   };
 
   function edit() {
-    editRoom(newRoomName);
+    editRoom(newRoomName, room.id);
     toggleOpen();
   }
 

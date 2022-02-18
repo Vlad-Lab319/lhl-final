@@ -4,7 +4,7 @@ import AddFriend from "./AddFriend";
 import Rename from "./Rename";
 
 export default function MenuList(props) {
-  const { friends, addUserToRoom, room } = props;
+  const { friends, addUserToRoom, room, editRoom } = props;
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -43,7 +43,7 @@ export default function MenuList(props) {
           friends={friends}
           addUserToRoom={addUserToRoom}
         />
-        <Rename room={room} />
+        <Rename room={room} editRoom={editRoom} />
         <MenuItem onClick={handleClose}>Delete Room</MenuItem>
       </Menu>
     </Box>

@@ -60,7 +60,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("updateRooms", () => {
-    socket.broadcast.emit("updateRooms");
+    socket.emit("updateRooms");
   });
 
   socket.on("message", (messageData) => {

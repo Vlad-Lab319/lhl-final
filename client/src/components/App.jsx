@@ -39,6 +39,7 @@ const App = () => {
     createChannel,
     clearErrors,
     addUserToRoom,
+    editRoom,
   } = useApplicationData();
 
   // theme stuff
@@ -102,6 +103,7 @@ const App = () => {
                   createChannel={createChannel}
                   friends={state.friends}
                   addUserToRoom={addUserToRoom}
+                  editRoom={editRoom}
                 />
 
                 {/* <FriendList

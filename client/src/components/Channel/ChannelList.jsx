@@ -22,6 +22,7 @@ const ChannelList = (props) => {
     createChannel,
     friends,
     addUserToRoom,
+    editRoom,
   } = props;
 
   const [open, setOpen] = useState(false);
@@ -104,6 +105,7 @@ const ChannelList = (props) => {
               friends={friends}
               addUserToRoom={addUserToRoom}
               room={room}
+              editRoom={editRoom}
             >
               {room.name}
               <SettingsIcon className="room-options" />
