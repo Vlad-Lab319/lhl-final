@@ -36,7 +36,7 @@ export default function useApplicationData() {
 
   useEffect(() => {
     initialFetch(state.user);
-  }, [state.user.id]);
+  }, [state.user.id, state.user]);
 
   //-------------------------LOGIN/LOGOUT---------------------------------------
   const registerUser = (name, email, password) => {
@@ -137,7 +137,7 @@ export default function useApplicationData() {
   };
 
   const editRoom = (name, id) => {
-    return axios.post(`/api/rooms/${id}`, { name }).then(() => {
+    return axios.post(`/api/rooms/edit`, { name, id }).then(() => {
       state.socket.emit("updateRooms");
     });
   };
@@ -152,9 +152,9 @@ export default function useApplicationData() {
     });
   };
 
-  const addUserToRoom = (id) => {
+  const addUserToRoom = (id, room) => {
     return axios
-      .post(`/api/rooms/user`, { userID: id, roomID: state.room.id })
+      .post("/api/rooms/adduser", { userID: id, roomID: room.id })
       .then(state.socket.emit("updateRooms"));
   };
 
@@ -201,7 +201,7 @@ export default function useApplicationData() {
         });
       });
 
-      // return () => socket.disconnect();
+      return () => socket.disconnect();
     }
   }, [state.user.id]);
 

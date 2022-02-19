@@ -5,7 +5,7 @@ const router = express.Router();
 router.get("/:userID", (req, res) => {
   db.query(
     `
-    SELECT rooms.* FROM rooms 
+    SELECT rooms.* FROM rooms
     JOIN room_users ON rooms.id = room_id
     WHERE room_users.user_id = $1
     ;`,
@@ -35,23 +35,9 @@ router.post("/", (req, res) => {
     .catch((error) => console.log(error));
 });
 
-router.post("/:roomID", (req, res) => {
-  const { name } = req.body;
-  console.log(name);
-  db.query(
-    `
-      UPDATE rooms SET name=$1 where id=$2;
-    `,
-    [name, req.params.roomID]
-  )
-    .then(() => {
-      res.json({});
-    })
-    .catch((error) => console.log(error));
-});
-
-router.post("/user", (req, res) => {
+router.post("/adduser", (req, res) => {
   const { userID, roomID } = req.body;
+  console.log(req.body);
   db.query(
     `
     INSERT INTO room_users (user_id, room_id)
@@ -65,6 +51,20 @@ router.post("/user", (req, res) => {
   ).then(() => {
     res.json({});
   });
+});
+
+router.post("/edit", (req, res) => {
+  const { name, id } = req.body;
+  db.query(
+    `
+      UPDATE rooms SET name=$1 where id=$2;
+    `,
+    [name, id]
+  )
+    .then(() => {
+      res.json({});
+    })
+    .catch((error) => console.log(error));
 });
 
 module.exports = router;

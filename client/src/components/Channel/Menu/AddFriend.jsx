@@ -1,16 +1,16 @@
 //mui material
 import { MenuItem } from "@mui/material";
+import Autocomplete from "@mui/material/Autocomplete";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
-import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
 import { useState } from "react";
 
 const AddFriend = (props) => {
-  const { close, friends, addUserToRoom } = props;
+  const { close, friends, addUserToRoom, room } = props;
 
   const [open, setOpen] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState([]);
@@ -27,7 +27,7 @@ const AddFriend = (props) => {
   const handleChange = (event, value) => setSelectedOptions(value);
 
   const handleSubmit = () => {
-    addUserToRoom(selectedOptions.id);
+    addUserToRoom(selectedOptions.id, room);
     closeDialog();
   };
 
