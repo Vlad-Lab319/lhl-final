@@ -142,6 +142,24 @@ export default function useApplicationData() {
     });
   };
 
+  const deleteRoom = (id) => {
+    return axios.post(`/api/rooms/delete`, { id }).then(() => {
+      state.socket.emit("updateRooms");
+    });
+  };
+
+  const editChannel = (name, id) => {
+    return axios.post(`/api/channels/edit`, { name, id }).then(() => {
+      state.socket.emit("updateChannels");
+    });
+  };
+
+  const deleteChannel = (id) => {
+    return axios.post(`/api/channels/delete`, { id }).then(() => {
+      state.socket.emit("updateChannels");
+    });
+  };
+
   const createChannel = (channelData) => {
     return axios.post(`/api/channels`, channelData).then((channel) => {
       dispatch({
@@ -176,6 +194,19 @@ export default function useApplicationData() {
           dispatch({
             type: r.SET_ROOMS,
             value: rooms.data,
+          });
+          dispatch({
+            type: r.SET_ROOM,
+            value: {},
+          });
+        });
+      });
+
+      socket.on("updateChannels", () => {
+        axios.get(`/api/channels/${state.user.id}`).then((channels) => {
+          dispatch({
+            type: r.SET_CHANNELS,
+            value: channels.data,
           });
         });
       });
@@ -219,5 +250,8 @@ export default function useApplicationData() {
     clearErrors,
     addUserToRoom,
     editRoom,
+    editChannel,
+    deleteRoom,
+    deleteChannel,
   };
 }
