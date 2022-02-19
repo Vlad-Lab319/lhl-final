@@ -154,6 +154,12 @@ export default function useApplicationData() {
     });
   };
 
+  const deleteChannel = (id) => {
+    return axios.post(`/api/channels/delete`, { id }).then(() => {
+      state.socket.emit("updateChannels");
+    });
+  };
+
   const createChannel = (channelData) => {
     return axios.post(`/api/channels`, channelData).then((channel) => {
       dispatch({
@@ -246,5 +252,6 @@ export default function useApplicationData() {
     editRoom,
     editChannel,
     deleteRoom,
+    deleteChannel,
   };
 }

@@ -25,6 +25,20 @@ router.post("/edit", (req, res) => {
     .catch((error) => console.log(error));
 });
 
+router.post("/delete", (req, res) => {
+  const { id } = req.body;
+  db.query(
+    `
+      DELETE FROM channels where id=$1;
+    `,
+    [id]
+  )
+    .then(() => {
+      res.json({});
+    })
+    .catch((error) => console.log(error));
+});
+
 router.post("/", (req, res) => {
   const { roomID, newChannelName } = req.body;
   db.query(

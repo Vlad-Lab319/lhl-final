@@ -2,6 +2,7 @@ import TextsmsIcon from "@mui/icons-material/Textsms";
 import classNames from "classnames";
 import "./ChannelListItem.scss";
 import SettingsIcon from "@mui/icons-material/Settings";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { Input } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -11,22 +12,32 @@ import DialogContent from "@mui/material/DialogContent";
 import { useState } from "react";
 
 const ChannelListItem = (props) => {
-  const { name, setChannel, selected, type, editChannel, channel } = props;
+  const {
+    name,
+    setChannel,
+    selected,
+    type,
+    editChannel,
+    channel,
+    deleteChannel,
+  } = props;
 
-  const [open, setOpen] = useState(false);
   const [newChannelName, setNewChannelName] = useState(channel.name);
 
-  const toggleOpen = () => {
-    setOpen(!open);
+  // edit menu
+  const [openEdit, setOpenEdit] = useState(false);
+
+  const toggleOpenEdit = () => {
+    setOpenEdit(!openEdit);
   };
 
   function edit() {
     editChannel(newChannelName, channel.id);
-    toggleOpen();
+    toggleOpenEdit();
   }
 
   const editMenu = (
-    <Dialog open={open} onClose={toggleOpen}>
+    <Dialog open={openEdit} onClose={toggleOpenEdit}>
       <DialogTitle>Rename Channel</DialogTitle>
       <DialogContent>
         <Input
@@ -41,8 +52,31 @@ const ChannelListItem = (props) => {
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={toggleOpen}>Cancel</Button>
+        <Button onClick={toggleOpenEdit}>Cancel</Button>
         <Button onClick={edit}>Submit</Button>
+      </DialogActions>
+    </Dialog>
+  );
+  // edit menu ends
+
+  // confirm menu
+  const [openConfirm, setOpenConfirm] = useState(false);
+
+  const toggleOpenConfirm = () => {
+    setOpenConfirm(!openConfirm);
+  };
+
+  function confirm() {
+    deleteChannel(channel.id);
+    toggleOpenConfirm();
+  }
+
+  const confirmMenu = (
+    <Dialog open={openConfirm} onClose={toggleOpenConfirm}>
+      <DialogTitle>Are you sure you want to delete the channel?</DialogTitle>
+      <DialogActions>
+        <Button onClick={toggleOpenConfirm}>Cancel</Button>
+        <Button onClick={confirm}>Confirm</Button>
       </DialogActions>
     </Dialog>
   );
@@ -61,8 +95,10 @@ const ChannelListItem = (props) => {
     <div className={channelListClass} onClick={setChannel}>
       <div className={iconClass}>{type === "text" && <TextsmsIcon />}</div>
       <span>{name}</span>
-      <SettingsIcon onClick={toggleOpen} />
+      <SettingsIcon onClick={toggleOpenEdit} />
+      <DeleteIcon onClick={toggleOpenConfirm} />
       {editMenu}
+      {confirmMenu}
     </div>
   );
 };

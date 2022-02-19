@@ -25,6 +25,7 @@ const ChannelList = (props) => {
     editRoom,
     editChannel,
     deleteRoom,
+    deleteChannel,
   } = props;
 
   const [open, setOpen] = useState(false);
@@ -45,6 +46,7 @@ const ChannelList = (props) => {
         type={channel.type}
         editChannel={editChannel}
         channel={channel}
+        deleteChannel={deleteChannel}
       />
     );
   });

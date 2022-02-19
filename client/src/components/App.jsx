@@ -42,6 +42,7 @@ const App = () => {
     editRoom,
     editChannel,
     deleteRoom,
+    deleteChannel,
   } = useApplicationData();
 
   // theme stuff
@@ -108,6 +109,7 @@ const App = () => {
                   editRoom={editRoom}
                   editChannel={editChannel}
                   deleteRoom={deleteRoom}
+                  deleteChannel={deleteChannel}
                 />
 
                 {/* <FriendList
