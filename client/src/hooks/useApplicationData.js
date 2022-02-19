@@ -155,9 +155,10 @@ export default function useApplicationData() {
   useEffect(() => {
     if (state.user.id) {
       const socket = io(process.env.REACT_APP_WEBSOCKET_URL);
+      socket.connect();
       setSocket(socket);
 
-      socket.on("connect", () => {
+      socket.on("connection", () => {
         socket.emit("updateActiveUsers", {
           type: r.SET_ACTIVE_USERS,
           value: state.user,
@@ -195,7 +196,7 @@ export default function useApplicationData() {
         });
       });
 
-      // return () => socket.disconnect();
+      return () => socket.disconnect();
     }
   }, [state.user.id]);
 

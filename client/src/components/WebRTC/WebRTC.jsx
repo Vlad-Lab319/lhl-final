@@ -209,7 +209,7 @@ const WebRtc = (props) => {
   // }
 
   return (
-    <div className="webrtc">
+    <div className="webrtc" draggable={true}>
       <div className="webrtc-container">
         <h2>Video meeting</h2>
         <div className="videos">
