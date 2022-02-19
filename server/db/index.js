@@ -13,6 +13,8 @@ pool.connect((err, client) => {
 });
 
 const query = (queryString, queryParams) => {
+  console.log("Query String: ", queryString);
+  console.log("Query Params: ", queryParams);
   return pool.query(queryString, queryParams);
 };
 

@@ -28,12 +28,8 @@ const ChannelList = (props) => {
   const [open, setOpen] = useState(false);
   const [newChannelName, setNewChannelName] = useState("");
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
+  const toggleOpen = () => {
+    setOpen(!open);
     setNewChannelName("");
   };
 
@@ -56,18 +52,18 @@ const ChannelList = (props) => {
       newChannelName,
     };
     createChannel(channelData);
-    handleClose();
+    toggleOpen();
   }
 
   const addButton = (
     <>
-      <div className="channel-item" onClick={handleClickOpen}>
+      <div className="channel-item" onClick={toggleOpen}>
         <div className="channel-icon">
           <AddBoxIcon />
         </div>
         <span>Create a channel</span>
       </div>
-      <Dialog open={open} onClose={handleClose} className="add-channel-box">
+      <Dialog open={open} onClose={toggleOpen} className="add-channel-box">
         <DialogTitle className="add-channel-title">{room.name}</DialogTitle>
         <DialogContent className="add-channel-content">
           <DialogContentText className="add-channel-text">
@@ -85,7 +81,7 @@ const ChannelList = (props) => {
           />
         </DialogContent>
         <div className="add-channel-btn-container">
-          <button className="add-channel-btn cancel" onClick={handleClose}>
+          <button className="add-channel-btn cancel" onClick={toggleOpen}>
             Cancel
           </button>
           <button className="add-channel-btn confirm" onClick={create}>

@@ -51,8 +51,6 @@ io.on("connection", (socket) => {
 
   socket.on("updateActiveUsers", (action) => {
     users[action.value.id] = { ...action.value, socketID: socket.id };
-
-    console.log("CONNECTED USERS: ", users);
     io.emit("updateActiveUsers", {
       type: SET_ACTIVE_USERS,
       value: users,
@@ -60,7 +58,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("updateRooms", () => {
-    socket.emit("updateRooms");
+    io.emit("updateRooms");
   });
 
   socket.on("message", (messageData) => {
@@ -74,7 +72,6 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log(socket.id);
     const user = getUserBySocket(socket.id);
-    console.log("Disconnect: ", user);
     if (user) {
       delete users[user.id];
       io.emit("updateActiveUsers", {

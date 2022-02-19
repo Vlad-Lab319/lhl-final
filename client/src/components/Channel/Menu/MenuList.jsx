@@ -42,6 +42,7 @@ export default function MenuList(props) {
           close={handleClose}
           friends={friends}
           addUserToRoom={addUserToRoom}
+          room={room}
         />
         <Rename room={room} editRoom={editRoom} />
         <MenuItem onClick={handleClose}>Delete Room</MenuItem>
