@@ -66,9 +66,9 @@ export default function useApplicationData() {
   // };
   const logoutUser = () => {
     dispatch({ type: r.SET_USER, value: { id: null } });
-    // if (state.socket) {
-    state.socket.disconnect();
-    // }
+    if (state.socket) {
+      state.socket.disconnect();
+    }
   };
   const clearErrors = () => {
     dispatch({ type: r.SET_ERRORS, value: null });
@@ -195,7 +195,6 @@ export default function useApplicationData() {
       });
 
       socket.on("updateActiveUsers", (action) => {
-        console.log("Update: ", action);
         dispatch({
           type: action.type,
           value: action.value,

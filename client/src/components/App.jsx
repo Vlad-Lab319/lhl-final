@@ -162,6 +162,7 @@ const App = () => {
                   <RoomMembersList
                     memberList={memberList}
                     activeUser={state.user}
+                    room={state.room}
                   />
                 </div>
                 {/* <div className="webrtc">
