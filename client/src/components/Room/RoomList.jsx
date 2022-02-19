@@ -55,7 +55,6 @@ const RoomList = (props) => {
       <Dialog open={open} onClose={toggleOpen}>
         <DialogTitle>Create new room</DialogTitle>
         <DialogContent>
-          <DialogContentText>Create your amazing new room!</DialogContentText>
           <Input
             autoFocus
             margin="dense"

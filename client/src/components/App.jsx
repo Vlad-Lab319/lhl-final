@@ -39,10 +39,11 @@ const App = () => {
     createChannel,
     clearErrors,
     addUserToRoom,
+    editRoom,
   } = useApplicationData();
 
   // theme stuff
-  const [mode, setMode] = useState("light");
+  const [mode, setMode] = useState("dark");
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
@@ -56,6 +57,9 @@ const App = () => {
       createTheme({
         palette: {
           mode,
+          primary: {
+            main: "#af6fcd",
+          },
         },
       }),
     [mode]
@@ -99,6 +103,7 @@ const App = () => {
                   createChannel={createChannel}
                   friends={state.friends}
                   addUserToRoom={addUserToRoom}
+                  editRoom={editRoom}
                 />
 
                 {/* <FriendList

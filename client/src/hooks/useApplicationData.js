@@ -136,6 +136,12 @@ export default function useApplicationData() {
     });
   };
 
+  const editRoom = (name, id) => {
+    return axios.post(`/api/rooms/${id}`, { name }).then(() => {
+      state.socket.emit("updateRooms");
+    });
+  };
+
   const createChannel = (channelData) => {
     return axios.post(`/api/channels`, channelData).then((channel) => {
       dispatch({
@@ -212,5 +218,6 @@ export default function useApplicationData() {
     createChannel,
     clearErrors,
     addUserToRoom,
+    editRoom,
   };
 }
