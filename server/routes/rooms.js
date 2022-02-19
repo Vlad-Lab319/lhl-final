@@ -67,4 +67,18 @@ router.post("/edit", (req, res) => {
     .catch((error) => console.log(error));
 });
 
+router.post("/delete", (req, res) => {
+  const { id } = req.body;
+  db.query(
+    `
+      DELETE FROM rooms where id=$1;
+    `,
+    [id]
+  )
+    .then(() => {
+      res.json({});
+    })
+    .catch((error) => console.log(error));
+});
+
 module.exports = router;

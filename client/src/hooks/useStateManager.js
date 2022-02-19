@@ -8,6 +8,7 @@ export default function useStateManager() {
     SET_ROOM: "SET_ROOM",
     SET_ROOMS: "SET_ROOMS",
     SET_CHANNEL: "SET_CHANNEL",
+    SET_CHANNELS: "SET_CHANNELS",
     SET_FRIENDS: "SET_FRIENDS",
     SET_RECIPIENT: "SET_RECIPIENT",
     ADD_MESSAGES: "ADD_MESSAGES",
@@ -74,6 +75,11 @@ export default function useStateManager() {
         return {
           ...state,
           channel: action.value,
+        };
+      case r.SET_CHANNELS:
+        return {
+          ...state,
+          channels: action.value,
         };
       case r.SET_FRIENDS:
         return {

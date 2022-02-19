@@ -23,6 +23,8 @@ const ChannelList = (props) => {
     friends,
     addUserToRoom,
     editRoom,
+    editChannel,
+    deleteRoom,
   } = props;
 
   const [open, setOpen] = useState(false);
@@ -41,6 +43,8 @@ const ChannelList = (props) => {
         setChannel={() => setChannel(channel, room, user)}
         selected={channel.id === value.id}
         type={channel.type}
+        editChannel={editChannel}
+        channel={channel}
       />
     );
   });
@@ -102,6 +106,7 @@ const ChannelList = (props) => {
               addUserToRoom={addUserToRoom}
               room={room}
               editRoom={editRoom}
+              deleteRoom={deleteRoom}
             >
               {room.name}
               <SettingsIcon className="room-options" />

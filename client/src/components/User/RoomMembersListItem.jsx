@@ -1,5 +1,6 @@
 // TODO: RoomMembersListItem needs to be implemented
 import PhoneIcon from "@mui/icons-material/Phone";
+import { IconButton } from "@mui/material";
 import { useState } from "react";
 import WebRTC from "../WebRTC/WebRTC";
 import "./RoomMembersListItem.scss";

@@ -11,6 +11,20 @@ router.get("/:userID", (req, res) => {
   });
 });
 
+router.post("/edit", (req, res) => {
+  const { name, id } = req.body;
+  db.query(
+    `
+      UPDATE channels SET name=$1 where id=$2;
+    `,
+    [name, id]
+  )
+    .then(() => {
+      res.json({});
+    })
+    .catch((error) => console.log(error));
+});
+
 router.post("/", (req, res) => {
   const { roomID, newChannelName } = req.body;
   db.query(

@@ -2,9 +2,10 @@ import { Box, Button, Menu, MenuItem } from "@mui/material";
 import { useState } from "react";
 import AddFriend from "./AddFriend";
 import Rename from "./Rename";
+import Confirm from "./Confirm";
 
 export default function MenuList(props) {
-  const { friends, addUserToRoom, room, editRoom } = props;
+  const { friends, addUserToRoom, room, editRoom, deleteRoom } = props;
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -45,7 +46,7 @@ export default function MenuList(props) {
           room={room}
         />
         <Rename room={room} editRoom={editRoom} />
-        <MenuItem onClick={handleClose}>Delete Room</MenuItem>
+        <Confirm room={room} deleteRoom={deleteRoom} />
       </Menu>
     </Box>
   );
