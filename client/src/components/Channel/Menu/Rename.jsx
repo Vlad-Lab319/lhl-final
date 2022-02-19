@@ -7,7 +7,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import { useState } from "react";
 
-const AddFriend = (props) => {
+const Rename = (props) => {
   const { room, editRoom } = props;
 
   const [open, setOpen] = useState(false);
@@ -48,4 +48,4 @@ const AddFriend = (props) => {
   );
 };
 
-export default AddFriend;
+export default Rename;
