@@ -16,13 +16,14 @@ const RoomMembersList = (props) => {
     );
   });
   return (
-    <>
-      <h3 className="members-title">
+    <div className="sidebar sidebar--friends">
+      <div className="member-title">
         {room.name && room.name}
-        {room.name && <span className="members-online">{members.length}</span>}
-      </h3>
+        {room.name && <span className="member-online">{members.length}</span>}
+      </div>
+      <div className="member-separator"></div>
       {members}
-    </>
+    </div>
   );
 };
 

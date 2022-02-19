@@ -15,7 +15,7 @@ const RoomMembersListItem = (props) => {
   return (
     <div className="member-item">
       <img src={avatar} alt="" className="member-icon" />
-      <span className="member-user">{name}</span>
+      <span className="member-name">{name}</span>
       {!isUser && (
         <PhoneIcon className="member-phone" onClick={() => makeCall(id)} />
       )}
