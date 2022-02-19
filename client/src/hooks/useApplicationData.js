@@ -177,6 +177,10 @@ export default function useApplicationData() {
             type: r.SET_ROOMS,
             value: rooms.data,
           });
+          dispatch({
+            type: r.SET_ROOM,
+            value: {},
+          });
         });
       });
 
