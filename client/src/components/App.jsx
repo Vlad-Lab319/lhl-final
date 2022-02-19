@@ -159,7 +159,10 @@ const App = () => {
             </> */}
                 </div>
                 <div className="sidebar sidebar--friends">
-                  <RoomMembersList memberList={memberList} />
+                  <RoomMembersList
+                    memberList={memberList}
+                    activeUser={state.user}
+                  />
                 </div>
                 {/* <div className="webrtc">
             <WebRtc />

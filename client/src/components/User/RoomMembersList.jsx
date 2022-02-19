@@ -1,12 +1,11 @@
 // TODO: RoomMembersList needs the users present in the room that the user is currently in
-import { useEffect } from "react";
 import "./RoomMembersList.scss";
 import RoomMembersListItem from "./RoomMembersListItem";
 
 const RoomMembersList = (props) => {
-  const { memberList } = props;
+  const { activeUser, memberList } = props;
 
-  useEffect(() => {}, [memberList.length]);
+  // useEffect(() => {}, [memberList.length]);
 
   const members = memberList.map((user) => {
     return (
@@ -14,6 +13,7 @@ const RoomMembersList = (props) => {
         key={user.id}
         name={user.name}
         avatar={user.avatar}
+        isUser={activeUser.id === user.id}
       />
     );
   });
