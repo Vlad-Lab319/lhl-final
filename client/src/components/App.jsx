@@ -158,13 +158,13 @@ const App = () => {
 
             </> */}
                 </div>
-                <div className="sidebar sidebar--friends">
-                  <RoomMembersList
-                    memberList={memberList}
-                    activeUser={state.user}
-                    room={state.room}
-                  />
-                </div>
+
+                <RoomMembersList
+                  memberList={memberList}
+                  activeUser={state.user}
+                  room={state.room}
+                />
+
                 {/* <div className="webrtc">
             <WebRtc />
           </div> */}
