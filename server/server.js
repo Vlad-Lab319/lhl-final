@@ -53,7 +53,7 @@ io.on("connection", (socket) => {
     users[action.value.id] = { ...action.value, socketID: socket.id };
 
     console.log("CONNECTED USERS: ", users);
-    socket.broadcast.emit("updateActiveUsers", {
+    io.emit("updateActiveUsers", {
       type: SET_ACTIVE_USERS,
       value: users,
     });
@@ -77,7 +77,7 @@ io.on("connection", (socket) => {
     console.log("Disconnect: ", user);
     if (user) {
       delete users[user.id];
-      socket.broadcast.emit("updateActiveUsers", {
+      io.emit("updateActiveUsers", {
         type: SET_ACTIVE_USERS,
         value: users,
       });
