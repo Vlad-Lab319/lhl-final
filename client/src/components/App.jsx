@@ -111,30 +111,11 @@ const App = () => {
                   deleteRoom={deleteRoom}
                   deleteChannel={deleteChannel}
                 />
-
-                {/* <FriendList
-
-
-
-          <div className="main-container">
-            <RoomList
-              setRoom={setRoom}
-              roomList={state.rooms}
-              value={state.room}
-              createRoom={createRoom}
-              userID={state.user.id}
-            />
-            <ChannelList
-              setChannel={setChannel}
-              channelList={channelList}
-              value={state.channel}
-              room={state.room}
-            />
-            {/* <FriendList
-            friendList={friendList}
-            value={state.recipient.id}
-            setRecipient={setRecipient}
-          /> */}
+                <RoomMembersList
+                  memberList={memberList}
+                  activeUser={state.user}
+                  room={state.room}
+                />
                 <div className="messages">
                   {state.channel.id && (
                     <>
@@ -150,30 +131,7 @@ const App = () => {
                       />
                     </>
                   )}
-
-                  {/* <>
-              <DirectMessagesList messageList={directMessagesList}
-
-              />
-              <ChatInput
-              channel={null}
-              user={state.user}
-              recipient={state.recipient}
-              sendMessage={sendMessage}
-              />
-
-            </> */}
                 </div>
-
-                <RoomMembersList
-                  memberList={memberList}
-                  activeUser={state.user}
-                  room={state.room}
-                />
-
-                {/* <div className="webrtc">
-            <WebRtc />
-          </div> */}
               </div>
             </>
           ) : (

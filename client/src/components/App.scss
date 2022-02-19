@@ -3,14 +3,15 @@
 //TODO: Some scss needs to be moved down into the appropriate scss files
 
 .header {
-  position: relative;
+  position: fixed;
   top: 0;
+  right: 0;
+  left: 0;
   display: flex;
   flex-direction: row;
   color: white;
   background-color: $dark-background;
-  width: 100vw;
-  height: $sidebar-width;
+  height: $header-height;
 }
 
 .container {
@@ -18,51 +19,50 @@
 }
 
 .sidebar {
-  position: relative;
+  position: fixed;
   display: flex;
   flex-direction: column;
-  top: 0;
+  top: $header-height;
   bottom: 0;
   overflow-y: auto;
   overflow-x: hidden;
   cursor: pointer;
 
   &--rooms {
-    width: $sidebar-width;
-    min-width: $sidebar-width;
+    left: 0;
+    width: $sidebar-width-rooms;
+    min-width: $sidebar-width-rooms;
     background-color: lighten($dark-background, 5);
     margin: 0;
   }
 
   &--channels {
-    width: $sidebar-width * 2.5;
-    min-width: $sidebar-width * 2.5;
+    left: $sidebar-width-rooms;
+    width: $sidebar-width-channels;
+    min-width: $sidebar-width-channels;
     background-color: lighten($dark-background, 10);
   }
 
   &--friends {
-    min-width: $sidebar-width * 2.5;
-    width: $sidebar-width * 2.5;
+    right: 0;
+    width: $sidebar-width-room-members;
     background-color: lighten($dark-background, 10);
   }
-  &:hover {
-    box-shadow: 0 0 10px black inset;
-  }
+
   &::-webkit-scrollbar {
     width: 0px;
   }
 }
 
 .messages {
-  position: relative;
+  position: fixed;
   display: flex;
   flex-direction: column;
   align-items: center;
-  top: 0;
+  top: $header-height;
   bottom: 0;
-  left: 0;
-  right: 0;
+  left: $sidebar-width-rooms + $sidebar-width-channels;
+  right: $sidebar-width-room-members;
   background-color: lighten($dark-background, 5);
-  width: 100%;
   align-items: flex-start;
 }
