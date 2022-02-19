@@ -195,14 +195,13 @@ export default function useApplicationData() {
       });
 
       socket.on("updateActiveUsers", (action) => {
-        console.log("Update: ", action);
         dispatch({
           type: action.type,
           value: action.value,
         });
       });
 
-      return () => socket.disconnect();
+      // return () => socket.disconnect();
     }
   }, [state.user.id]);
 

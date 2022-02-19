@@ -3,9 +3,7 @@ import "./RoomMembersList.scss";
 import RoomMembersListItem from "./RoomMembersListItem";
 
 const RoomMembersList = (props) => {
-  const { activeUser, memberList } = props;
-
-  // useEffect(() => {}, [memberList.length]);
+  const { activeUser, memberList, room } = props;
 
   const members = memberList.map((user) => {
     return (
@@ -19,7 +17,10 @@ const RoomMembersList = (props) => {
   });
   return (
     <>
-      <h3 className="members-title">Online -- {members.length}</h3>
+      <h3 className="members-title">
+        {room.name && room.name}
+        {room.name && <span className="members-online">{members.length}</span>}
+      </h3>
       {members}
     </>
   );
