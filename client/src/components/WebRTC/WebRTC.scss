@@ -1,15 +1,19 @@
-@import "variables.scss";
+@import "../../styles/variables.scss";
 
 .webrtc {
-  position: relative;
+  position: fixed;
+  top: 5rem;
+  bottom: 5rem;
+  left: 10rem;
+  right: 10rem;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  top: 0;
-  bottom: 0;
+  border-radius: 2rem;
+  box-shadow: 0px 0px 200px 50px black;
   background-color: lighten($dark-background, 5);
-  width: 100%;
+  // width: 100%;
 }
 
 .webrtc-container {
@@ -47,7 +51,6 @@ video {
   background-color: lighten($dark-background, 10);
   border-radius: 1rem;
 }
-
 
 .stream-button {
   display: flex;

@@ -4,7 +4,7 @@ import "./RoomMembersList.scss";
 import RoomMembersListItem from "./RoomMembersListItem";
 
 const RoomMembersList = (props) => {
-  const { memberList } = props;
+  const { activeUser, memberList } = props;
 
   useEffect(() => {}, [memberList.length]);
 
@@ -14,6 +14,7 @@ const RoomMembersList = (props) => {
         key={user.id}
         name={user.name}
         avatar={user.avatar}
+        isUser={activeUser.id === user.id}
       />
     );
   });
