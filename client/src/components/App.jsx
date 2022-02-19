@@ -68,6 +68,13 @@ const App = () => {
     [mode]
   );
 
+  const [directMessage, setDirectMessage] = useState(false);
+  const toggleDirectMessage = () => {
+    setDirectMessage(!directMessage);
+    setRoom({}, {}, state.user);
+    setChannel({}, {}, state.user);
+  };
+
   const channelList = getChannelsForRoom(state.room, state);
   const messageList = getMessagesForChannel(state.channel, state);
   const directMessagesList = getDirectMessages(state);
@@ -96,6 +103,8 @@ const App = () => {
                   createRoom={createRoom}
                   user={state.user}
                   channel={state.channel}
+                  directMessage={directMessage}
+                  toggleDirectMessage={toggleDirectMessage}
                 />
                 <ChannelList
                   setChannel={setChannel}
