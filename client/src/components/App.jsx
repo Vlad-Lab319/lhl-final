@@ -1,4 +1,4 @@
-// Helpers
+//-------------------------------Helpers----------------------------------------
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { createContext, useMemo, useState } from "react";
 import {
@@ -8,23 +8,22 @@ import {
   getMessagesForChannel,
   getUsersForRoom,
 } from "../helpers/selectors";
-// State
+//-------------------------------State------------------------------------------
 import useApplicationData from "../hooks/useApplicationData";
+//-------------------------------Styles-----------------------------------------
 import "./App.scss";
+//-----------------------------Components---------------------------------------
 import ChannelList from "./Channel/ChannelList";
 import Header from "./Login/Header";
 import UserForm from "./Login/index";
 import ChatInput from "./Message/ChatInput";
 import MessageList from "./Message/MessageList";
 import RoomList from "./Room/RoomList";
+import FriendList from "./User/FriendList";
 import RoomMembersList from "./User/RoomMembersList";
-
-// TODO: Create a private chat Component, the friends list can replace the channels bar, and should we replace the RoomMembersList side bar with something else while in private chats?
-// TODO: WebRTC needs to be integrated into the app, likely we'll need to put it in the private chat component
-//TODO: div messages needs to be refactored as a separate component to handle different channel types
-
+//-------------------------------Theme------------------------------------------
 const ColorModeContext = createContext({ toggleColorMode: () => {} });
-
+//-------------------------------Main-------------------------------------------
 const App = () => {
   const {
     state,
@@ -69,6 +68,7 @@ const App = () => {
   );
 
   const [directMessage, setDirectMessage] = useState(false);
+
   const toggleDirectMessage = () => {
     setDirectMessage(!directMessage);
     setRoom({}, {}, state.user);
@@ -77,7 +77,7 @@ const App = () => {
 
   const channelList = getChannelsForRoom(state.room, state);
   const messageList = getMessagesForChannel(state.channel, state);
-  const directMessagesList = getDirectMessages(state);
+  const directMessageList = getDirectMessages(state);
   const messageListWithUsers = attachUsersToMessages(messageList, state);
   const memberList = getUsersForRoom(state.room, state);
 
@@ -106,25 +106,35 @@ const App = () => {
                   directMessage={directMessage}
                   toggleDirectMessage={toggleDirectMessage}
                 />
-                <ChannelList
-                  setChannel={setChannel}
-                  channelList={channelList}
-                  value={state.channel}
-                  room={state.room}
-                  user={state.user}
-                  createChannel={createChannel}
-                  friends={state.friends}
-                  addUserToRoom={addUserToRoom}
-                  editRoom={editRoom}
-                  editChannel={editChannel}
-                  deleteRoom={deleteRoom}
-                  deleteChannel={deleteChannel}
-                />
-                <RoomMembersList
-                  memberList={memberList}
-                  activeUser={state.user}
-                  room={state.room}
-                />
+                {directMessage ? (
+                  <FriendList
+                    friendList={state.friends}
+                    user={state.user}
+                    directMessageList={directMessageList}
+                  />
+                ) : (
+                  <>
+                    <ChannelList
+                      setChannel={setChannel}
+                      channelList={channelList}
+                      value={state.channel}
+                      room={state.room}
+                      user={state.user}
+                      createChannel={createChannel}
+                      friends={state.friends}
+                      addUserToRoom={addUserToRoom}
+                      editRoom={editRoom}
+                      editChannel={editChannel}
+                      deleteRoom={deleteRoom}
+                      deleteChannel={deleteChannel}
+                    />
+                    <RoomMembersList
+                      memberList={memberList}
+                      activeUser={state.user}
+                      room={state.room}
+                    />
+                  </>
+                )}
                 <div className="messages">
                   {state.channel.id && (
                     <>

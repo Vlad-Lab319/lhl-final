@@ -13,11 +13,8 @@ export default function useApplicationData() {
         axios.get(`/api/users/`),
         axios.get(`/api/rooms/${user.id}`),
         axios.get(`/api/channels/${user.id}`),
-        // axios.get(`/api/messages/${user.id}`),
         axios.get(`/api/messages/`),
         axios.get(`/api/users/friends/${user.id}`),
-        // TODO: Needs route for getting all users who are in the same rooms as the currently signed in user
-        // axios.get(`/api/users/${state.user.id}`),
       ]).then((all) => {
         const [users, rooms, channels, messages, friends] = all;
         dispatch({
