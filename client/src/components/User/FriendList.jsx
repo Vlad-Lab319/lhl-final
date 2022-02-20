@@ -4,7 +4,7 @@ import FriendListItem from "./FriendListItem";
 // TODO: FriendList needs to be implemented
 
 const FriendList = (props) => {
-  const { friendList, setRecipient, value } = props;
+  const { friendList, setRecipient, value, user } = props;
 
   const friends = friendList.map((friend) => {
     return (
@@ -20,8 +20,11 @@ const FriendList = (props) => {
 
   return (
     <div className="sidebar sidebar--friends">
-      <h3>Friends</h3>
-      {friends}
+      <div className="friend-list">
+        <div className="friend-list-title">{user.name} - Friends</div>
+        <div className="friend-list-separator"></div>
+        {friends}
+      </div>
     </div>
   );
 };
