@@ -57,6 +57,13 @@
     background-color: lighten($dark-background, 10);
   }
 
+  &--find-friend {
+    right: 0;
+    width: $sidebar-width-channels;
+    min-width: $sidebar-width-channels;
+    background-color: lighten($dark-background, 10);
+  }
+
   &::-webkit-scrollbar {
     width: 0px;
   }

@@ -19,6 +19,7 @@ import UserForm from "./Login/index";
 import ChatInput from "./Message/ChatInput";
 import MessageList from "./Message/MessageList";
 import RoomList from "./Room/RoomList";
+import FindFriendList from "./User/FindFriendList";
 import FriendList from "./User/FriendList";
 import RoomMembersList from "./User/RoomMembersList";
 //-------------------------------Theme------------------------------------------
@@ -106,6 +107,7 @@ const App = () => {
                       user={state.user}
                       directMessageList={directMessageList}
                     />
+                    <FindFriendList />
                   </>
                 )}
                 {!state.directMessage && (
