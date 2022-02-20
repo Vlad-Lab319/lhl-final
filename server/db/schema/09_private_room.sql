@@ -1,0 +1,4 @@
+DROP TABLE IF EXISTS private_rooms CASCADE;
+CREATE TABLE private_rooms (
+  id SERIAL PRIMARY KEY NOT NULL
+);
