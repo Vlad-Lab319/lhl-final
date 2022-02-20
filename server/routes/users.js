@@ -58,13 +58,39 @@ router.get("/search/:name/:id", (req, res) => {
 router.get("/friends/:userID", (req, res) => {
   db.query(
     `
-    SELECT users.* FROM friends
+    SELECT users.id AS id, users.username AS name, users.avatar_url AS avatar FROM friends
     JOIN users ON friend_id = users.id
     WHERE user_id = $1
     ;`,
     [req.params.userID]
   ).then(({ rows: friends }) => {
     res.json(friends);
+  });
+});
+
+router.get("/friends/requests/:id", (req, res) => {
+  db.query(
+    `
+    SELECT u1.id AS fromid, u1.username AS fromname, u1.avatar_url AS fromavatar, u2.id AS toid, u2.username AS toname, u2.avatar_url AS toavatar
+    FROM users u1
+    JOIN friend_requests fr1 ON fr1.user_id = u1.id
+    JOIN users u2 ON fr1.friend_id = u2.id
+    WHERE fr1.user_id = $1 OR fr1.friend_id = $1
+    `,
+
+    [req.params.id]
+  ).then((data) => {
+    const formatData = data.rows.map((users) => {
+      return {
+        from: {
+          id: users.fromid,
+          name: users.fromname,
+          avatar: users.fromavatar,
+        },
+        to: { id: users.toid, name: users.toname, avatar: users.toavatar },
+      };
+    });
+    res.json(formatData);
   });
 });
 
@@ -124,7 +150,48 @@ router.post("/login", (req, res) => {
 
 router.post("/friends/add", (req, res) => {
   const { user_id, friend_id } = req.body;
-  db.query(``).then((data) => data.json(data.rows[0]));
+  db.query(
+    `INSERT INTO friend_requests (user_id, friend_id) SELECT $1,$2 WHERE NOT EXISTS(SELECT user_id, friend_id FROM friend_requests WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1 )) RETURNING *`,
+    [user_id, friend_id]
+  ).then((data) => {
+    if (data.rows.length) {
+      res.sendStatus(200);
+    } else {
+      res.sendStatus(500);
+    }
+  });
+});
+
+router.post("/friends/delete", (req, res) => {
+  const { user_id, friend_id } = req.body;
+  db.query(
+    `DELETE FROM friend_requests WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1 )  RETURNING *;`,
+    [user_id, friend_id]
+  ).then((data) => {
+    res.sendStatus(200);
+    // if (data.rows.length) {
+    // } else {
+    //   res.sendStatus(500);
+    // }
+  });
+});
+
+router.post("/friends/accept", (req, res) => {
+  const { user_id, friend_id } = req.body;
+  db.query(
+    `DELETE FROM friend_requests WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1 );`,
+    [user_id, friend_id]
+  );
+  db.query(
+    `INSERT INTO friends (user_id, friend_id) SELECT $1,$2 WHERE NOT EXISTS(SELECT user_id, friend_id FROM friends WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1 )) RETURNING *`,
+    [user_id, friend_id]
+  ).then((data) => {
+    res.sendStatus(200);
+    // if (data.rows.length) {
+    // } else {
+    //   res.sendStatus(500);
+    // }
+  });
 });
 
 // TODO: get all distinct users from the users table that are in the same rooms as the current logged in user

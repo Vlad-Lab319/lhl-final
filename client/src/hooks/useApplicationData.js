@@ -15,8 +15,9 @@ export default function useApplicationData() {
         axios.get(`/api/channels/${user.id}`),
         axios.get(`/api/messages/`),
         axios.get(`/api/users/friends/${user.id}`),
+        axios.get(`/api/users/friends/requests/${user.id}`),
       ]).then((all) => {
-        const [users, rooms, channels, messages, friends] = all;
+        const [users, rooms, channels, messages, friends, friendRequests] = all;
         dispatch({
           type: r.SET_APPLICATION_DATA,
           value: {
@@ -25,14 +26,85 @@ export default function useApplicationData() {
             channels: channels.data,
             messages: messages.data,
             friends: friends.data,
+            friendRequests: friendRequests.data,
           },
         });
       });
     }
   };
 
+  const socketMan = (user) => {
+    if (user.id) {
+      const socket = io(process.env.REACT_APP_WEBSOCKET_URL);
+      socket.connect().emit("updateActiveUsers", {
+        type: r.SET_ACTIVE_USERS,
+        value: user,
+      });
+
+      setSocket(socket);
+
+      socket.on("sendfriendrequest", (action) => {
+        dispatch({ type: action.type, value: action.value });
+      });
+
+      socket.on("cancelfriendrequest", (action) => {
+        dispatch({ type: action.type, value: action.value });
+      });
+
+      socket.on("acceptfriendrequest", (action) => {
+        dispatch({ type: action.type, value: action.value });
+      });
+
+      socket.on("updateRooms", (id) => {
+        axios.get(`/api/rooms/${state.user.id}`).then((rooms) => {
+          dispatch({
+            type: r.SET_ROOMS,
+            value: rooms.data,
+          });
+          dispatch({
+            type: r.SET_ROOM,
+            value: rooms.data.find((room) => room.id === id.id) || {},
+          });
+        });
+      });
+
+      socket.on("updateChannels", () => {
+        axios.get(`/api/channels/${user.id}`).then((channels) => {
+          dispatch({
+            type: r.SET_CHANNELS,
+            value: channels.data,
+          });
+        });
+      });
+
+      socket.on("message", (message) => {
+        dispatch({
+          type: r.ADD_MESSAGES,
+          value: message,
+        });
+      });
+
+      socket.on("channel", (channel) => {
+        dispatch({
+          type: r.ADD_CHANNELS,
+          value: channel,
+        });
+      });
+
+      socket.on("updateActiveUsers", (action) => {
+        dispatch({
+          type: action.type,
+          value: action.value,
+        });
+      });
+
+      // return () => socket.disconnect();
+    }
+  };
+
   useEffect(() => {
     initialFetch(state.user);
+    socketMan(state.user);
   }, [state.user.id]);
 
   //-------------------------LOGIN/LOGOUT---------------------------------------
@@ -124,7 +196,28 @@ export default function useApplicationData() {
   // -----------------------------WEBSOCKET-------------------------------------
 
   const sendFriendRequest = (user_id, friend_id) => {
-    state.socket.emit("friendrequest", { value: { user_id, friend_id } });
+    axios.post("/api/users/friends/add", { user_id, friend_id }).then(() => {
+      state.socket.emit("sendfriendrequest", { value: { user_id, friend_id } });
+    });
+  };
+
+  const cancelFriendRequest = (user_id, friend_id) => {
+    axios.post("/api/users/friends/delete", { user_id, friend_id }).then(() => {
+      state.socket.emit("cancelfriendrequest", {
+        value: { user_id, friend_id },
+      });
+    });
+  };
+
+  const acceptFriendRequest = (user_id, friend_id) => {
+    axios.post("/api/users/friends/accept", { user_id, friend_id }).then(() => {
+      state.socket.emit("acceptfriendrequest", {
+        value: { user_id, friend_id },
+      });
+      state.socket.emit("cancelfriendrequest", {
+        value: { user_id, friend_id },
+      });
+    });
   };
 
   const sendMessage = (messageData) => {
@@ -186,71 +279,6 @@ export default function useApplicationData() {
       .then(state.socket.emit("updateRooms", { id: room.id }));
   };
 
-  useEffect(() => {
-    if (state.user.id) {
-      const socket = io(process.env.REACT_APP_WEBSOCKET_URL);
-      socket.connect();
-      setSocket(socket);
-
-      socket.on("connection", () => {
-        socket.emit("updateActiveUsers", {
-          type: r.SET_ACTIVE_USERS,
-          value: state.user,
-        });
-      });
-
-      socket.on("friendrequest", (action) => {
-        console.log(action);
-        dispatch({ type: action.type, value: action.value });
-      });
-
-      socket.on("updateRooms", (id) => {
-        axios.get(`/api/rooms/${state.user.id}`).then((rooms) => {
-          dispatch({
-            type: r.SET_ROOMS,
-            value: rooms.data,
-          });
-          dispatch({
-            type: r.SET_ROOM,
-            value: rooms.data.find((room) => room.id === id.id) || {},
-          });
-        });
-      });
-
-      socket.on("updateChannels", () => {
-        axios.get(`/api/channels/${state.user.id}`).then((channels) => {
-          dispatch({
-            type: r.SET_CHANNELS,
-            value: channels.data,
-          });
-        });
-      });
-
-      socket.on("message", (message) => {
-        dispatch({
-          type: r.ADD_MESSAGES,
-          value: message,
-        });
-      });
-
-      socket.on("channel", (channel) => {
-        dispatch({
-          type: r.ADD_CHANNELS,
-          value: channel,
-        });
-      });
-
-      socket.on("updateActiveUsers", (action) => {
-        dispatch({
-          type: action.type,
-          value: action.value,
-        });
-      });
-
-      // return () => socket.disconnect();
-    }
-  }, [state.user.id]);
-
   return {
     state,
     setChannel,
@@ -270,5 +298,7 @@ export default function useApplicationData() {
     deleteChannel,
     toggleDirectMessage,
     sendFriendRequest,
+    cancelFriendRequest,
+    acceptFriendRequest,
   };
 }

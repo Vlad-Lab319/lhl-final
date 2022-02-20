@@ -1,0 +1,6 @@
+DROP TABLE IF EXISTS friend_requests CASCADE;
+CREATE TABLE friend_requests (
+  id SERIAL PRIMARY KEY NOT NULL,
+  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  friend_id INTEGER REFERENCES users(id) ON DELETE CASCADE
+);

@@ -19,6 +19,8 @@ export default function useStateManager() {
     SET_ACTIVE_USERS: "SET_ACTIVE_USERS",
     TOGGLE_DIRECT_MESSAGE: "TOGGLE_DIRECT_MESSAGE",
     SET_FRIEND_REQUEST: "SET_FRIEND_REQUEST",
+    CANCEL_FRIEND_REQUEST: "CANCEL_FRIEND_REQUEST",
+    ADD_FRIEND: "ADD_FRIEND",
   };
 
   const r = reducerVariables;
@@ -43,7 +45,6 @@ export default function useStateManager() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   function reducer(state, action) {
-    console.log(action);
     switch (action.type) {
       case r.SET_SOCKET:
         return {
@@ -118,6 +119,7 @@ export default function useStateManager() {
           channels: action.value.channels,
           friends: action.value.friends,
           messages: action.value.messages,
+          friendRequests: action.value.friendRequests,
         };
       case r.SET_ERRORS:
         return {
@@ -133,6 +135,20 @@ export default function useStateManager() {
         return {
           ...state,
           friendRequests: [...state.friendRequests, action.value],
+        };
+      case r.CANCEL_FRIEND_REQUEST:
+        const currentFriendRequests = [...state.friendRequests];
+        const newFriendRequests = currentFriendRequests.filter((request) => {
+          return action.value.to.id !== request.to.id;
+        });
+        return {
+          ...state,
+          friendRequests: [...newFriendRequests],
+        };
+      case r.ADD_FRIEND:
+        return {
+          ...state,
+          friends: [...state.friends, action.value],
         };
       default:
         return { ...state };

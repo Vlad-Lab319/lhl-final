@@ -59,6 +59,8 @@ const reducerVariables = {
   SET_ACTIVE_USERS: "SET_ACTIVE_USERS",
   TOGGLE_DIRECT_MESSAGE: "TOGGLE_DIRECT_MESSAGE",
   SET_FRIEND_REQUEST: "SET_FRIEND_REQUEST",
+  CANCEL_FRIEND_REQUEST: "CANCEL_FRIEND_REQUEST",
+  ADD_FRIEND: "ADD_FRIEND",
 };
 
 const r = reducerVariables;
@@ -68,8 +70,6 @@ const getUserBySocket = (socketID) => {
 };
 
 io.on("connection", (socket) => {
-  console.log(`User Connected: ${socket.id}`);
-
   socket.on("updateActiveUsers", (action) => {
     users[action.value.id] = { ...action.value, socketID: socket.id };
     io.emit("updateActiveUsers", {
@@ -78,13 +78,9 @@ io.on("connection", (socket) => {
     });
   });
 
-  socket.on("friendrequest", (action) => {
-    console.log(action.value.user_id);
-    console.log(users);
+  socket.on("sendfriendrequest", (action) => {
     const sender = users[action.value.user_id];
     const receiver = users[action.value.friend_id];
-    console.log("Sender: ", sender);
-    console.log("Receiver: ", receiver);
     db.query(
       `SELECT id, username AS name, avatar_url AS avatar FROM users WHERE id IN($1,$2)`,
       [action.value.user_id, action.value.friend_id]
@@ -96,15 +92,71 @@ io.on("connection", (socket) => {
           ? data.rows[0]
           : data.rows[1];
       if (sender) {
-        io.to(sender.socketID).emit("friendrequest", {
+        io.to(sender.socketID).emit("sendfriendrequest", {
           type: r.SET_FRIEND_REQUEST,
           value: { from: sendingUser, to: receivingUser },
         });
       }
       if (receiver) {
-        io.to(receiver.socketID).emit("friendrequest", {
+        io.to(receiver.socketID).emit("sendfriendrequest", {
           type: r.SET_FRIEND_REQUEST,
           value: { from: sendingUser, to: receivingUser },
+        });
+      }
+    });
+  });
+
+  socket.on("cancelfriendrequest", (action) => {
+    const sender = users[action.value.user_id];
+    const receiver = users[action.value.friend_id];
+    db.query(
+      `SELECT id, username AS name, avatar_url AS avatar FROM users WHERE id IN($1,$2)`,
+      [action.value.user_id, action.value.friend_id]
+    ).then((data) => {
+      const sendingUser =
+        data.rows[0].id === action.value.user_id ? data.rows[0] : data.rows[1];
+      const receivingUser =
+        data.rows[0].id === action.value.friend_id
+          ? data.rows[0]
+          : data.rows[1];
+      if (sender) {
+        io.to(sender.socketID).emit("cancelfriendrequest", {
+          type: r.CANCEL_FRIEND_REQUEST,
+          value: { from: sendingUser, to: receivingUser },
+        });
+      }
+      if (receiver) {
+        io.to(receiver.socketID).emit("cancelfriendrequest", {
+          type: r.CANCEL_FRIEND_REQUEST,
+          value: { from: sendingUser, to: receivingUser },
+        });
+      }
+    });
+  });
+
+  socket.on("acceptfriendrequest", (action) => {
+    const sender = users[action.value.user_id];
+    const receiver = users[action.value.friend_id];
+    db.query(
+      `SELECT id, username AS name, avatar_url AS avatar FROM users WHERE id IN($1,$2)`,
+      [action.value.user_id, action.value.friend_id]
+    ).then((data) => {
+      const sendingUser =
+        data.rows[0].id === action.value.user_id ? data.rows[0] : data.rows[1];
+      const receivingUser =
+        data.rows[0].id === action.value.friend_id
+          ? data.rows[0]
+          : data.rows[1];
+      if (sender) {
+        io.to(sender.socketID).emit("acceptfriendrequest", {
+          type: r.ADD_FRIEND,
+          value: receivingUser,
+        });
+      }
+      if (receiver) {
+        io.to(receiver.socketID).emit("acceptfriendrequest", {
+          type: r.ADD_FRIEND,
+          value: sendingUser,
         });
       }
     });
@@ -127,7 +179,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log(socket.id);
     const user = getUserBySocket(socket.id);
     if (user) {
       delete users[user.id];
@@ -135,7 +186,6 @@ io.on("connection", (socket) => {
         type: r.SET_ACTIVE_USERS,
         value: users,
       });
-      console.log("CONNECTED USERS: ", users);
     }
   });
 });
