@@ -106,9 +106,9 @@ const RoomList = (props) => {
   return (
     <div className="sidebar sidebar--rooms">
       {friendButton}
-      {rooms.length && <div className="room-separator"></div>}
+      <div className="room-separator"></div>
       {rooms}
-      {rooms.length && <div className="room-separator"></div>}
+      {rooms.length > 0 && <div className="room-separator"></div>}
       {addButton}
       {/* <ArrowDropDownOutlinedIcon /> */}
     </div>

@@ -45,7 +45,7 @@ const FindFriendList = (props) => {
             autoComplete="off"
           />
         </Box>
-        {findFriendList.length > 0 && <div className="member-separator"></div>}
+        <div className="member-separator"></div>
         {findFriendList}
       </div>
     </div>
