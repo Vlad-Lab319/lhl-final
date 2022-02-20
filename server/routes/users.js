@@ -183,13 +183,12 @@ router.post("/friends/accept", async (req, res) => {
       `DELETE FROM friend_requests WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1 );`,
       [user_id, friend_id]
     );
-    const privateRoomId = await db.query(
-      `INSERT INTO private_rooms DEFAULT VALUES RETURNING *;`
-    );
-    console.log(privateRoomId.rows[0].id);
+    const {
+      rows: { id: private_room_id },
+    } = await db.query(`INSERT INTO private_rooms DEFAULT VALUES RETURNING *;`);
     await db.query(
       `INSERT INTO private_room_users (user_id, private_room_id) VALUES ($1, $3), ($2, $3)`,
-      [user_id, friend_id, privateRoomId.rows[0].id]
+      [user_id, friend_id, private_room_id]
     );
     await db.query(
       `INSERT INTO friends (user_id, friend_id) SELECT $1,$2 WHERE NOT EXISTS(SELECT user_id, friend_id FROM friends WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1 )) RETURNING *`,
