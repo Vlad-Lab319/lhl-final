@@ -14,7 +14,6 @@ const FindFriendList = (props) => {
   useEffect(() => {
     if (searchValue.length) {
       axios.get(`api/users/search/${searchValue}/${user.id}`).then((res) => {
-        console.log(res.data);
         setSearchResults(res.data);
       });
     } else {

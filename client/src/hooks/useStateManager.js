@@ -45,7 +45,6 @@ export default function useStateManager() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   function reducer(state, action) {
-    console.log(action);
     switch (action.type) {
       case r.SET_SOCKET:
         return {

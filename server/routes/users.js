@@ -154,7 +154,6 @@ router.post("/friends/add", (req, res) => {
     `INSERT INTO friend_requests (user_id, friend_id) SELECT $1,$2 WHERE NOT EXISTS(SELECT user_id, friend_id FROM friend_requests WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1 )) RETURNING *`,
     [user_id, friend_id]
   ).then((data) => {
-    console.log("Data Rows: ", data.rows);
     if (data.rows.length) {
       res.sendStatus(200);
     } else {
@@ -187,7 +186,6 @@ router.post("/friends/accept", (req, res) => {
     `INSERT INTO friends (user_id, friend_id) SELECT $1,$2 WHERE NOT EXISTS(SELECT user_id, friend_id FROM friends WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1 )) RETURNING *`,
     [user_id, friend_id]
   ).then((data) => {
-    console.log("Data Rows: ", data.rows);
     res.sendStatus(200);
     // if (data.rows.length) {
     // } else {

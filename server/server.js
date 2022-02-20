@@ -78,7 +78,7 @@ io.on("connection", (socket) => {
     });
   });
 
-  socket.on("friendrequest", (action) => {
+  socket.on("sendfriendrequest", (action) => {
     const sender = users[action.value.user_id];
     const receiver = users[action.value.friend_id];
     db.query(
@@ -92,13 +92,13 @@ io.on("connection", (socket) => {
           ? data.rows[0]
           : data.rows[1];
       if (sender) {
-        io.to(sender.socketID).emit("friendrequest", {
+        io.to(sender.socketID).emit("sendfriendrequest", {
           type: r.SET_FRIEND_REQUEST,
           value: { from: sendingUser, to: receivingUser },
         });
       }
       if (receiver) {
-        io.to(receiver.socketID).emit("friendrequest", {
+        io.to(receiver.socketID).emit("sendfriendrequest", {
           type: r.SET_FRIEND_REQUEST,
           value: { from: sendingUser, to: receivingUser },
         });
@@ -134,7 +134,7 @@ io.on("connection", (socket) => {
     });
   });
 
-  socket.on("addfriend", (action) => {
+  socket.on("acceptfriendrequest", (action) => {
     const sender = users[action.value.user_id];
     const receiver = users[action.value.friend_id];
     db.query(
@@ -148,13 +148,13 @@ io.on("connection", (socket) => {
           ? data.rows[0]
           : data.rows[1];
       if (sender) {
-        io.to(sender.socketID).emit("addfriend", {
+        io.to(sender.socketID).emit("acceptfriendrequest", {
           type: r.ADD_FRIEND,
           value: receivingUser,
         });
       }
       if (receiver) {
-        io.to(receiver.socketID).emit("addfriend", {
+        io.to(receiver.socketID).emit("acceptfriendrequest", {
           type: r.ADD_FRIEND,
           value: sendingUser,
         });
