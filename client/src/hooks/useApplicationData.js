@@ -126,7 +126,9 @@ export default function useApplicationData() {
   // -----------------------------WEBSOCKET-------------------------------------
 
   const sendFriendRequest = (user_id, friend_id) => {
-    state.socket.emit("friendrequest", { value: { user_id, friend_id } });
+    axios.post("/api/users/friends/add", { user_id, friend_id }).then(() => {
+      state.socket.emit("friendrequest", { value: { user_id, friend_id } });
+    });
   };
 
   const sendMessage = (messageData) => {

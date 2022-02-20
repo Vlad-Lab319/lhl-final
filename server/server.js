@@ -68,8 +68,6 @@ const getUserBySocket = (socketID) => {
 };
 
 io.on("connection", (socket) => {
-  console.log(`User Connected: ${socket.id}`);
-
   socket.on("updateActiveUsers", (action) => {
     users[action.value.id] = { ...action.value, socketID: socket.id };
     io.emit("updateActiveUsers", {
@@ -79,12 +77,8 @@ io.on("connection", (socket) => {
   });
 
   socket.on("friendrequest", (action) => {
-    console.log(action.value.user_id);
-    console.log(users);
     const sender = users[action.value.user_id];
     const receiver = users[action.value.friend_id];
-    console.log("Sender: ", sender);
-    console.log("Receiver: ", receiver);
     db.query(
       `SELECT id, username AS name, avatar_url AS avatar FROM users WHERE id IN($1,$2)`,
       [action.value.user_id, action.value.friend_id]
@@ -127,7 +121,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log(socket.id);
     const user = getUserBySocket(socket.id);
     if (user) {
       delete users[user.id];
@@ -135,7 +128,6 @@ io.on("connection", (socket) => {
         type: r.SET_ACTIVE_USERS,
         value: users,
       });
-      console.log("CONNECTED USERS: ", users);
     }
   });
 });

@@ -150,7 +150,17 @@ router.post("/login", (req, res) => {
 
 router.post("/friends/add", (req, res) => {
   const { user_id, friend_id } = req.body;
-  db.query(``).then((data) => data.json(data.rows[0]));
+  db.query(
+    `INSERT INTO friend_requests (user_id, friend_id) SELECT $1,$2 WHERE NOT EXISTS(SELECT user_id, friend_id FROM friend_requests WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1 )) RETURNING *`,
+    [user_id, friend_id]
+  ).then((data) => {
+    console.log("Data Rows: ", data.rows);
+    if (data.rows.length) {
+      res.sendStatus(200);
+    } else {
+      res.sendStatus(500);
+    }
+  });
 });
 
 // TODO: get all distinct users from the users table that are in the same rooms as the current logged in user

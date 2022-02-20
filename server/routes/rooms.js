@@ -37,7 +37,6 @@ router.post("/", (req, res) => {
 
 router.post("/adduser", (req, res) => {
   const { userID, roomID } = req.body;
-  console.log(req.body);
   db.query(
     `
     INSERT INTO room_users (user_id, room_id)
