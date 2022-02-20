@@ -15,8 +15,9 @@ export default function useApplicationData() {
         axios.get(`/api/channels/${user.id}`),
         axios.get(`/api/messages/`),
         axios.get(`/api/users/friends/${user.id}`),
+        axios.get(`/api/users/friends/requests/${user.id}`),
       ]).then((all) => {
-        const [users, rooms, channels, messages, friends] = all;
+        const [users, rooms, channels, messages, friends, friendRequests] = all;
         dispatch({
           type: r.SET_APPLICATION_DATA,
           value: {
@@ -25,6 +26,7 @@ export default function useApplicationData() {
             channels: channels.data,
             messages: messages.data,
             friends: friends.data,
+            friendRequests: friendRequests.data,
           },
         });
       });

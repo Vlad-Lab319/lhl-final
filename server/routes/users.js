@@ -58,13 +58,39 @@ router.get("/search/:name/:id", (req, res) => {
 router.get("/friends/:userID", (req, res) => {
   db.query(
     `
-    SELECT users.* FROM friends
+    SELECT users.id AS id, users.username AS name, users.avatar_url AS avatar FROM friends
     JOIN users ON friend_id = users.id
     WHERE user_id = $1
     ;`,
     [req.params.userID]
   ).then(({ rows: friends }) => {
     res.json(friends);
+  });
+});
+
+router.get("/friends/requests/:id", (req, res) => {
+  db.query(
+    `
+    SELECT u1.id AS fromid, u1.username AS fromname, u1.avatar_url AS fromavatar, u2.id AS toid, u2.username AS toname, u2.avatar_url AS toavatar
+    FROM users u1
+    JOIN friend_requests fr1 ON fr1.user_id = u1.id
+    JOIN users u2 ON fr1.friend_id = u2.id
+    WHERE fr1.user_id = $1 OR fr1.friend_id = $1
+    `,
+
+    [req.params.id]
+  ).then((data) => {
+    const formatData = data.rows.map((users) => {
+      return {
+        from: {
+          id: users.fromid,
+          name: users.fromname,
+          avatar: users.fromavatar,
+        },
+        to: { id: users.toid, name: users.toname, avatar: users.toavatar },
+      };
+    });
+    res.json(formatData);
   });
 });
 
