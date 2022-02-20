@@ -139,6 +139,17 @@ export default function useApplicationData() {
     });
   };
 
+  const acceptFriendRequest = (user_id, friend_id) => {
+    axios.post("/api/users/friends/accept", { user_id, friend_id }).then(() => {
+      state.socket.emit("addfriend", {
+        value: { user_id, friend_id },
+      });
+      state.socket.emit("cancelfriendrequest", {
+        value: { user_id, friend_id },
+      });
+    });
+  };
+
   const sendMessage = (messageData) => {
     return axios.post(`/api/messages`, messageData).then((message) => {
       dispatch({
@@ -212,11 +223,14 @@ export default function useApplicationData() {
       });
 
       socket.on("friendrequest", (action) => {
-        console.log(action);
         dispatch({ type: action.type, value: action.value });
       });
 
       socket.on("cancelfriendrequest", (action) => {
+        dispatch({ type: action.type, value: action.value });
+      });
+
+      socket.on("addfriend", (action) => {
         console.log(action);
         dispatch({ type: action.type, value: action.value });
       });
@@ -288,5 +302,6 @@ export default function useApplicationData() {
     toggleDirectMessage,
     sendFriendRequest,
     cancelFriendRequest,
+    acceptFriendRequest,
   };
 }

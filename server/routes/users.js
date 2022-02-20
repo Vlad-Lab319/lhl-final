@@ -166,10 +166,33 @@ router.post("/friends/add", (req, res) => {
 router.post("/friends/delete", (req, res) => {
   const { user_id, friend_id } = req.body;
   db.query(
-    `DELETE FROM friend_requests WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1 );`,
+    `DELETE FROM friend_requests WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1 )  RETURNING *;`,
     [user_id, friend_id]
   ).then((data) => {
     res.sendStatus(200);
+    // if (data.rows.length) {
+    // } else {
+    //   res.sendStatus(500);
+    // }
+  });
+});
+
+router.post("/friends/accept", (req, res) => {
+  const { user_id, friend_id } = req.body;
+  db.query(
+    `DELETE FROM friend_requests WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1 );`,
+    [user_id, friend_id]
+  );
+  db.query(
+    `INSERT INTO friends (user_id, friend_id) SELECT $1,$2 WHERE NOT EXISTS(SELECT user_id, friend_id FROM friends WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1 )) RETURNING *`,
+    [user_id, friend_id]
+  ).then((data) => {
+    console.log("Data Rows: ", data.rows);
+    res.sendStatus(200);
+    // if (data.rows.length) {
+    // } else {
+    //   res.sendStatus(500);
+    // }
   });
 });
 

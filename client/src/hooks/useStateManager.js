@@ -20,6 +20,7 @@ export default function useStateManager() {
     TOGGLE_DIRECT_MESSAGE: "TOGGLE_DIRECT_MESSAGE",
     SET_FRIEND_REQUEST: "SET_FRIEND_REQUEST",
     CANCEL_FRIEND_REQUEST: "CANCEL_FRIEND_REQUEST",
+    ADD_FRIEND: "ADD_FRIEND",
   };
 
   const r = reducerVariables;
@@ -144,6 +145,11 @@ export default function useStateManager() {
         return {
           ...state,
           friendRequests: [...newFriendRequests],
+        };
+      case r.ADD_FRIEND:
+        return {
+          ...state,
+          friends: [...state.friends, action.value],
         };
       default:
         return { ...state };

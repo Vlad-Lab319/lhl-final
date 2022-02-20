@@ -6,7 +6,14 @@ import "./FriendList.scss";
 // TODO: Add avatar
 
 const FriendListItem = (props) => {
-  const { avatar, name, isRequest, requestStatus, cancelFriendRequest } = props;
+  const {
+    avatar,
+    name,
+    isRequest,
+    requestStatus,
+    cancelFriendRequest,
+    acceptFriendRequest,
+  } = props;
 
   const [status, setStatus] = useState("Pending");
 
@@ -28,7 +35,10 @@ const FriendListItem = (props) => {
           className="friend-request-decline"
           onClick={cancelFriendRequest}
         />
-        <CheckCircleOutlineIcon className="friend-request-accept" />
+        <CheckCircleOutlineIcon
+          className="friend-request-accept"
+          onClick={acceptFriendRequest}
+        />
       </div>
     );
   };

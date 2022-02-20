@@ -11,6 +11,7 @@ const FriendList = (props) => {
     user,
     friendRequests,
     cancelFriendRequest,
+    acceptFriendRequest,
   } = props;
 
   const friends = friendList.map((friend) => {
@@ -40,6 +41,9 @@ const FriendList = (props) => {
         cancelFriendRequest={() =>
           cancelFriendRequest(friendRequest.from.id, friendRequest.to.id)
         }
+        acceptFriendRequest={() => {
+          acceptFriendRequest(friendRequest.from.id, friendRequest.to.id);
+        }}
       />
     );
   });
