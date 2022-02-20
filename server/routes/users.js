@@ -122,6 +122,11 @@ router.post("/login", (req, res) => {
   });
 });
 
+router.post("/friends/add", (req, res) => {
+  const { user_id, friend_id } = req.body;
+  db.query(``).then((data) => data.json(data.rows[0]));
+});
+
 // TODO: get all distinct users from the users table that are in the same rooms as the current logged in user
 
 // TODO: Login will need to get a user by email and password they enter, that password will need to be compared against the hashed password (check INFO.md for directions)

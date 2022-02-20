@@ -33,7 +33,7 @@ export default function useApplicationData() {
 
   useEffect(() => {
     initialFetch(state.user);
-  }, [state.user.id, state.user]);
+  }, [state.user.id]);
 
   //-------------------------LOGIN/LOGOUT---------------------------------------
   const registerUser = (name, email, password) => {
@@ -123,6 +123,10 @@ export default function useApplicationData() {
 
   // -----------------------------WEBSOCKET-------------------------------------
 
+  const sendFriendRequest = (user_id, friend_id) => {
+    state.socket.emit("friendrequest", { value: { user_id, friend_id } });
+  };
+
   const sendMessage = (messageData) => {
     return axios.post(`/api/messages`, messageData).then((message) => {
       dispatch({
@@ -195,6 +199,11 @@ export default function useApplicationData() {
         });
       });
 
+      socket.on("friendrequest", (action) => {
+        console.log(action);
+        dispatch({ type: action.type, value: action.value });
+      });
+
       socket.on("updateRooms", () => {
         axios.get(`/api/rooms/${state.user.id}`).then((rooms) => {
           dispatch({
@@ -238,7 +247,7 @@ export default function useApplicationData() {
         });
       });
 
-      return () => socket.disconnect();
+      // return () => socket.disconnect();
     }
   }, [state.user.id]);
 
@@ -260,5 +269,6 @@ export default function useApplicationData() {
     deleteRoom,
     deleteChannel,
     toggleDirectMessage,
+    sendFriendRequest,
   };
 }

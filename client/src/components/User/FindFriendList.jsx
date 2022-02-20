@@ -7,7 +7,7 @@ import "./FindFriendList.scss";
 import FindFriendListItem from "./FindFriendListItem";
 
 const FindFriendList = (props) => {
-  const { user } = props;
+  const { user, sendFriendRequest } = props;
   const [searchValue, setSearchValue] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 
@@ -22,10 +22,17 @@ const FindFriendList = (props) => {
     }
   }, [searchValue]);
 
-  const findFriendList = searchResults.map((user) => {
-    console.log(user);
+  const findFriendList = searchResults.map((foundUser) => {
+    console.log(foundUser);
     return (
-      <FindFriendListItem key={user.id} name={user.name} avatar={user.avatar} />
+      <FindFriendListItem
+        key={foundUser.id}
+        id={foundUser.id}
+        user={user}
+        name={foundUser.name}
+        avatar={foundUser.avatar}
+        sendFriendRequest={sendFriendRequest}
+      />
     );
   });
 

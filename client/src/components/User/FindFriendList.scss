@@ -33,6 +33,24 @@
       margin: 0.5rem 1rem 0.5rem 1rem;
       border-radius: 1rem;
     }
+
+    .find-friend-list-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      height: 100%;
+      width: 100%;
+
+      .find-friend-list-add {
+        height: 2rem;
+        width: 2rem;
+        margin-right: 1rem;
+        &:hover {
+          color: $sig-color;
+        }
+      }
+    }
   }
   .find-friend-list-separator {
     margin-left: 1rem;

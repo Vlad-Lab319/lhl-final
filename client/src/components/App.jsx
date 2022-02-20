@@ -44,6 +44,7 @@ const App = () => {
     deleteRoom,
     deleteChannel,
     toggleDirectMessage,
+    sendFriendRequest,
   } = useApplicationData();
 
   // theme stuff
@@ -106,8 +107,12 @@ const App = () => {
                       friendList={state.friends}
                       user={state.user}
                       directMessageList={directMessageList}
+                      friendRequests={state.friendRequests}
                     />
-                    <FindFriendList user={state.user} />
+                    <FindFriendList
+                      user={state.user}
+                      sendFriendRequest={sendFriendRequest}
+                    />
                   </>
                 )}
                 {!state.directMessage && (
