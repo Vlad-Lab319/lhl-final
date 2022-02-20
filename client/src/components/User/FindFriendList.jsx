@@ -6,32 +6,27 @@ import { useEffect, useState } from "react";
 import "./FindFriendList.scss";
 import FindFriendListItem from "./FindFriendListItem";
 
-// Input component that sends a get request onChange
-
 const FindFriendList = () => {
   const [searchValue, setSearchValue] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  let findFriendList = [];
 
   useEffect(() => {
-    axios.get(`api/users/search/${searchValue}`).then((res) => {
-      console.log(res.data);
-      setSearchResults(res.data);
-    });
+    if (searchValue.length) {
+      axios.get(`api/users/search/${searchValue}`).then((res) => {
+        console.log(res.data);
+        setSearchResults(res.data);
+      });
+    } else {
+      setSearchResults([]);
+    }
   }, [searchValue]);
 
-  if (searchResults.length) {
-    findFriendList = searchResults.map((user) => {
-      console.log(user);
-      return (
-        <FindFriendListItem
-          key={user.id}
-          name={user.name}
-          avatar={user.avatar}
-        />
-      );
-    });
-  }
+  const findFriendList = searchResults.map((user) => {
+    console.log(user);
+    return (
+      <FindFriendListItem key={user.id} name={user.name} avatar={user.avatar} />
+    );
+  });
 
   return (
     <div className="sidebar sidebar--find-friend">
@@ -46,6 +41,7 @@ const FindFriendList = () => {
             placeholder="Find new friends..."
             variant="standard"
             onChange={(e) => setSearchValue(e.target.value)}
+            autoComplete="off"
           />
         </Box>
         {findFriendList.length > 0 && <div className="member-separator"></div>}
