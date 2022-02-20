@@ -21,7 +21,8 @@ router.get("/", (req, res) => {
 
 // TODO: REMOVE - Remove for deploy
 // get single user
-router.get("/:id", (req, res) => {
+
+router.get("/login/:id", (req, res) => {
   db.query(
     `SELECT id, username AS name, avatar_url AS avatar FROM users WHERE id = $1;`,
     [req.params.id]
@@ -42,6 +43,16 @@ router.get("/:id", (req, res) => {
   });
 });
 
+router.get("/search/:name", (req, res) => {
+  db.query(
+    `SELECT id, username AS name, avatar_url AS avatar FROM users WHERE LOWER(username) LIKE LOWER($1);`,
+    [req.params.name + "%"]
+  ).then((data) => {
+    // console.log(data.rows);
+
+    res.json(data.rows);
+  });
+});
 // get friends
 router.get("/friends/:userID", (req, res) => {
   db.query(

@@ -11,20 +11,28 @@ import FindFriendListItem from "./FindFriendListItem";
 const FindFriendList = () => {
   const [searchValue, setSearchValue] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  let findFriendList = [];
 
   useEffect(() => {
     axios.get(`api/users/search/${searchValue}`).then((res) => {
-      setSearchResults(res);
+      console.log(res.data);
+      setSearchResults(res.data);
     });
   }, [searchValue]);
 
-  const userList = searchResults;
+  if (searchResults.length) {
+    findFriendList = searchResults.map((user) => {
+      console.log(user);
+      return (
+        <FindFriendListItem
+          key={user.id}
+          name={user.name}
+          avatar={user.avatar}
+        />
+      );
+    });
+  }
 
-  const findFriendList = userList.map((user) => {
-    return (
-      <FindFriendListItem key={user.id} name={user.name} avatar={user.avatar} />
-    );
-  });
   return (
     <div className="sidebar sidebar--find-friend">
       <div className="find-friend-list">
@@ -40,7 +48,7 @@ const FindFriendList = () => {
             onChange={(e) => setSearchValue(e.target.value)}
           />
         </Box>
-        {userList.length > 0 && <div className="member-separator"></div>}
+        {findFriendList.length > 0 && <div className="member-separator"></div>}
         {findFriendList}
       </div>
     </div>

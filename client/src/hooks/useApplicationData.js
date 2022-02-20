@@ -51,7 +51,7 @@ export default function useApplicationData() {
   // TODO: UNCOMMENT - uncomment for deploy
   const loginUser = (id) => {
     clearErrors();
-    axios.get(`api/users/${id}`).then((user) => {
+    axios.get(`api/users/login/${id}`).then((user) => {
       dispatch(user.data.action);
     });
   };
