@@ -18,6 +18,7 @@ export default function useStateManager() {
     SET_ERRORS: "SET_ERRORS",
     SET_ACTIVE_USERS: "SET_ACTIVE_USERS",
     TOGGLE_DIRECT_MESSAGE: "TOGGLE_DIRECT_MESSAGE",
+    SET_FRIEND_REQUEST: "SET_FRIEND_REQUEST",
   };
 
   const r = reducerVariables;
@@ -36,11 +37,13 @@ export default function useStateManager() {
     members: [],
     messages: [],
     errors: null,
+    friendRequests: [],
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
   function reducer(state, action) {
+    console.log(action);
     switch (action.type) {
       case r.SET_SOCKET:
         return {
@@ -125,6 +128,11 @@ export default function useStateManager() {
         return {
           ...state,
           directMessage: action.value,
+        };
+      case r.SET_FRIEND_REQUEST:
+        return {
+          ...state,
+          friendRequests: [...state.friendRequests, action.value],
         };
       default:
         return { ...state };

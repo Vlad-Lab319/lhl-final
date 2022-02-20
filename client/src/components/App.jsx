@@ -19,6 +19,7 @@ import UserForm from "./Login/index";
 import ChatInput from "./Message/ChatInput";
 import MessageList from "./Message/MessageList";
 import RoomList from "./Room/RoomList";
+import FindFriendList from "./User/FindFriendList";
 import FriendList from "./User/FriendList";
 import RoomMembersList from "./User/RoomMembersList";
 //-------------------------------Theme------------------------------------------
@@ -43,6 +44,7 @@ const App = () => {
     deleteRoom,
     deleteChannel,
     toggleDirectMessage,
+    sendFriendRequest,
   } = useApplicationData();
 
   // theme stuff
@@ -105,6 +107,11 @@ const App = () => {
                       friendList={state.friends}
                       user={state.user}
                       directMessageList={directMessageList}
+                      friendRequests={state.friendRequests}
+                    />
+                    <FindFriendList
+                      user={state.user}
+                      sendFriendRequest={sendFriendRequest}
                     />
                   </>
                 )}

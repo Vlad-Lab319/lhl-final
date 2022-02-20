@@ -21,7 +21,8 @@ router.get("/", (req, res) => {
 
 // TODO: REMOVE - Remove for deploy
 // get single user
-router.get("/:id", (req, res) => {
+
+router.get("/login/:id", (req, res) => {
   db.query(
     `SELECT id, username AS name, avatar_url AS avatar FROM users WHERE id = $1;`,
     [req.params.id]
@@ -42,6 +43,17 @@ router.get("/:id", (req, res) => {
   });
 });
 
+router.get("/search/:name/:id", (req, res) => {
+  db.query(
+    `SELECT id, username AS name, avatar_url AS avatar FROM users WHERE LOWER(username) LIKE LOWER($1) AND NOT id = $2 AND username NOT IN(SELECT users.username FROM friends
+    JOIN users ON friend_id = users.id
+    WHERE user_id = $2
+    );`,
+    [req.params.name + "%", req.params.id]
+  ).then((data) => {
+    res.json(data.rows);
+  });
+});
 // get friends
 router.get("/friends/:userID", (req, res) => {
   db.query(
@@ -108,6 +120,11 @@ router.post("/login", (req, res) => {
       });
     }
   });
+});
+
+router.post("/friends/add", (req, res) => {
+  const { user_id, friend_id } = req.body;
+  db.query(``).then((data) => data.json(data.rows[0]));
 });
 
 // TODO: get all distinct users from the users table that are in the same rooms as the current logged in user
