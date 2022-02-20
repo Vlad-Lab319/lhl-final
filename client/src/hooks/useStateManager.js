@@ -118,6 +118,7 @@ export default function useStateManager() {
           channels: action.value.channels,
           friends: action.value.friends,
           messages: action.value.messages,
+          friendRequests: action.value.friendRequests,
         };
       case r.SET_ERRORS:
         return {

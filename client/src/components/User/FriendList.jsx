@@ -10,10 +10,10 @@ const FriendList = (props) => {
     return (
       <FriendListItem
         key={friend.id}
-        name={friend.username}
+        name={friend.name}
         setRecipient={() => setRecipient(friend)}
         selected={friend.id === value}
-        avatar={friend.avatar_url}
+        avatar={friend.avatar}
       />
     );
   });
