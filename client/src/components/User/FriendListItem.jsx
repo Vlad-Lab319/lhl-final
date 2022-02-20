@@ -6,7 +6,7 @@ import "./FriendList.scss";
 // TODO: Add avatar
 
 const FriendListItem = (props) => {
-  const { avatar, name, isRequest, requestStatus } = props;
+  const { avatar, name, isRequest, requestStatus, cancelFriendRequest } = props;
 
   const [status, setStatus] = useState("Pending");
 
@@ -17,13 +17,17 @@ const FriendListItem = (props) => {
           className="friend-request-status"
           onMouseEnter={() => setStatus("Cancel")}
           onMouseLeave={() => setStatus("Pending")}
+          onClick={cancelFriendRequest}
         >
           {status}
         </div>
       </div>
     ) : (
       <div className="friend-request-container">
-        <DoNotDisturbAltIcon className="friend-request-decline" />
+        <DoNotDisturbAltIcon
+          className="friend-request-decline"
+          onClick={cancelFriendRequest}
+        />
         <CheckCircleOutlineIcon className="friend-request-accept" />
       </div>
     );

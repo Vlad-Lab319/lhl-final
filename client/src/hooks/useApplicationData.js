@@ -131,6 +131,14 @@ export default function useApplicationData() {
     });
   };
 
+  const cancelFriendRequest = (user_id, friend_id) => {
+    axios.post("/api/users/friends/delete", { user_id, friend_id }).then(() => {
+      state.socket.emit("cancelfriendrequest", {
+        value: { user_id, friend_id },
+      });
+    });
+  };
+
   const sendMessage = (messageData) => {
     return axios.post(`/api/messages`, messageData).then((message) => {
       dispatch({
@@ -274,5 +282,6 @@ export default function useApplicationData() {
     deleteChannel,
     toggleDirectMessage,
     sendFriendRequest,
+    cancelFriendRequest,
   };
 }

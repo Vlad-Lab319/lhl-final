@@ -163,6 +163,16 @@ router.post("/friends/add", (req, res) => {
   });
 });
 
+router.post("/friends/delete", (req, res) => {
+  const { user_id, friend_id } = req.body;
+  db.query(
+    `DELETE FROM friend_requests WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1 );`,
+    [user_id, friend_id]
+  ).then((data) => {
+    res.sendStatus(200);
+  });
+});
+
 // TODO: get all distinct users from the users table that are in the same rooms as the current logged in user
 
 // TODO: Login will need to get a user by email and password they enter, that password will need to be compared against the hashed password (check INFO.md for directions)

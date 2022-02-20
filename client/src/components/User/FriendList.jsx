@@ -4,7 +4,14 @@ import FriendListItem from "./FriendListItem";
 // TODO: FriendList needs to be implemented
 
 const FriendList = (props) => {
-  const { friendList, setRecipient, value, user, friendRequests } = props;
+  const {
+    friendList,
+    setRecipient,
+    value,
+    user,
+    friendRequests,
+    cancelFriendRequest,
+  } = props;
 
   const friends = friendList.map((friend) => {
     return (
@@ -30,6 +37,9 @@ const FriendList = (props) => {
         avatar={friend.avatar}
         isRequest={true}
         requestStatus={friendRequest.from.id === user.id}
+        cancelFriendRequest={() =>
+          cancelFriendRequest(friendRequest.from.id, friendRequest.to.id)
+        }
       />
     );
   });
