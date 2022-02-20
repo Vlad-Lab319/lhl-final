@@ -148,13 +148,13 @@ export default function useApplicationData() {
 
   const editRoom = (name, id) => {
     return axios.post(`/api/rooms/edit`, { name, id }).then(() => {
-      state.socket.emit("updateRooms");
+      state.socket.emit("updateRooms", { id });
     });
   };
 
   const deleteRoom = (id) => {
     return axios.post(`/api/rooms/delete`, { id }).then(() => {
-      state.socket.emit("updateRooms");
+      state.socket.emit("updateRooms", { id });
     });
   };
 
@@ -183,7 +183,7 @@ export default function useApplicationData() {
   const addUserToRoom = (id, room) => {
     return axios
       .post("/api/rooms/adduser", { userID: id, roomID: room.id })
-      .then(state.socket.emit("updateRooms"));
+      .then(state.socket.emit("updateRooms", { id: room.id }));
   };
 
   useEffect(() => {
@@ -204,7 +204,7 @@ export default function useApplicationData() {
         dispatch({ type: action.type, value: action.value });
       });
 
-      socket.on("updateRooms", () => {
+      socket.on("updateRooms", (id) => {
         axios.get(`/api/rooms/${state.user.id}`).then((rooms) => {
           dispatch({
             type: r.SET_ROOMS,
@@ -212,7 +212,7 @@ export default function useApplicationData() {
           });
           dispatch({
             type: r.SET_ROOM,
-            value: {},
+            value: rooms.data.find((room) => room.id === id.id) || {},
           });
         });
       });
