@@ -216,6 +216,11 @@ export default function useApplicationData() {
         dispatch({ type: action.type, value: action.value });
       });
 
+      socket.on("cancelfriendrequest", (action) => {
+        console.log(action);
+        dispatch({ type: action.type, value: action.value });
+      });
+
       socket.on("updateRooms", (id) => {
         axios.get(`/api/rooms/${state.user.id}`).then((rooms) => {
           dispatch({

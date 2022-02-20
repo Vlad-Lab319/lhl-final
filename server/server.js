@@ -59,6 +59,7 @@ const reducerVariables = {
   SET_ACTIVE_USERS: "SET_ACTIVE_USERS",
   TOGGLE_DIRECT_MESSAGE: "TOGGLE_DIRECT_MESSAGE",
   SET_FRIEND_REQUEST: "SET_FRIEND_REQUEST",
+  CANCEL_FRIEND_REQUEST: "CANCEL_FRIEND_REQUEST",
 };
 
 const r = reducerVariables;
@@ -98,6 +99,34 @@ io.on("connection", (socket) => {
       if (receiver) {
         io.to(receiver.socketID).emit("friendrequest", {
           type: r.SET_FRIEND_REQUEST,
+          value: { from: sendingUser, to: receivingUser },
+        });
+      }
+    });
+  });
+
+  socket.on("cancelfriendrequest", (action) => {
+    const sender = users[action.value.user_id];
+    const receiver = users[action.value.friend_id];
+    db.query(
+      `SELECT id, username AS name, avatar_url AS avatar FROM users WHERE id IN($1,$2)`,
+      [action.value.user_id, action.value.friend_id]
+    ).then((data) => {
+      const sendingUser =
+        data.rows[0].id === action.value.user_id ? data.rows[0] : data.rows[1];
+      const receivingUser =
+        data.rows[0].id === action.value.friend_id
+          ? data.rows[0]
+          : data.rows[1];
+      if (sender) {
+        io.to(sender.socketID).emit("cancelfriendrequest", {
+          type: r.CANCEL_FRIEND_REQUEST,
+          value: { from: sendingUser, to: receivingUser },
+        });
+      }
+      if (receiver) {
+        io.to(receiver.socketID).emit("cancelfriendrequest", {
+          type: r.CANCEL_FRIEND_REQUEST,
           value: { from: sendingUser, to: receivingUser },
         });
       }

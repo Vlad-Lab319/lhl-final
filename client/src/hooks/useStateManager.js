@@ -19,6 +19,7 @@ export default function useStateManager() {
     SET_ACTIVE_USERS: "SET_ACTIVE_USERS",
     TOGGLE_DIRECT_MESSAGE: "TOGGLE_DIRECT_MESSAGE",
     SET_FRIEND_REQUEST: "SET_FRIEND_REQUEST",
+    CANCEL_FRIEND_REQUEST: "CANCEL_FRIEND_REQUEST",
   };
 
   const r = reducerVariables;
@@ -134,6 +135,20 @@ export default function useStateManager() {
         return {
           ...state,
           friendRequests: [...state.friendRequests, action.value],
+        };
+      case r.CANCEL_FRIEND_REQUEST:
+        console.log("Request to be deleted: ", action.value);
+        const currentFriendRequests = [...state.friendRequests];
+        console.log("Current FRs: ", currentFriendRequests);
+
+        const newFriendRequests = currentFriendRequests.filter((request) => {
+          return action.value.to.id !== request.to.id;
+        });
+        console.log("New FRs: ", newFriendRequests);
+
+        return {
+          ...state,
+          friendRequests: [...newFriendRequests],
         };
       default:
         return { ...state };
