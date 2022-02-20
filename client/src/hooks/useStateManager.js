@@ -137,15 +137,10 @@ export default function useStateManager() {
           friendRequests: [...state.friendRequests, action.value],
         };
       case r.CANCEL_FRIEND_REQUEST:
-        console.log("Request to be deleted: ", action.value);
         const currentFriendRequests = [...state.friendRequests];
-        console.log("Current FRs: ", currentFriendRequests);
-
         const newFriendRequests = currentFriendRequests.filter((request) => {
           return action.value.to.id !== request.to.id;
         });
-        console.log("New FRs: ", newFriendRequests);
-
         return {
           ...state,
           friendRequests: [...newFriendRequests],
