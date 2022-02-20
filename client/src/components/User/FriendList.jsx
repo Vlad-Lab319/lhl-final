@@ -20,11 +20,11 @@ const FriendList = (props) => {
 
   return (
     <div className="sidebar sidebar--friends">
-      <ul className="friend-list">
-        <li className="friend-list-title">{user.name} - Friends</li>
-        <li className="friend-list-separator"></li>
+      <div className="friend-list">
+        <div className="friend-list-title">{user.name} - Friends</div>
+        <div className="friend-list-separator"></div>
         {friends}
-      </ul>
+      </div>
     </div>
   );
 };

@@ -16,7 +16,7 @@ const RoomMembersList = (props) => {
     );
   });
   return (
-    <div className="sidebar sidebar--friends">
+    <div className="sidebar sidebar--room-members">
       <div className="member-title">
         {room.name && room.name}
         {room.name && <span className="member-online">{members.length}</span>}

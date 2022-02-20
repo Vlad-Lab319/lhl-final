@@ -50,6 +50,13 @@
     background-color: lighten($dark-background, 10);
   }
 
+  &--room-members {
+    right: 0;
+    width: $sidebar-width-channels;
+    min-width: $sidebar-width-channels;
+    background-color: lighten($dark-background, 10);
+  }
+
   &::-webkit-scrollbar {
     width: 0px;
   }

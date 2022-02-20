@@ -104,15 +104,18 @@ const App = () => {
                   user={state.user}
                   channel={state.channel}
                   directMessage={directMessage}
-                  toggleDirectMessage={toggleDirectMessage}
+                  toggleDirectMessage={() => toggleDirectMessage()}
                 />
-                {directMessage ? (
-                  <FriendList
-                    friendList={state.friends}
-                    user={state.user}
-                    directMessageList={directMessageList}
-                  />
-                ) : (
+                {directMessage && (
+                  <>
+                    <FriendList
+                      friendList={state.friends}
+                      user={state.user}
+                      directMessageList={directMessageList}
+                    />
+                  </>
+                )}
+                {!directMessage && (
                   <>
                     <ChannelList
                       setChannel={setChannel}
@@ -128,6 +131,7 @@ const App = () => {
                       deleteRoom={deleteRoom}
                       deleteChannel={deleteChannel}
                     />
+
                     <RoomMembersList
                       memberList={memberList}
                       activeUser={state.user}
