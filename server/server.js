@@ -57,8 +57,12 @@ io.on("connection", (socket) => {
     });
   });
 
-  socket.on("updateRooms", () => {
-    io.emit("updateRooms");
+  socket.on("updateRooms", (id) => {
+    io.emit("updateRooms", id);
+  });
+
+  socket.on("updateChannels", () => {
+    socket.broadcast.emit("updateChannels");
   });
 
   socket.on("message", (messageData) => {
