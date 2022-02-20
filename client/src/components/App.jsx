@@ -42,6 +42,7 @@ const App = () => {
     editChannel,
     deleteRoom,
     deleteChannel,
+    toggleDirectMessage,
   } = useApplicationData();
 
   // theme stuff
@@ -66,14 +67,6 @@ const App = () => {
       }),
     [mode]
   );
-
-  const [directMessage, setDirectMessage] = useState(false);
-
-  const toggleDirectMessage = () => {
-    setDirectMessage(!directMessage);
-    setRoom({}, {}, state.user);
-    setChannel({}, {}, state.user);
-  };
 
   const channelList = getChannelsForRoom(state.room, state);
   const messageList = getMessagesForChannel(state.channel, state);
@@ -103,10 +96,10 @@ const App = () => {
                   createRoom={createRoom}
                   user={state.user}
                   channel={state.channel}
-                  directMessage={directMessage}
+                  directMessage={state.directMessage}
                   toggleDirectMessage={() => toggleDirectMessage()}
                 />
-                {directMessage && (
+                {state.directMessage && (
                   <>
                     <FriendList
                       friendList={state.friends}
@@ -115,7 +108,7 @@ const App = () => {
                     />
                   </>
                 )}
-                {!directMessage && (
+                {!state.directMessage && (
                   <>
                     <ChannelList
                       setChannel={setChannel}

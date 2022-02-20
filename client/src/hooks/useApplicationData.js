@@ -93,6 +93,8 @@ export default function useApplicationData() {
   };
 
   const setRoom = (channel, room, user) => {
+    state.directMessage &&
+      dispatch({ type: r.TOGGLE_DIRECT_MESSAGE, value: !state.directMessage });
     dispatch({ type: r.SET_ROOM, value: room });
     dispatch({ type: r.SET_CHANNEL, value: {} });
     dispatch({
@@ -112,6 +114,13 @@ export default function useApplicationData() {
   const setSocket = (socket) => {
     dispatch({ type: r.SET_SOCKET, value: socket });
   };
+
+  const toggleDirectMessage = () => {
+    dispatch({ type: r.TOGGLE_DIRECT_MESSAGE, value: !state.directMessage });
+    setRoom({}, {}, state.user);
+    setChannel({}, {}, state.user);
+  };
+
   // -----------------------------WEBSOCKET-------------------------------------
 
   const sendMessage = (messageData) => {
@@ -250,5 +259,6 @@ export default function useApplicationData() {
     editChannel,
     deleteRoom,
     deleteChannel,
+    toggleDirectMessage,
   };
 }

@@ -17,6 +17,7 @@ export default function useStateManager() {
     SET_APPLICATION_DATA: "SET_APPLICATION_DATA",
     SET_ERRORS: "SET_ERRORS",
     SET_ACTIVE_USERS: "SET_ACTIVE_USERS",
+    TOGGLE_DIRECT_MESSAGE: "TOGGLE_DIRECT_MESSAGE",
   };
 
   const r = reducerVariables;
@@ -119,6 +120,11 @@ export default function useStateManager() {
         return {
           ...state,
           errors: action.value,
+        };
+      case r.TOGGLE_DIRECT_MESSAGE:
+        return {
+          ...state,
+          directMessage: action.value,
         };
       default:
         return { ...state };
