@@ -1,25 +1,38 @@
-//mui material
+// MUI
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import GroupIcon from "@mui/icons-material/Group";
+import PersonIcon from "@mui/icons-material/Person";
 import { IconButton } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Input from "@mui/material/Input";
+// React
 import { useState } from "react";
+// Styles
 import "./RoomList.scss";
+// Components
 import RoomListItem from "./RoomListItem";
+
 const RoomList = (props) => {
-  const { user, roomList, setRoom, value, createRoom, channel } = props;
+  const {
+    user,
+    roomList,
+    setRoom,
+    value,
+    createRoom,
+    channel,
+    directMessage,
+    toggleDirectMessage,
+  } = props;
   const userID = user.id;
 
   const [open, setOpen] = useState(false);
   const [newRoomName, setNewRoomName] = useState("");
 
-  const toggleOpen = () => {
+  const toggleNewRoom = () => {
     setNewRoomName("");
     setOpen(!open);
   };
@@ -44,15 +57,15 @@ const RoomList = (props) => {
       icon: "https://i.pinimg.com/736x/f5/23/3a/f5233afc4af9c7be02cc1c673c7c93e9.jpg",
     };
     createRoom(roomData);
-    toggleOpen();
+    toggleNewRoom();
   }
 
   const addButton = (
     <div className="room-container">
       <IconButton color="inherit">
-        <AddCircleIcon onClick={toggleOpen} />
+        <AddCircleIcon onClick={toggleNewRoom} />
       </IconButton>
-      <Dialog open={open} onClose={toggleOpen}>
+      <Dialog open={open} onClose={toggleNewRoom}>
         <DialogTitle>Create new room</DialogTitle>
         <DialogContent>
           <Input
@@ -67,7 +80,7 @@ const RoomList = (props) => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={toggleOpen}>Cancel</Button>
+          <Button onClick={toggleNewRoom}>Cancel</Button>
           <Button onClick={create}>Create</Button>
         </DialogActions>
       </Dialog>
@@ -76,8 +89,16 @@ const RoomList = (props) => {
 
   const friendButton = (
     <div className="room-container">
-      <IconButton color="inherit">
-        <GroupIcon />
+      <IconButton
+        color="inherit"
+        onClick={toggleDirectMessage}
+        // className="room-icon"
+      >
+        {directMessage ? (
+          <PersonIcon className="room-icon" />
+        ) : (
+          <GroupIcon className="room-icon" />
+        )}
       </IconButton>
     </div>
   );
@@ -85,7 +106,9 @@ const RoomList = (props) => {
   return (
     <div className="sidebar sidebar--rooms">
       {friendButton}
+      {rooms.length && <div className="room-separator"></div>}
       {rooms}
+      {rooms.length && <div className="room-separator"></div>}
       {addButton}
       {/* <ArrowDropDownOutlinedIcon /> */}
     </div>

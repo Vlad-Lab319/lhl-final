@@ -13,11 +13,8 @@ export default function useApplicationData() {
         axios.get(`/api/users/`),
         axios.get(`/api/rooms/${user.id}`),
         axios.get(`/api/channels/${user.id}`),
-        // axios.get(`/api/messages/${user.id}`),
         axios.get(`/api/messages/`),
         axios.get(`/api/users/friends/${user.id}`),
-        // TODO: Needs route for getting all users who are in the same rooms as the currently signed in user
-        // axios.get(`/api/users/${state.user.id}`),
       ]).then((all) => {
         const [users, rooms, channels, messages, friends] = all;
         dispatch({
@@ -96,6 +93,8 @@ export default function useApplicationData() {
   };
 
   const setRoom = (channel, room, user) => {
+    state.directMessage &&
+      dispatch({ type: r.TOGGLE_DIRECT_MESSAGE, value: !state.directMessage });
     dispatch({ type: r.SET_ROOM, value: room });
     dispatch({ type: r.SET_CHANNEL, value: {} });
     dispatch({
@@ -115,6 +114,13 @@ export default function useApplicationData() {
   const setSocket = (socket) => {
     dispatch({ type: r.SET_SOCKET, value: socket });
   };
+
+  const toggleDirectMessage = () => {
+    dispatch({ type: r.TOGGLE_DIRECT_MESSAGE, value: !state.directMessage });
+    setRoom({}, {}, state.user);
+    setChannel({}, {}, state.user);
+  };
+
   // -----------------------------WEBSOCKET-------------------------------------
 
   const sendMessage = (messageData) => {
@@ -253,5 +259,6 @@ export default function useApplicationData() {
     editChannel,
     deleteRoom,
     deleteChannel,
+    toggleDirectMessage,
   };
 }
