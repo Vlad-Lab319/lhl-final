@@ -43,13 +43,14 @@ router.get("/login/:id", (req, res) => {
   });
 });
 
-router.get("/search/:name", (req, res) => {
+router.get("/search/:name/:id", (req, res) => {
   db.query(
-    `SELECT id, username AS name, avatar_url AS avatar FROM users WHERE LOWER(username) LIKE LOWER($1);`,
-    [req.params.name + "%"]
+    `SELECT id, username AS name, avatar_url AS avatar FROM users WHERE LOWER(username) LIKE LOWER($1) AND NOT id = $2 AND username NOT IN(SELECT users.username FROM friends
+    JOIN users ON friend_id = users.id
+    WHERE user_id = $2
+    );`,
+    [req.params.name + "%", req.params.id]
   ).then((data) => {
-    // console.log(data.rows);
-
     res.json(data.rows);
   });
 });

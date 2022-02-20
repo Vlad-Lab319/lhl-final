@@ -6,13 +6,14 @@ import { useEffect, useState } from "react";
 import "./FindFriendList.scss";
 import FindFriendListItem from "./FindFriendListItem";
 
-const FindFriendList = () => {
+const FindFriendList = (props) => {
+  const { user } = props;
   const [searchValue, setSearchValue] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
     if (searchValue.length) {
-      axios.get(`api/users/search/${searchValue}`).then((res) => {
+      axios.get(`api/users/search/${searchValue}/${user.id}`).then((res) => {
         console.log(res.data);
         setSearchResults(res.data);
       });

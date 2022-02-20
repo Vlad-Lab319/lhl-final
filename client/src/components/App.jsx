@@ -107,7 +107,7 @@ const App = () => {
                       user={state.user}
                       directMessageList={directMessageList}
                     />
-                    <FindFriendList />
+                    <FindFriendList user={state.user} />
                   </>
                 )}
                 {!state.directMessage && (
