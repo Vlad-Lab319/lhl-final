@@ -57,7 +57,7 @@ const FindFriendList = (props) => {
             autoComplete="off"
           />
         </Box>
-        <div className="member-separator"></div>
+        <div className="find-friend-list-separator"></div>
         {findFriendList}
       </div>
     </div>

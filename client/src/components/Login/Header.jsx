@@ -1,6 +1,7 @@
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
+import HomeIcon from "@mui/icons-material/Home";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { IconButton } from "@mui/material";
 import ClarionLogo from "../ClarionLogo";
@@ -8,10 +9,13 @@ import "./Header.scss";
 // TODO: Header needs actual interactive icons rather than the placeholder text here, register/login/logout needs to be implemented (Probably create a new component that get rendered by the Header and handles that)
 
 const Header = (props) => {
-  const { user, logoutUser, toggle, theme } = props;
+  const { user, logoutUser, toggle, theme, takeMeHome } = props;
   return (
     <div className="container">
-      <ClarionLogo className="clarion-small" />
+      <div className="nav-options">
+        <ClarionLogo className="clarion-small" />
+        <HomeIcon className="home-button" onClick={takeMeHome} />
+      </div>
       <div className="user-options">
         {user ? (
           <>

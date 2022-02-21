@@ -5,10 +5,10 @@ import {
   attachUsersToMessages,
   getChannelsForRoom,
   getDirectMessages,
+  getFilteredFriends,
   getMessagesForChannel,
   getMessagesForPrivateRoom,
   getUsersForRoom,
-  getFilteredFriends,
 } from "../helpers/selectors";
 //-------------------------------State------------------------------------------
 import useApplicationData from "../hooks/useApplicationData";
@@ -51,6 +51,7 @@ const App = () => {
     cancelFriendRequest,
     acceptFriendRequest,
     setPrivateRoom,
+    takeMeHome,
   } = useApplicationData();
 
   // theme stuff
@@ -103,6 +104,7 @@ const App = () => {
                   logoutUser={() => logoutUser()}
                   toggle={colorMode.toggleColorMode}
                   theme={theme}
+                  takeMeHome={() => takeMeHome()}
                 />
               </header>
               <div className="main-container">
@@ -149,7 +151,7 @@ const App = () => {
                     )}
                   </>
                 )}
-                {!state.directMessage && (
+                {!state.directMessage && state.room.id && (
                   <>
                     <ChannelList
                       setChannel={setChannel}

@@ -134,24 +134,34 @@ export default function useApplicationData() {
   }, [state.room]);
 
   //-------------------------LOGIN/LOGOUT---------------------------------------
-  const registerUser = (name, email, password) => {
+  const registerUser = async (name, email, password) => {
     clearErrors();
-    axios
-      .post(`api/users/register`, {
+    try {
+      const {
+        data: { type, value },
+      } = await axios.post(`api/users/register`, {
         name,
         email,
         password,
-      })
-      .then((user) => {
-        dispatch(user.data.action);
       });
+      dispatch({ type, value });
+    } catch (err) {
+      console.log(err);
+    }
   };
   // TODO: UNCOMMENT - uncomment for deploy
-  const loginUser = (id) => {
+  const loginUser = async (id) => {
     clearErrors();
-    axios.get(`api/users/login/${id}`).then((user) => {
-      dispatch(user.data.action);
-    });
+    try {
+      const {
+        data: {
+          action: { type, value },
+        },
+      } = await axios.get(`api/users/login/${id}`);
+      dispatch({ type, value });
+    } catch (err) {
+      console.log(err);
+    }
   };
   // const loginUser = (email, password) => {
   //   clearErrors();
@@ -210,10 +220,9 @@ export default function useApplicationData() {
   };
 
   const setPrivateRoom = async (user, friend) => {
-    const { data } = await axios.get(
-      `api/users/privateroom/${user.id}/${friend.id}`
-    );
-    console.log(data);
+    const {
+      data: { id, participants },
+    } = await axios.get(`api/users/privateroom/${user.id}/${friend.id}`);
     dispatch({
       type: r.SET_DIRECT_MESSAGE,
       value: true,
@@ -222,7 +231,7 @@ export default function useApplicationData() {
     dispatch({ type: r.SET_CHANNEL, value: {} });
     dispatch({
       type: r.SET_PRIVATE_ROOM,
-      value: { id: data.id, participants: data.participants },
+      value: { id, participants },
     });
     state.socket.emit("updateActiveUsers", {
       type: r.SET_ACTIVE_USERS,
@@ -240,6 +249,12 @@ export default function useApplicationData() {
 
   const toggleDirectMessage = (directMessage) => {
     dispatch({ type: r.SET_DIRECT_MESSAGE, value: !directMessage });
+    setRoom({}, state.user);
+    setChannel({}, {}, state.user);
+  };
+
+  const takeMeHome = () => {
+    dispatch({ type: r.SET_DIRECT_MESSAGE, value: false });
     setRoom({}, state.user);
     setChannel({}, {}, state.user);
   };
@@ -370,5 +385,6 @@ export default function useApplicationData() {
     cancelFriendRequest,
     acceptFriendRequest,
     setPrivateRoom,
+    takeMeHome,
   };
 }

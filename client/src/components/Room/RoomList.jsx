@@ -10,7 +10,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Input from "@mui/material/Input";
 // React
-import { useEffect, useState } from "react";
+import { useState } from "react";
 // Styles
 import "./RoomList.scss";
 // Components
@@ -43,7 +43,7 @@ const RoomList = (props) => {
         id={room.id}
         name={room.name}
         icon={room.icon_url}
-        setRoom={() => setRoom( room, user,directMessage)}
+        setRoom={() => setRoom(room, user, directMessage)}
         selected={room.id === value.id}
       />
     );
@@ -60,9 +60,9 @@ const RoomList = (props) => {
   }
 
   const addButton = (
-    <div className="room-container">
-      <IconButton color="inherit">
-        <AddCircleIcon onClick={toggleNewRoom} />
+    <div className="list-item">
+      <IconButton color="inherit" onClick={toggleNewRoom}>
+        <AddCircleIcon className="list-icon" />
       </IconButton>
       <Dialog open={open} onClose={toggleNewRoom}>
         <DialogTitle>Create new room</DialogTitle>
@@ -87,15 +87,15 @@ const RoomList = (props) => {
   );
 
   const friendButton = (
-    <div className="room-container">
-      <IconButton
-        color="inherit"
-        onClick={() => toggleDirectMessage(directMessage)}
-      >
+    <div
+      className="list-item"
+      onClick={() => toggleDirectMessage(directMessage)}
+    >
+      <IconButton color="inherit">
         {directMessage ? (
-          <PersonIcon className="room-icon" />
+          <PersonIcon className="list-icon-options" />
         ) : (
-          <GroupIcon className="room-icon" />
+          <GroupIcon className="list-icon" />
         )}
       </IconButton>
     </div>
@@ -103,12 +103,13 @@ const RoomList = (props) => {
 
   return (
     <div className="sidebar sidebar--rooms">
-      {friendButton}
-      <div className="room-separator"></div>
-      {rooms}
-      {rooms.length > 0 && <div className="room-separator"></div>}
-      {addButton}
-      {/* <ArrowDropDownOutlinedIcon /> */}
+      <div className="room-list">
+        {friendButton}
+        <div className="separator" />
+        {rooms}
+        {rooms.length > 0 && <div className="separator" />}
+        {addButton}
+      </div>
     </div>
   );
 };

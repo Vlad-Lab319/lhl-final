@@ -84,9 +84,9 @@ router.get("/friends/requests/:id", (req, res) => {
 router.get("/friends/:userID", (req, res) => {
   db.query(
     `
-    SELECT users.id AS id, users.username AS name, users.avatar_url AS avatar FROM friends
-    JOIN users ON friend_id = users.id
-    WHERE user_id = $1
+    SELECT users.id AS id, users.username AS name, users.avatar_url AS avatar FROM users
+    JOIN friends ON friends.friend_id = users.id
+    WHERE friends.user_id = $1
     ;`,
     [req.params.userID]
   ).then(({ rows: friends }) => {
@@ -96,102 +96,107 @@ router.get("/friends/:userID", (req, res) => {
 
 router.get("/privateroom/:user_id/:friend_id", async (req, res) => {
   const { user_id, friend_id } = req.params;
-  const data = await db.query(
-    `
-    SELECT A.private_room_id AS id
-FROM private_room_users A, private_room_users B
-WHERE (A.user_id = $1 AND B.user_id = $2)
-AND A.private_room_id = B.private_room_id
-
-    `,
-    [user_id, friend_id]
-  );
-  res.json({
-    id: data.rows[0].id,
-    participants: [user_id, friend_id],
-  });
-});
-
-router.post("/register", (req, res) => {
-  const { name, email, password } = req.body;
-  db.query(
-    `INSERT INTO users (username, email, password, avatar_url)
-    VALUES ($1, $2, $3, 'https://i.pinimg.com/736x/f5/23/3a/f5233afc4af9c7be02cc1c673c7c93e9.jpg') RETURNING id, username, avatar_url;`,
-    [name, email, bcrypt.hashSync(password, 10)]
-  )
-    .then((data) => {
-      const dbResponse = data.rows[0];
-      res.json({
-        action: {
-          type: "SET_USER",
-          value: {
-            id: dbResponse.id,
-            name: dbResponse.username,
-            avatar: dbResponse.avatar_url,
-          },
-        },
-      });
-    })
-    .catch((err) => {
-      res.json({
-        action: {
-          type: "SET_ERRORS",
-          value:
-            "Someone has already registered with that email, try a different one",
-        },
-      });
+  try {
+    const {
+      rows: [{ id }],
+    } = await db.query(
+      `SELECT A.private_room_id AS id
+      FROM private_room_users A, private_room_users B
+      WHERE (A.user_id = $1 AND B.user_id = $2)
+      AND A.private_room_id = B.private_room_id;`,
+      [user_id, friend_id]
+    );
+    res.json({
+      id: id,
+      participants: [user_id, friend_id],
     });
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
 });
 
-router.post("/login", (req, res) => {
+router.post("/register", async (req, res) => {
+  const { name, email, password } = req.body;
+  try {
+    const {
+      rows: [{ id, username, avatar_url }],
+    } = await db.query(
+      `INSERT INTO users (username, email, password, avatar_url)
+      VALUES ($1, $2, $3, 'https://i.pinimg.com/736x/f5/23/3a/f5233afc4af9c7be02cc1c673c7c93e9.jpg')
+      RETURNING id, username, avatar_url;`,
+      [name, email, bcrypt.hashSync(password, 10)]
+    );
+    res.json({
+      type: "SET_USER",
+      value: {
+        id: id,
+        name: username,
+        avatar: avatar_url,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    res.json({
+      type: "SET_ERRORS",
+      value:
+        "Someone has already registered with that email, try a different one",
+    });
+  }
+});
+
+router.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  db.query(`SELECT * FROM users WHERE email = $1;`, [email]).then((data) => {
-    const dbResponse = data.rows[0];
-    if (dbResponse && bcrypt.compareSync(password, dbResponse.password)) {
-      res.json({
-        action: {
+  try {
+    const {
+      rows: [{ id, name, avatar, hashed }],
+    } = await db.query(
+      `SELECT id, username AS name, avatar_url AS avatar, password AS hashed FROM users WHERE email = $1;`,
+      [email]
+    );
+    id
+      ? bcrypt.compareSync(password, hashed) &&
+        res.json({
           type: "SET_USER",
           value: {
-            id: dbResponse.id,
-            name: dbResponse.username,
-            avatar: dbResponse.avatar_url,
+            id,
+            name,
+            avatar,
           },
-        },
-      });
-    } else {
-      res.json({
-        action: { type: "SET_ERRORS", value: "Email/Password is incorrect" },
-      });
-    }
-  });
+        })
+      : res.json({ type: "SET_ERRORS", value: "Email/Password is incorrect" });
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
 });
 
-router.post("/friends/add", (req, res) => {
+router.post("/friends/add", async (req, res) => {
   const { user_id, friend_id } = req.body;
-  db.query(
-    `INSERT INTO friend_requests (user_id, friend_id) SELECT $1,$2 WHERE NOT EXISTS(SELECT user_id, friend_id FROM friend_requests WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1 )) RETURNING *`,
-    [user_id, friend_id]
-  ).then((data) => {
-    if (data.rows.length) {
-      res.sendStatus(200);
-    } else {
-      res.sendStatus(500);
-    }
-  });
+  try {
+    const { rows } = await db.query(
+      `INSERT INTO friend_requests (user_id, friend_id) SELECT $1,$2 WHERE NOT EXISTS(SELECT user_id, friend_id FROM friend_requests WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1 )) RETURNING *`,
+      [user_id, friend_id]
+    );
+    rows.length ? res.sendStatus(200) : res.sendStatus(500);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
 });
 
-router.post("/friends/delete", (req, res) => {
+router.post("/friends/delete", async (req, res) => {
   const { user_id, friend_id } = req.body;
-  db.query(
-    `DELETE FROM friend_requests WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1 )  RETURNING *;`,
-    [user_id, friend_id]
-  ).then((data) => {
+  try {
+    await db.query(
+      `DELETE FROM friend_requests WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1 )  RETURNING *;`,
+      [user_id, friend_id]
+    );
     res.sendStatus(200);
-    // if (data.rows.length) {
-    // } else {
-    //   res.sendStatus(500);
-    // }
-  });
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
 });
 
 router.post("/friends/accept", async (req, res) => {
@@ -209,9 +214,10 @@ router.post("/friends/accept", async (req, res) => {
       [user_id, friend_id, private_room_id]
     );
     await db.query(
-      `INSERT INTO friends (user_id, friend_id) SELECT $1,$2 WHERE NOT EXISTS(SELECT user_id, friend_id FROM friends WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1 )) RETURNING *;`,
+      `INSERT INTO friends (user_id, friend_id) VALUES($1,$2),($2,$1);`,
       [user_id, friend_id]
     );
+
     res.sendStatus(200);
   } catch (error) {
     console.log(error);
