@@ -7,6 +7,7 @@ import {
   getDirectMessages,
   getMessagesForChannel,
   getUsersForRoom,
+  getMessagesForPrivateRoom
 } from "../helpers/selectors";
 //-------------------------------State------------------------------------------
 import useApplicationData from "../hooks/useApplicationData";
@@ -33,6 +34,7 @@ const App = () => {
     loginUser,
     logoutUser,
     sendMessage,
+    sendPrivateMessage,
     setRecipient,
     registerUser,
     createRoom,
@@ -78,6 +80,8 @@ const App = () => {
   const directMessageList = getDirectMessages(state);
   const messageListWithUsers = attachUsersToMessages(messageList, state);
   const memberList = getUsersForRoom(state.room, state);
+  const privateMessageList = getMessagesForPrivateRoom(state.privateRoom, state)
+  const privateMessageListWithUsers = attachUsersToMessages(privateMessageList,state)
 
   return (
     <ColorModeContext.Provider value={colorMode}>
@@ -119,7 +123,24 @@ const App = () => {
                       user={state.user}
                       sendFriendRequest={sendFriendRequest}
                     />
-                  </>
+                    {state.privateRoom.id &&
+                                  <div className="messages">
+                      <MessageList
+                        messageList={privateMessageListWithUsers}
+                          user={state.user}
+                          isPrivate={true}
+                          privateRoom={state.privateRoom}
+                        />
+                      <ChatInput
+
+                        user={state.user}
+                          sendPrivateMessage={sendPrivateMessage}
+                          isPrivate={true}
+                          privateRoom={state.privateRoom}
+                        />
+                </div>
+                      }
+                        </>
                 )}
                 {!state.directMessage && (
                   <>
@@ -137,7 +158,6 @@ const App = () => {
                       deleteRoom={deleteRoom}
                       deleteChannel={deleteChannel}
                     />
-
                     <RoomMembersList
                       memberList={memberList}
                       activeUser={state.user}
@@ -145,9 +165,8 @@ const App = () => {
                     />
                   </>
                 )}
-                <div className="messages">
                   {state.channel.id && (
-                    <>
+                <div className="messages">
                       <MessageList
                         messageList={messageListWithUsers}
                         channel={state.channel}
@@ -158,9 +177,8 @@ const App = () => {
                         user={state.user}
                         sendMessage={sendMessage}
                       />
-                    </>
-                  )}
                 </div>
+                  )}
               </div>
             </>
           ) : (

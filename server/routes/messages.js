@@ -27,6 +27,25 @@ router.get("/", (req, res) => {
   );
 });
 
+router.get("/private/:user_id", async (req, res) => {
+  const { user_id } = req.params;
+  const data = await db.query(
+    `
+    SELECT *
+    FROM private_messages
+    JOIN private_rooms ON private_messages.private_room_id = private_rooms.id
+    WHERE private_rooms.id IN(
+      SELECT private_room_users.private_room_id
+      FROM private_room_users
+      WHERE private_room_users.user_id = $1
+    )
+    ORDER BY private_messages.created_at DESC;
+    `,
+    [user_id]
+  );
+  res.json(data.rows);
+});
+
 router.post("/", (req, res) => {
   const { userID, channelID, message } = req.body;
   db.query(

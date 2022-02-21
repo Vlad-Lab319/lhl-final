@@ -3,18 +3,36 @@ import "./ChatInput.scss";
 
 const ChatInput = (props) => {
   const [message, setMessage] = useState("");
-  const { channel, user, sendMessage } = props;
+  const {
+    channel,
+    privateRoom,
+    user,
+    sendMessage,
+    sendPrivateMessage,
+    isPrivate,
+  } = props;
+  const handleSubmit = () => {
+    if (isPrivate) {
+      const user_id = user.id;
+      const private_room_id = privateRoom.id;
+      const messageData = {
+        user_id,
+        message,
+      };
 
-  const send = () => {
-    const userID = user.id;
-    const channelID = channel.id;
-    const messageData = {
-      userID,
-      channelID,
-      message,
-    };
+      sendPrivateMessage(messageData);
+    } else {
+      const userID = user.id;
+      const channelID = channel.id;
+      const messageData = {
+        userID,
+        channelID,
+        message,
+      };
 
-    sendMessage(messageData);
+      sendMessage(messageData);
+    }
+
     setMessage("");
   };
 
@@ -23,7 +41,7 @@ const ChatInput = (props) => {
       className="input-form"
       onSubmit={(event) => {
         event.preventDefault();
-        send();
+        handleSubmit();
       }}
     >
       <input

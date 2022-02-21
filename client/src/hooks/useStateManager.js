@@ -22,6 +22,7 @@ export default function useStateManager() {
     CANCEL_FRIEND_REQUEST: "CANCEL_FRIEND_REQUEST",
     ADD_FRIEND: "ADD_FRIEND",
     SET_PRIVATE_ROOM: "SET_PRIVATE_ROOM",
+    ADD_PRIVATE_MESSAGE: "ADD_PRIVATE_MESSAGE",
   };
 
   const r = reducerVariables;
@@ -42,6 +43,7 @@ export default function useStateManager() {
     messages: [],
     errors: null,
     friendRequests: [],
+    privateMessages: [],
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -108,6 +110,11 @@ export default function useStateManager() {
           ...state,
           messages: [...state.messages, action.value],
         };
+      case r.ADD_PRIVATE_MESSAGE:
+        return {
+          ...state,
+          messages: [...state.privateMessages, action.value],
+        };
       case r.ADD_ROOMS:
         return {
           ...state,
@@ -127,6 +134,7 @@ export default function useStateManager() {
           friends: action.value.friends,
           messages: action.value.messages,
           friendRequests: action.value.friendRequests,
+          privateMessages: action.value.privateMessages,
         };
       case r.SET_ERRORS:
         return {

@@ -16,8 +16,17 @@ export default function useApplicationData() {
         axios.get(`/api/messages/`),
         axios.get(`/api/users/friends/${user.id}`),
         axios.get(`/api/users/friends/requests/${user.id}`),
+        axios.get(`/api/messages/private/${user.id}`),
       ]).then((all) => {
-        const [users, rooms, channels, messages, friends, friendRequests] = all;
+        const [
+          users,
+          rooms,
+          channels,
+          messages,
+          friends,
+          friendRequests,
+          privateMessages,
+        ] = all;
         dispatch({
           type: r.SET_APPLICATION_DATA,
           value: {
@@ -27,6 +36,7 @@ export default function useApplicationData() {
             messages: messages.data,
             friends: friends.data,
             friendRequests: friendRequests.data,
+            privateMessages: privateMessages.data,
           },
         });
       });
@@ -194,7 +204,7 @@ export default function useApplicationData() {
     });
     dispatch({ type: r.SET_ROOM, value: {} });
     dispatch({ type: r.SET_CHANNEL, value: {} });
-    dispatch({ type: r.SET_PRIVATE_ROOM, value: data });
+    dispatch({ type: r.SET_PRIVATE_ROOM, value: { id: data.private_room_id } });
     state.socket.emit("updateActiveUsers", {
       type: r.SET_ACTIVE_USERS,
       value: {
