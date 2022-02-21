@@ -55,19 +55,6 @@ router.get("/search/:name/:id", (req, res) => {
   });
 });
 
-router.get("/friends/:userID", (req, res) => {
-  db.query(
-    `
-    SELECT users.id AS id, users.username AS name, users.avatar_url AS avatar FROM friends
-    JOIN users ON friend_id = users.id
-    WHERE user_id = $1
-    ;`,
-    [req.params.userID]
-  ).then(({ rows: friends }) => {
-    res.json(friends);
-  });
-});
-
 router.get("/friends/requests/:id", (req, res) => {
   db.query(
     `
@@ -91,6 +78,19 @@ router.get("/friends/requests/:id", (req, res) => {
       };
     });
     res.json(formatData);
+  });
+});
+
+router.get("/friends/:userID", (req, res) => {
+  db.query(
+    `
+    SELECT users.id AS id, users.username AS name, users.avatar_url AS avatar FROM friends
+    JOIN users ON friend_id = users.id
+    WHERE user_id = $1
+    ;`,
+    [req.params.userID]
+  ).then(({ rows: friends }) => {
+    res.json(friends);
   });
 });
 

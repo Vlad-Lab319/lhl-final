@@ -113,7 +113,7 @@ export default function useStateManager() {
       case r.ADD_PRIVATE_MESSAGE:
         return {
           ...state,
-          messages: [...state.privateMessages, action.value],
+          privateMessages: [...state.privateMessages, action.value],
         };
       case r.ADD_ROOMS:
         return {

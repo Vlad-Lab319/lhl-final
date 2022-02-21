@@ -6,8 +6,8 @@ import {
   getChannelsForRoom,
   getDirectMessages,
   getMessagesForChannel,
+  getMessagesForPrivateRoom,
   getUsersForRoom,
-  getMessagesForPrivateRoom
 } from "../helpers/selectors";
 //-------------------------------State------------------------------------------
 import useApplicationData from "../hooks/useApplicationData";
@@ -49,7 +49,7 @@ const App = () => {
     sendFriendRequest,
     cancelFriendRequest,
     acceptFriendRequest,
-    setPrivateRoom
+    setPrivateRoom,
   } = useApplicationData();
 
   // theme stuff
@@ -80,8 +80,14 @@ const App = () => {
   const directMessageList = getDirectMessages(state);
   const messageListWithUsers = attachUsersToMessages(messageList, state);
   const memberList = getUsersForRoom(state.room, state);
-  const privateMessageList = getMessagesForPrivateRoom(state.privateRoom, state)
-  const privateMessageListWithUsers = attachUsersToMessages(privateMessageList,state)
+  const privateMessageList = getMessagesForPrivateRoom(
+    state.privateRoom,
+    state
+  );
+  const privateMessageListWithUsers = attachUsersToMessages(
+    privateMessageList,
+    state
+  );
 
   return (
     <ColorModeContext.Provider value={colorMode}>
@@ -123,24 +129,23 @@ const App = () => {
                       user={state.user}
                       sendFriendRequest={sendFriendRequest}
                     />
-                    {state.privateRoom.id &&
-                                  <div className="messages">
-                      <MessageList
-                        messageList={privateMessageListWithUsers}
+                    {state.privateRoom.id && (
+                      <div className="messages">
+                        <MessageList
+                          messageList={privateMessageListWithUsers}
                           user={state.user}
                           isPrivate={true}
                           privateRoom={state.privateRoom}
                         />
-                      <ChatInput
-
-                        user={state.user}
+                        <ChatInput
+                          user={state.user}
                           sendPrivateMessage={sendPrivateMessage}
                           isPrivate={true}
                           privateRoom={state.privateRoom}
                         />
-                </div>
-                      }
-                        </>
+                      </div>
+                    )}
+                  </>
                 )}
                 {!state.directMessage && (
                   <>
@@ -165,20 +170,20 @@ const App = () => {
                     />
                   </>
                 )}
-                  {state.channel.id && (
-                <div className="messages">
-                      <MessageList
-                        messageList={messageListWithUsers}
-                        channel={state.channel}
-                        user={state.user}
-                      />
-                      <ChatInput
-                        channel={state.channel}
-                        user={state.user}
-                        sendMessage={sendMessage}
-                      />
-                </div>
-                  )}
+                {state.channel.id && (
+                  <div className="messages">
+                    <MessageList
+                      messageList={messageListWithUsers}
+                      channel={state.channel}
+                      user={state.user}
+                    />
+                    <ChatInput
+                      channel={state.channel}
+                      user={state.user}
+                      sendMessage={sendMessage}
+                    />
+                  </div>
+                )}
               </div>
             </>
           ) : (

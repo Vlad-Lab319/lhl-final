@@ -40,7 +40,7 @@ router.get("/private/:user_id", async (req, res) => {
       FROM private_room_users
       WHERE private_room_users.user_id = $1
     )
-    ORDER BY private_messages.created_at DESC;
+    ORDER BY private_messages.created_at ASC;
     `,
     [user_id]
   );
@@ -64,13 +64,13 @@ router.post("/", (req, res) => {
 router.post("/private", async (req, res) => {
   const { user_id, private_room_id, message } = req.body;
   try {
-    await db.query(
+    const data = await db.query(
       `
-      INSERT INTO private_messages (user_id, private_room_id, message) VALUES ($1, $2, $3);
+      INSERT INTO private_messages (user_id, private_room_id, message) VALUES ($1, $2, $3) RETURNING*;
       `,
       [user_id, private_room_id, message]
     );
-    res.sendStatus(200);
+    res.json(data.rows[0]);
   } catch (err) {
     res.sendStatus(500);
   }

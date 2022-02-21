@@ -94,6 +94,13 @@ export default function useApplicationData() {
         });
       });
 
+      socket.on("privatemessage", (action) => {
+        dispatch({
+          type: action.type,
+          value: action.value,
+        });
+      });
+
       socket.on("channel", (channel) => {
         dispatch({
           type: r.ADD_CHANNELS,
@@ -204,7 +211,10 @@ export default function useApplicationData() {
     });
     dispatch({ type: r.SET_ROOM, value: {} });
     dispatch({ type: r.SET_CHANNEL, value: {} });
-    dispatch({ type: r.SET_PRIVATE_ROOM, value: { id: data.id } });
+    dispatch({
+      type: r.SET_PRIVATE_ROOM,
+      value: { id: data.id, participants: data.participants },
+    });
     state.socket.emit("updateActiveUsers", {
       type: r.SET_ACTIVE_USERS,
       value: {
@@ -227,28 +237,25 @@ export default function useApplicationData() {
 
   // -----------------------------WEBSOCKET-------------------------------------
 
-  const sendFriendRequest = (user_id, friend_id) => {
-    axios.post("/api/users/friends/add", { user_id, friend_id }).then(() => {
-      state.socket.emit("sendfriendrequest", { value: { user_id, friend_id } });
+  const sendFriendRequest = async (user_id, friend_id) => {
+    await axios.post("/api/users/friends/add", { user_id, friend_id });
+    state.socket.emit("sendfriendrequest", { value: { user_id, friend_id } });
+  };
+
+  const cancelFriendRequest = async (user_id, friend_id) => {
+    await axios.post("/api/users/friends/delete", { user_id, friend_id });
+    state.socket.emit("cancelfriendrequest", {
+      value: { user_id, friend_id },
     });
   };
 
-  const cancelFriendRequest = (user_id, friend_id) => {
-    axios.post("/api/users/friends/delete", { user_id, friend_id }).then(() => {
-      state.socket.emit("cancelfriendrequest", {
-        value: { user_id, friend_id },
-      });
+  const acceptFriendRequest = async (user_id, friend_id) => {
+    await axios.post("/api/users/friends/accept", { user_id, friend_id });
+    state.socket.emit("acceptfriendrequest", {
+      value: { user_id, friend_id },
     });
-  };
-
-  const acceptFriendRequest = (user_id, friend_id) => {
-    axios.post("/api/users/friends/accept", { user_id, friend_id }).then(() => {
-      state.socket.emit("acceptfriendrequest", {
-        value: { user_id, friend_id },
-      });
-      state.socket.emit("cancelfriendrequest", {
-        value: { user_id, friend_id },
-      });
+    state.socket.emit("cancelfriendrequest", {
+      value: { user_id, friend_id },
     });
   };
 
@@ -263,17 +270,23 @@ export default function useApplicationData() {
   };
 
   const sendPrivateMessage = async (messageData) => {
-    const { user_id, private_room_id, message } = messageData;
-    await axios.post(`/api/messages/private`, {
+    console.log("Message Data: ", messageData);
+    const { user_id, private_room_id, message, participants } = messageData;
+    const res = await axios.post(`/api/messages/private`, {
       user_id,
       private_room_id,
       message,
     });
+    const value = res.data;
+    console.log("USE APP DATA - SEND PM: ", value);
     dispatch({
       type: r.ADD_PRIVATE_MESSAGE,
-      value: { user_id, private_room_id, message },
+      value: value,
     });
-    state.socket.emit("privatemessage", messageData);
+    state.socket.emit("privatemessage", {
+      value: value,
+      participants: participants,
+    });
   };
 
   const createRoom = (roomData) => {
