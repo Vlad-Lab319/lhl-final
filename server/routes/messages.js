@@ -1,4 +1,5 @@
 const express = require("express");
+const { send } = require("upgrade");
 const db = require("../db/index");
 const router = express.Router();
 
@@ -58,6 +59,21 @@ router.post("/", (req, res) => {
       res.json(messages);
     })
     .catch((error) => console.log(error));
+});
+
+router.post("/private", async (req, res) => {
+  const { user_id, private_room_id, message } = req.body;
+  try {
+    await db.query(
+      `
+      INSERT INTO private_messages (user_id, private_room_id, message) VALUES ($1, $2, $3);
+      `,
+      [user_id, private_room_id, message]
+    );
+    res.sendStatus(200);
+  } catch (err) {
+    res.sendStatus(500);
+  }
 });
 
 module.exports = router;

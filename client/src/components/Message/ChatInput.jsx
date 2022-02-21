@@ -7,19 +7,22 @@ const ChatInput = (props) => {
     channel,
     privateRoom,
     user,
+    friend,
     sendMessage,
     sendPrivateMessage,
     isPrivate,
   } = props;
+
   const handleSubmit = () => {
     if (isPrivate) {
       const user_id = user.id;
       const private_room_id = privateRoom.id;
       const messageData = {
         user_id,
+        private_room_id,
         message,
+        participants: privateRoom.participants,
       };
-
       sendPrivateMessage(messageData);
     } else {
       const userID = user.id;

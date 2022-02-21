@@ -204,7 +204,7 @@ export default function useApplicationData() {
     });
     dispatch({ type: r.SET_ROOM, value: {} });
     dispatch({ type: r.SET_CHANNEL, value: {} });
-    dispatch({ type: r.SET_PRIVATE_ROOM, value: { id: data.private_room_id } });
+    dispatch({ type: r.SET_PRIVATE_ROOM, value: { id: data.id } });
     state.socket.emit("updateActiveUsers", {
       type: r.SET_ACTIVE_USERS,
       value: {
@@ -260,6 +260,20 @@ export default function useApplicationData() {
       });
       state.socket.emit("message", message.data[0]);
     });
+  };
+
+  const sendPrivateMessage = async (messageData) => {
+    const { user_id, private_room_id, message } = messageData;
+    await axios.post(`/api/messages/private`, {
+      user_id,
+      private_room_id,
+      message,
+    });
+    dispatch({
+      type: r.ADD_PRIVATE_MESSAGE,
+      value: { user_id, private_room_id, message },
+    });
+    state.socket.emit("privatemessage", messageData);
   };
 
   const createRoom = (roomData) => {
@@ -318,6 +332,7 @@ export default function useApplicationData() {
     loginUser,
     logoutUser,
     sendMessage,
+    sendPrivateMessage,
     setRecipient,
     registerUser,
     createRoom,

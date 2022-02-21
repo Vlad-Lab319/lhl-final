@@ -54,7 +54,7 @@ router.get("/search/:name/:id", (req, res) => {
     res.json(data.rows);
   });
 });
-// get friends
+
 router.get("/friends/:userID", (req, res) => {
   db.query(
     `
@@ -96,13 +96,9 @@ router.get("/friends/requests/:id", (req, res) => {
 
 router.get("/privateroom/:user_id/:friend_id", async (req, res) => {
   const { user_id, friend_id } = req.params;
-  // const data = await db.query("SELECT * FROM private_rooms;");
-  // console.log(data);
-  // const data2 = await db.query("SELECT * FROM private_room_users;");
-  // console.log(data2);
   const data = await db.query(
     `
-    SELECT A.private_room_id
+    SELECT A.private_room_id AS id
 FROM private_room_users A, private_room_users B
 WHERE (A.user_id = $1 AND B.user_id = $2)
 AND A.private_room_id = B.private_room_id
@@ -110,8 +106,10 @@ AND A.private_room_id = B.private_room_id
     `,
     [user_id, friend_id]
   );
-  console.log("room id: ", data.rows[0]);
-  res.json(data.rows[0]);
+  res.json({
+    id: data.rows[0].id,
+    participants: [user_id, friend_id],
+  });
 });
 
 router.post("/register", (req, res) => {
