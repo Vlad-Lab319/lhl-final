@@ -88,8 +88,8 @@ const ChannelListItem = (props) => {
     : "channel-list-icon";
 
   return (
-    <div className="channel-list-item" onClick={setChannel}>
-      <div className={channelInfoClass}>
+    <div className="channel-list-item">
+      <div className={channelInfoClass} onClick={setChannel}>
         <div className={channelIconClass}>
           {type === "text" && <TextsmsIcon />}
         </div>

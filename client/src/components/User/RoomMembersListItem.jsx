@@ -1,7 +1,9 @@
 // TODO: RoomMembersListItem needs to be implemented
 import PhoneIcon from "@mui/icons-material/Phone";
 import TextsmsIcon from "@mui/icons-material/Textsms";
+import { Avatar } from "@mui/material";
 import { useState } from "react";
+import stringAvatar from "../../helpers/helpers";
 import WebRTC from "../WebRTC/WebRTC";
 import "./RoomMembersList.scss";
 
@@ -26,7 +28,12 @@ const RoomMembersListItem = (props) => {
   return (
     <div className="member-list-item">
       <div className="member-list-user-info">
-        <img className="member-list-icon" src={avatar} alt="" />
+        {avatar ? (
+          <img src={avatar} alt="" className="member-list-icon" />
+        ) : (
+          <Avatar {...stringAvatar(name)} className="member-list-icon" />
+        )}
+
         {name}
       </div>
       {!isUser && friendOptions(isFriend)}

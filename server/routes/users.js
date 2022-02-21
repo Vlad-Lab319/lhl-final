@@ -122,8 +122,8 @@ router.post("/register", async (req, res) => {
     const {
       rows: [{ id, username, avatar_url }],
     } = await db.query(
-      `INSERT INTO users (username, email, password, avatar_url)
-      VALUES ($1, $2, $3, 'https://i.pinimg.com/736x/f5/23/3a/f5233afc4af9c7be02cc1c673c7c93e9.jpg')
+      `INSERT INTO users (username, email, password)
+      VALUES ($1, $2, $3)
       RETURNING id, username, avatar_url;`,
       [name, email, bcrypt.hashSync(password, 10)]
     );
@@ -219,8 +219,8 @@ router.post("/friends/accept", async (req, res) => {
     );
 
     res.sendStatus(200);
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.log(err);
     res.sendStatus(500);
   }
 });

@@ -45,16 +45,32 @@
     }
 
     &--avatar {
-      color: lighten($dark-background, 10);
+      color: black;
+      font-size: 2.5rem;
       @include icon-vars;
+      word-spacing: -10px;
     }
 
     &--logo {
       @include icon-vars;
     }
-    :hover {
-      color: lighten($dark-background, 40);
-      cursor: pointer;
+
+    .logout-btn {
+      // font-size: 1.5rem;
+      color: $grey-text;
+      // height: 1rem;
+      // width: 4rem;
+      border: 2px solid $grey-text;
+      border-radius: 5px;
+      padding: 0.25rem 0.75rem 0.25rem 0.75rem;
+
+      &:hover {
+        cursor: pointer;
+        // font-weight: 600;
+        color: lighten($sig-color, 15);
+        border-color: $sig-color;
+        box-shadow: 0px 0px 5px lighten($sig-color, 10) inset;
+      }
     }
   }
 }
