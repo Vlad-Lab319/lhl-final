@@ -8,6 +8,7 @@ import {
   getMessagesForChannel,
   getMessagesForPrivateRoom,
   getUsersForRoom,
+  getFilteredFriends,
 } from "../helpers/selectors";
 //-------------------------------State------------------------------------------
 import useApplicationData from "../hooks/useApplicationData";
@@ -88,6 +89,7 @@ const App = () => {
     privateMessageList,
     state
   );
+  const remainingMemberList = getFilteredFriends(state);
 
   return (
     <ColorModeContext.Provider value={colorMode}>
@@ -156,7 +158,7 @@ const App = () => {
                       room={state.room}
                       user={state.user}
                       createChannel={createChannel}
-                      friends={state.friends}
+                      remainingMemberList={remainingMemberList}
                       addUserToRoom={addUserToRoom}
                       editRoom={editRoom}
                       editChannel={editChannel}

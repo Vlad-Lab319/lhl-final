@@ -6,6 +6,7 @@ export default function useStateManager() {
     SET_USER: "SET_USER",
     SET_USERS: "SET_USERS",
     SET_ROOM: "SET_ROOM",
+    SET_ROOM_MEMBERS: "SET_ROOM_MEMBERS",
     SET_ROOMS: "SET_ROOMS",
     SET_CHANNEL: "SET_CHANNEL",
     SET_CHANNELS: "SET_CHANNELS",
@@ -33,6 +34,7 @@ export default function useStateManager() {
     activeUsers: {},
     socket: null,
     room: {},
+    roomMembers: {},
     privateRoom: {},
     channel: {},
     rooms: [],
@@ -74,6 +76,11 @@ export default function useStateManager() {
         return {
           ...state,
           room: action.value,
+        };
+      case r.SET_ROOM_MEMBERS:
+        return {
+          ...state,
+          roomMembers: action.value,
         };
       case r.SET_PRIVATE_ROOM:
         return {

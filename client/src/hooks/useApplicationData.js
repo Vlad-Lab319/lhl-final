@@ -124,6 +124,15 @@ export default function useApplicationData() {
     socketMan(state.user);
   }, [state.user.id]);
 
+  useEffect(() => {
+    axios.get(`/api/rooms/members/${state.room.id || 1}`).then((members) => {
+      dispatch({
+        type: r.SET_ROOM_MEMBERS,
+        value: members.data,
+      });
+    });
+  }, [state.room]);
+
   //-------------------------LOGIN/LOGOUT---------------------------------------
   const registerUser = async (name, email, password) => {
     clearErrors();
