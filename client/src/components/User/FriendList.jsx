@@ -12,7 +12,7 @@ const FriendList = (props) => {
     friendRequests,
     cancelFriendRequest,
     acceptFriendRequest,
-    setPrivateRoom
+    setPrivateRoom,
   } = props;
 
   const friends = friendList.map((friend) => {
@@ -57,12 +57,12 @@ const FriendList = (props) => {
     <div className="sidebar sidebar--friends">
       <div className="friend-list">
         <div className="friend-list-title">{user.name} - Friends</div>
-        <div className="friend-list-separator"></div>
+        <div className="friend-list-separator" />
         {friends}
         {friendRequestList.length > 0 && (
           <div className="friend-list-title">Friend Requests</div>
         )}
-        <div className="friend-list-separator"></div>
+        <div className="friend-list-separator" />
         {friendRequestList}
       </div>
     </div>
