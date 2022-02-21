@@ -101,6 +101,23 @@ const RoomList = (props) => {
     </div>
   );
 
+  const searchRooms = (
+    <div
+      className="list-item"
+      onClick={() => {
+        console.log("clicky");
+      }}
+    >
+      <IconButton color="inherit">
+        {directMessage ? (
+          <PersonIcon className="list-icon-options" />
+        ) : (
+          <GroupIcon className="list-icon" />
+        )}
+      </IconButton>
+    </div>
+  );
+
   return (
     <div className="sidebar sidebar--rooms">
       <div className="room-list">
