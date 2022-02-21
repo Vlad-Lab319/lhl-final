@@ -5,10 +5,10 @@ import {
   attachUsersToMessages,
   getChannelsForRoom,
   getDirectMessages,
+  getFilteredFriends,
   getMessagesForChannel,
   getMessagesForPrivateRoom,
   getUsersForRoom,
-  getFilteredFriends,
 } from "../helpers/selectors";
 //-------------------------------State------------------------------------------
 import useApplicationData from "../hooks/useApplicationData";
@@ -149,7 +149,7 @@ const App = () => {
                     )}
                   </>
                 )}
-                {!state.directMessage && (
+                {!state.directMessage && state.room.id && (
                   <>
                     <ChannelList
                       setChannel={setChannel}

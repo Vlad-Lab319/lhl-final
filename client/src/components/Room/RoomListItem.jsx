@@ -15,7 +15,11 @@ const RoomListItem = (props) => {
   const formatRoomName = (name) => {
     return name
       .split(" ")
-      .map((word) => word[0].toUpperCase())
+      .map((word, index) => {
+        if (index < 3) {
+          return word.length > 1 ? word[0].toUpperCase() : word.toUpperCase();
+        }
+      })
       .join(" ");
   };
 
