@@ -114,14 +114,17 @@ export default function useApplicationData() {
           value: action.value,
         });
       });
-
-      return () => socket.disconnect();
+    } else {
+      if (state.socket) {
+        state.socket.disconnect();
+      }
     }
+    return () => state.socket.disconnect();
   };
 
   useEffect(() => {
-    initialFetch(state.user);
     socketMan(state.user);
+    initialFetch(state.user);
   }, [state.user.id]);
 
   useEffect(() => {
@@ -170,7 +173,7 @@ export default function useApplicationData() {
   //   });
   // };
   const logoutUser = () => {
-    dispatch({ type: r.SET_USER, value: { id: null } });
+    dispatch({ type: r.LOGOUT });
     if (state.socket) {
       state.socket.disconnect();
     }
