@@ -1,6 +1,7 @@
 //mui material
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { Button, DialogActions } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
@@ -86,14 +87,14 @@ const ChannelList = (props) => {
             onChange={(event) => setNewChannelName(event.target.value)}
           />
         </DialogContent>
-        <div className="add-channel-btn-container">
-          <button className="add-channel-btn cancel" onClick={toggleOpen}>
+        <DialogActions>
+          <Button variant="outlined" color="error" onClick={toggleOpen}>
             Cancel
-          </button>
-          <button className="add-channel-btn confirm" onClick={create}>
-            Create
-          </button>
-        </div>
+          </Button>
+          <Button variant="outlined" color="success" onClick={create}>
+            Add
+          </Button>
+        </DialogActions>
       </Dialog>
     </>
   );
