@@ -112,35 +112,32 @@ AND A.private_room_id = B.private_room_id
   });
 });
 
-router.post("/register", (req, res) => {
+router.post("/register", async (req, res) => {
   const { name, email, password } = req.body;
-  db.query(
-    `INSERT INTO users (username, email, password, avatar_url)
+  try {
+    const {
+      rows: [{ id, username, avatar_url }],
+    } = await db.query(
+      `INSERT INTO users (username, email, password, avatar_url)
     VALUES ($1, $2, $3, 'https://i.pinimg.com/736x/f5/23/3a/f5233afc4af9c7be02cc1c673c7c93e9.jpg') RETURNING id, username, avatar_url;`,
-    [name, email, bcrypt.hashSync(password, 10)]
-  )
-    .then((data) => {
-      const dbResponse = data.rows[0];
-      res.json({
-        action: {
-          type: "SET_USER",
-          value: {
-            id: dbResponse.id,
-            name: dbResponse.username,
-            avatar: dbResponse.avatar_url,
-          },
-        },
-      });
-    })
-    .catch((err) => {
-      res.json({
-        action: {
-          type: "SET_ERRORS",
-          value:
-            "Someone has already registered with that email, try a different one",
-        },
-      });
+      [name, email, bcrypt.hashSync(password, 10)]
+    );
+
+    res.json({
+      type: "SET_USER",
+      value: {
+        id: id,
+        name: username,
+        avatar: avatar_url,
+      },
     });
+  } catch (err) {
+    res.json({
+      type: "SET_ERRORS",
+      value:
+        "Someone has already registered with that email, try a different one",
+    });
+  }
 });
 
 router.post("/login", (req, res) => {
@@ -180,18 +177,18 @@ router.post("/friends/add", (req, res) => {
   });
 });
 
-router.post("/friends/delete", (req, res) => {
+router.post("/friends/delete", async (req, res) => {
   const { user_id, friend_id } = req.body;
-  db.query(
-    `DELETE FROM friend_requests WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1 )  RETURNING *;`,
-    [user_id, friend_id]
-  ).then((data) => {
+  try {
+    await db.query(
+      `DELETE FROM friend_requests WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1 )  RETURNING *;`,
+      [user_id, friend_id]
+    );
     res.sendStatus(200);
-    // if (data.rows.length) {
-    // } else {
-    //   res.sendStatus(500);
-    // }
-  });
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
 });
 
 router.post("/friends/accept", async (req, res) => {
@@ -213,10 +210,6 @@ router.post("/friends/accept", async (req, res) => {
       [user_id, friend_id]
     );
 
-    // await db.query(
-    //   `INSERT INTO friends (user_id, friend_id) SELECT $1,$2 WHERE NOT EXISTS(SELECT user_id, friend_id FROM friends WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1 )) RETURNING *;`,
-    //   [user_id, friend_id]
-    // );
     res.sendStatus(200);
   } catch (error) {
     console.log(error);

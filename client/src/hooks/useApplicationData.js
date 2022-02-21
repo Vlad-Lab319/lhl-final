@@ -125,24 +125,28 @@ export default function useApplicationData() {
   }, [state.user.id]);
 
   //-------------------------LOGIN/LOGOUT---------------------------------------
-  const registerUser = (name, email, password) => {
+  const registerUser = async (name, email, password) => {
     clearErrors();
-    axios
-      .post(`api/users/register`, {
-        name,
-        email,
-        password,
-      })
-      .then((user) => {
-        dispatch(user.data.action);
-      });
+    const {
+      data: {
+        action: { type, value },
+      },
+    } = await axios.post(`api/users/register`, {
+      name,
+      email,
+      password,
+    });
+    dispatch({ type, value });
   };
   // TODO: UNCOMMENT - uncomment for deploy
-  const loginUser = (id) => {
+  const loginUser = async (id) => {
     clearErrors();
-    axios.get(`api/users/login/${id}`).then((user) => {
-      dispatch(user.data.action);
-    });
+    const {
+      data: {
+        action: { type, value },
+      },
+    } = await axios.get(`api/users/login/${id}`);
+    dispatch({ type, value });
   };
   // const loginUser = (email, password) => {
   //   clearErrors();
