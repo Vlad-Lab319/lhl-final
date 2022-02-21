@@ -3,6 +3,7 @@ import { useState } from "react";
 import AddFriend from "./AddFriend";
 import Rename from "./Rename";
 import Confirm from "./Confirm";
+import "./MenuList.scss";
 
 export default function MenuList(props) {
   const { remainingMemberList, addUserToRoom, room, editRoom, deleteRoom } =
