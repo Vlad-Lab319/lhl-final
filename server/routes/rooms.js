@@ -15,11 +15,11 @@ router.get("/:userID", (req, res) => {
   });
 });
 
-router.get("members/:roomID", (req, res) => {
+router.get("/members/:roomID", (req, res) => {
   db.query(
     `
     SELECT users.* FROM room_users
-    JOIN users ON user.id = user_id
+    JOIN users ON users.id = user_id
     WHERE room_users.room_id = $1
     ;`,
     [req.params.roomID]

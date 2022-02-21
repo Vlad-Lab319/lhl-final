@@ -10,7 +10,7 @@ import TextField from "@mui/material/TextField";
 import { useState } from "react";
 
 const AddFriend = (props) => {
-  const { close, friends, addUserToRoom, room } = props;
+  const { close, remainingMemberList, addUserToRoom, room } = props;
 
   const [open, setOpen] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState([]);
@@ -31,7 +31,7 @@ const AddFriend = (props) => {
     closeDialog();
   };
 
-  const newFriends = friends.map((friend) => {
+  const newFriends = remainingMemberList.map((friend) => {
     const newObj = {};
     newObj["label"] = friend.username;
     newObj["id"] = friend.id;

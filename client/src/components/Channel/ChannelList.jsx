@@ -20,7 +20,7 @@ const ChannelList = (props) => {
     value,
     room,
     createChannel,
-    friends,
+    remainingMemberList,
     addUserToRoom,
     editRoom,
     editChannel,
@@ -104,7 +104,7 @@ const ChannelList = (props) => {
         <>
           <h3 className="channel-title">
             <MenuList
-              friends={friends}
+              remainingMemberList={remainingMemberList}
               addUserToRoom={addUserToRoom}
               room={room}
               editRoom={editRoom}
