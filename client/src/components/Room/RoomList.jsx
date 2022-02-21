@@ -62,7 +62,7 @@ const RoomList = (props) => {
   const addButton = (
     <div className="room-container">
       <IconButton color="inherit" onClick={toggleNewRoom}>
-        <AddCircleIcon />
+        <AddCircleIcon className="room-icon" />
       </IconButton>
       <Dialog open={open} onClose={toggleNewRoom}>
         <DialogTitle>Create new room</DialogTitle>
