@@ -115,7 +115,7 @@ export default function useApplicationData() {
         });
       });
 
-      // return () => socket.disconnect();
+      return () => socket.disconnect();
     }
   };
 

@@ -1,5 +1,7 @@
 // TODO: getUsersForRoom needs to be implemented
 
+import axios from "axios";
+
 const getChannelsForRoom = (room, state) => {
   return state.channels.filter((channel) => channel.room_id === room.id);
 };
@@ -35,6 +37,12 @@ const getMessagesForPrivateRoom = (privateRoom, state) => {
   });
 };
 
+const getFilteredListForAddFriend = (state) => {
+  axios.get(`/api/rooms/members/${state.room.id}`).then((members) => {
+    console.log(members);
+  });
+};
+
 export {
   getChannelsForRoom,
   getMessagesForChannel,
@@ -42,4 +50,5 @@ export {
   getDirectMessages,
   getUsersForRoom,
   getMessagesForPrivateRoom,
+  getFilteredListForAddFriend,
 };
