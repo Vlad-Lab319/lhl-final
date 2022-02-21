@@ -17,10 +17,12 @@ export default function useStateManager() {
     SET_APPLICATION_DATA: "SET_APPLICATION_DATA",
     SET_ERRORS: "SET_ERRORS",
     SET_ACTIVE_USERS: "SET_ACTIVE_USERS",
-    TOGGLE_DIRECT_MESSAGE: "TOGGLE_DIRECT_MESSAGE",
+    SET_DIRECT_MESSAGE: "SET_DIRECT_MESSAGE",
     SET_FRIEND_REQUEST: "SET_FRIEND_REQUEST",
     CANCEL_FRIEND_REQUEST: "CANCEL_FRIEND_REQUEST",
     ADD_FRIEND: "ADD_FRIEND",
+    SET_PRIVATE_ROOM: "SET_PRIVATE_ROOM",
+    ADD_PRIVATE_MESSAGE: "ADD_PRIVATE_MESSAGE",
   };
 
   const r = reducerVariables;
@@ -31,6 +33,7 @@ export default function useStateManager() {
     activeUsers: {},
     socket: null,
     room: {},
+    privateRoom: {},
     channel: {},
     rooms: [],
     channels: [],
@@ -40,6 +43,7 @@ export default function useStateManager() {
     messages: [],
     errors: null,
     friendRequests: [],
+    privateMessages: [],
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -71,6 +75,11 @@ export default function useStateManager() {
           ...state,
           room: action.value,
         };
+      case r.SET_PRIVATE_ROOM:
+        return {
+          ...state,
+          privateRoom: action.value,
+        };
       case r.SET_ROOMS:
         return {
           ...state,
@@ -101,6 +110,11 @@ export default function useStateManager() {
           ...state,
           messages: [...state.messages, action.value],
         };
+      case r.ADD_PRIVATE_MESSAGE:
+        return {
+          ...state,
+          privateMessages: [...state.privateMessages, action.value],
+        };
       case r.ADD_ROOMS:
         return {
           ...state,
@@ -120,13 +134,14 @@ export default function useStateManager() {
           friends: action.value.friends,
           messages: action.value.messages,
           friendRequests: action.value.friendRequests,
+          privateMessages: action.value.privateMessages,
         };
       case r.SET_ERRORS:
         return {
           ...state,
           errors: action.value,
         };
-      case r.TOGGLE_DIRECT_MESSAGE:
+      case r.SET_DIRECT_MESSAGE:
         return {
           ...state,
           directMessage: action.value,

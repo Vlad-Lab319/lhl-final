@@ -2,7 +2,7 @@ import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import "./FindFriendList.scss";
 
 const FindFriendListItem = (props) => {
-  const { user, id, name, avatar, sendFriendRequest } = props;
+  const { user, id, name, avatar, sendFriendRequest, clearSearch } = props;
 
   return (
     <div className="find-friend-list-item">
@@ -11,7 +11,10 @@ const FindFriendListItem = (props) => {
         <span className="find-friend-list-name">{name}</span>
         <PersonAddAlt1Icon
           className="find-friend-list-add"
-          onClick={() => sendFriendRequest(user.id, id)}
+          onClick={() => {
+            clearSearch();
+            sendFriendRequest(user.id, id);
+          }}
         />
       </span>
     </div>

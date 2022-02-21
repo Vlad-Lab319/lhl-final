@@ -61,6 +61,7 @@ const reducerVariables = {
   SET_FRIEND_REQUEST: "SET_FRIEND_REQUEST",
   CANCEL_FRIEND_REQUEST: "CANCEL_FRIEND_REQUEST",
   ADD_FRIEND: "ADD_FRIEND",
+  ADD_PRIVATE_MESSAGE: "ADD_PRIVATE_MESSAGE",
 };
 
 const r = reducerVariables;
@@ -172,6 +173,22 @@ io.on("connection", (socket) => {
 
   socket.on("message", (messageData) => {
     socket.broadcast.emit("message", messageData);
+  });
+
+  socket.on("privatemessage", (messageData) => {
+    const { value, participants } = messageData;
+    console.log(participants);
+    console.log("Value: ", value);
+    const receivingUserId = participants.filter((id) => id != value.user_id)[0];
+    console.log("receivingUserId: ", receivingUserId);
+    const receiverUser = users[receivingUserId];
+    if (receiverUser) {
+      console.log("receiverUser: ", receiverUser);
+      io.to(receiverUser.socketID).emit("privatemessage", {
+        type: r.ADD_PRIVATE_MESSAGE,
+        value: value,
+      });
+    }
   });
 
   socket.on("channel", (channelData) => {

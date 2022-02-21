@@ -29,10 +29,17 @@ const getUsersForRoom = (room, state) => {
   );
 };
 
+const getMessagesForPrivateRoom = (privateRoom, state) => {
+  return state.privateMessages.filter((message) => {
+    return message.private_room_id === privateRoom.id;
+  });
+};
+
 export {
   getChannelsForRoom,
   getMessagesForChannel,
   attachUsersToMessages,
   getDirectMessages,
   getUsersForRoom,
+  getMessagesForPrivateRoom,
 };

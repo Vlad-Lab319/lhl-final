@@ -16,8 +16,17 @@ export default function useApplicationData() {
         axios.get(`/api/messages/`),
         axios.get(`/api/users/friends/${user.id}`),
         axios.get(`/api/users/friends/requests/${user.id}`),
+        axios.get(`/api/messages/private/${user.id}`),
       ]).then((all) => {
-        const [users, rooms, channels, messages, friends, friendRequests] = all;
+        const [
+          users,
+          rooms,
+          channels,
+          messages,
+          friends,
+          friendRequests,
+          privateMessages,
+        ] = all;
         dispatch({
           type: r.SET_APPLICATION_DATA,
           value: {
@@ -27,6 +36,7 @@ export default function useApplicationData() {
             messages: messages.data,
             friends: friends.data,
             friendRequests: friendRequests.data,
+            privateMessages: privateMessages.data,
           },
         });
       });
@@ -81,6 +91,13 @@ export default function useApplicationData() {
         dispatch({
           type: r.ADD_MESSAGES,
           value: message,
+        });
+      });
+
+      socket.on("privatemessage", (action) => {
+        dispatch({
+          type: action.type,
+          value: action.value,
         });
       });
 
@@ -154,7 +171,6 @@ export default function useApplicationData() {
       type: r.SET_ACTIVE_USERS,
       value: {
         ...user,
-        room_id: room.id,
         channel_id: channel.id,
       },
     });
@@ -164,21 +180,47 @@ export default function useApplicationData() {
     dispatch({ type: r.SET_RECIPIENT, value: recipient });
   };
 
-  const setRoom = (channel, room, user) => {
-    state.directMessage &&
-      dispatch({ type: r.TOGGLE_DIRECT_MESSAGE, value: !state.directMessage });
+  const setRoom = (room, user, directMessage) => {
+    directMessage &&
+      dispatch({ type: r.SET_DIRECT_MESSAGE, value: !directMessage });
     dispatch({ type: r.SET_ROOM, value: room });
+    dispatch({ type: r.SET_PRIVATE_ROOM, value: {} });
     dispatch({ type: r.SET_CHANNEL, value: {} });
     dispatch({
       type: r.SET_USER,
-      value: { ...user, room_id: room.id, channel_id: channel.id },
+      value: { ...user, room_id: room.id, channel_id: null },
     });
     state.socket.emit("updateActiveUsers", {
       type: r.SET_ACTIVE_USERS,
       value: {
         ...user,
         room_id: room.id,
-        channel_id: channel.id,
+        channel_id: null,
+      },
+    });
+  };
+
+  const setPrivateRoom = async (user, friend) => {
+    const { data } = await axios.get(
+      `api/users/privateroom/${user.id}/${friend.id}`
+    );
+    console.log(data);
+    dispatch({
+      type: r.SET_DIRECT_MESSAGE,
+      value: true,
+    });
+    dispatch({ type: r.SET_ROOM, value: {} });
+    dispatch({ type: r.SET_CHANNEL, value: {} });
+    dispatch({
+      type: r.SET_PRIVATE_ROOM,
+      value: { id: data.id, participants: data.participants },
+    });
+    state.socket.emit("updateActiveUsers", {
+      type: r.SET_ACTIVE_USERS,
+      value: {
+        ...user,
+        room_id: null,
+        channel_id: null,
       },
     });
   };
@@ -187,36 +229,33 @@ export default function useApplicationData() {
     dispatch({ type: r.SET_SOCKET, value: socket });
   };
 
-  const toggleDirectMessage = () => {
-    dispatch({ type: r.TOGGLE_DIRECT_MESSAGE, value: !state.directMessage });
-    setRoom({}, {}, state.user);
+  const toggleDirectMessage = (directMessage) => {
+    dispatch({ type: r.SET_DIRECT_MESSAGE, value: !directMessage });
+    setRoom({}, state.user);
     setChannel({}, {}, state.user);
   };
 
   // -----------------------------WEBSOCKET-------------------------------------
 
-  const sendFriendRequest = (user_id, friend_id) => {
-    axios.post("/api/users/friends/add", { user_id, friend_id }).then(() => {
-      state.socket.emit("sendfriendrequest", { value: { user_id, friend_id } });
+  const sendFriendRequest = async (user_id, friend_id) => {
+    await axios.post("/api/users/friends/add", { user_id, friend_id });
+    state.socket.emit("sendfriendrequest", { value: { user_id, friend_id } });
+  };
+
+  const cancelFriendRequest = async (user_id, friend_id) => {
+    await axios.post("/api/users/friends/delete", { user_id, friend_id });
+    state.socket.emit("cancelfriendrequest", {
+      value: { user_id, friend_id },
     });
   };
 
-  const cancelFriendRequest = (user_id, friend_id) => {
-    axios.post("/api/users/friends/delete", { user_id, friend_id }).then(() => {
-      state.socket.emit("cancelfriendrequest", {
-        value: { user_id, friend_id },
-      });
+  const acceptFriendRequest = async (user_id, friend_id) => {
+    await axios.post("/api/users/friends/accept", { user_id, friend_id });
+    state.socket.emit("acceptfriendrequest", {
+      value: { user_id, friend_id },
     });
-  };
-
-  const acceptFriendRequest = (user_id, friend_id) => {
-    axios.post("/api/users/friends/accept", { user_id, friend_id }).then(() => {
-      state.socket.emit("acceptfriendrequest", {
-        value: { user_id, friend_id },
-      });
-      state.socket.emit("cancelfriendrequest", {
-        value: { user_id, friend_id },
-      });
+    state.socket.emit("cancelfriendrequest", {
+      value: { user_id, friend_id },
     });
   };
 
@@ -227,6 +266,26 @@ export default function useApplicationData() {
         value: message.data[0],
       });
       state.socket.emit("message", message.data[0]);
+    });
+  };
+
+  const sendPrivateMessage = async (messageData) => {
+    console.log("Message Data: ", messageData);
+    const { user_id, private_room_id, message, participants } = messageData;
+    const res = await axios.post(`/api/messages/private`, {
+      user_id,
+      private_room_id,
+      message,
+    });
+    const value = res.data;
+    console.log("USE APP DATA - SEND PM: ", value);
+    dispatch({
+      type: r.ADD_PRIVATE_MESSAGE,
+      value: value,
+    });
+    state.socket.emit("privatemessage", {
+      value: value,
+      participants: participants,
     });
   };
 
@@ -286,6 +345,7 @@ export default function useApplicationData() {
     loginUser,
     logoutUser,
     sendMessage,
+    sendPrivateMessage,
     setRecipient,
     registerUser,
     createRoom,
@@ -300,5 +360,6 @@ export default function useApplicationData() {
     sendFriendRequest,
     cancelFriendRequest,
     acceptFriendRequest,
+    setPrivateRoom,
   };
 }

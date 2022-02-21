@@ -1,4 +1,5 @@
 const express = require("express");
+const { send } = require("upgrade");
 const db = require("../db/index");
 const router = express.Router();
 
@@ -27,6 +28,25 @@ router.get("/", (req, res) => {
   );
 });
 
+router.get("/private/:user_id", async (req, res) => {
+  const { user_id } = req.params;
+  const data = await db.query(
+    `
+    SELECT *
+    FROM private_messages
+    JOIN private_rooms ON private_messages.private_room_id = private_rooms.id
+    WHERE private_rooms.id IN(
+      SELECT private_room_users.private_room_id
+      FROM private_room_users
+      WHERE private_room_users.user_id = $1
+    )
+    ORDER BY private_messages.created_at ASC;
+    `,
+    [user_id]
+  );
+  res.json(data.rows);
+});
+
 router.post("/", (req, res) => {
   const { userID, channelID, message } = req.body;
   db.query(
@@ -39,6 +59,21 @@ router.post("/", (req, res) => {
       res.json(messages);
     })
     .catch((error) => console.log(error));
+});
+
+router.post("/private", async (req, res) => {
+  const { user_id, private_room_id, message } = req.body;
+  try {
+    const data = await db.query(
+      `
+      INSERT INTO private_messages (user_id, private_room_id, message) VALUES ($1, $2, $3) RETURNING*;
+      `,
+      [user_id, private_room_id, message]
+    );
+    res.json(data.rows[0]);
+  } catch (err) {
+    res.sendStatus(500);
+  }
 });
 
 module.exports = router;

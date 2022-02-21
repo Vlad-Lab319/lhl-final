@@ -54,19 +54,6 @@ router.get("/search/:name/:id", (req, res) => {
     res.json(data.rows);
   });
 });
-// get friends
-router.get("/friends/:userID", (req, res) => {
-  db.query(
-    `
-    SELECT users.id AS id, users.username AS name, users.avatar_url AS avatar FROM friends
-    JOIN users ON friend_id = users.id
-    WHERE user_id = $1
-    ;`,
-    [req.params.userID]
-  ).then(({ rows: friends }) => {
-    res.json(friends);
-  });
-});
 
 router.get("/friends/requests/:id", (req, res) => {
   db.query(
@@ -91,6 +78,37 @@ router.get("/friends/requests/:id", (req, res) => {
       };
     });
     res.json(formatData);
+  });
+});
+
+router.get("/friends/:userID", (req, res) => {
+  db.query(
+    `
+    SELECT users.id AS id, users.username AS name, users.avatar_url AS avatar FROM friends
+    JOIN users ON friend_id = users.id
+    WHERE user_id = $1
+    ;`,
+    [req.params.userID]
+  ).then(({ rows: friends }) => {
+    res.json(friends);
+  });
+});
+
+router.get("/privateroom/:user_id/:friend_id", async (req, res) => {
+  const { user_id, friend_id } = req.params;
+  const data = await db.query(
+    `
+    SELECT A.private_room_id AS id
+FROM private_room_users A, private_room_users B
+WHERE (A.user_id = $1 AND B.user_id = $2)
+AND A.private_room_id = B.private_room_id
+
+    `,
+    [user_id, friend_id]
+  );
+  res.json({
+    id: data.rows[0].id,
+    participants: [user_id, friend_id],
   });
 });
 
@@ -176,26 +194,29 @@ router.post("/friends/delete", (req, res) => {
   });
 });
 
-router.post("/friends/accept", (req, res) => {
+router.post("/friends/accept", async (req, res) => {
   const { user_id, friend_id } = req.body;
-  db.query(
-    `DELETE FROM friend_requests WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1 );`,
-    [user_id, friend_id]
-  );
-  db.query(
-    `INSERT INTO friends (user_id, friend_id) SELECT $1,$2 WHERE NOT EXISTS(SELECT user_id, friend_id FROM friends WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1 )) RETURNING *`,
-    [user_id, friend_id]
-  ).then((data) => {
+  try {
+    await db.query(
+      `DELETE FROM friend_requests WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1 );`,
+      [user_id, friend_id]
+    );
+    const {
+      rows: [{ id: private_room_id }],
+    } = await db.query(`INSERT INTO private_rooms VALUES(DEFAULT) RETURNING*;`);
+    await db.query(
+      `INSERT INTO private_room_users (user_id, private_room_id) VALUES ($1, $3), ($2, $3);`,
+      [user_id, friend_id, private_room_id]
+    );
+    await db.query(
+      `INSERT INTO friends (user_id, friend_id) SELECT $1,$2 WHERE NOT EXISTS(SELECT user_id, friend_id FROM friends WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1 )) RETURNING *;`,
+      [user_id, friend_id]
+    );
     res.sendStatus(200);
-    // if (data.rows.length) {
-    // } else {
-    //   res.sendStatus(500);
-    // }
-  });
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
 });
-
-// TODO: get all distinct users from the users table that are in the same rooms as the current logged in user
-
-// TODO: Login will need to get a user by email and password they enter, that password will need to be compared against the hashed password (check INFO.md for directions)
 
 module.exports = router;
