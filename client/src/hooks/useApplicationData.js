@@ -7,39 +7,41 @@ export default function useApplicationData() {
   const { state, dispatch, r } = useStateManager();
   // --------------------------INITIALIZE DATA----------------------------------
 
-  const initialFetch = (user) => {
+  const initialFetch = async (user) => {
     if (user.id) {
-      Promise.all([
-        axios.get(`/api/users/`),
-        axios.get(`/api/rooms/${user.id}`),
-        axios.get(`/api/channels/${user.id}`),
-        axios.get(`/api/messages/`),
-        axios.get(`/api/users/friends/${user.id}`),
-        axios.get(`/api/users/friends/requests/${user.id}`),
-        axios.get(`/api/messages/private/${user.id}`),
-      ]).then((all) => {
+      try {
         const [
-          users,
-          rooms,
-          channels,
-          messages,
-          friends,
-          friendRequests,
-          privateMessages,
-        ] = all;
+          { data: users },
+          { data: rooms },
+          { data: channels },
+          { data: messages },
+          { data: friends },
+          { data: friendRequests },
+          { data: privateMessages },
+        ] = await Promise.all([
+          axios.get(`/api/users/`),
+          axios.get(`/api/rooms/${user.id}`),
+          axios.get(`/api/channels/${user.id}`),
+          axios.get(`/api/messages/`),
+          axios.get(`/api/users/friends/${user.id}`),
+          axios.get(`/api/users/friends/requests/${user.id}`),
+          axios.get(`/api/messages/private/${user.id}`),
+        ]);
         dispatch({
           type: r.SET_APPLICATION_DATA,
           value: {
-            users: users.data,
-            rooms: rooms.data,
-            channels: channels.data,
-            messages: messages.data,
-            friends: friends.data,
-            friendRequests: friendRequests.data,
-            privateMessages: privateMessages.data,
+            users,
+            rooms,
+            channels,
+            messages,
+            friends,
+            friendRequests,
+            privateMessages,
           },
         });
-      });
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
