@@ -3,9 +3,11 @@ import { useState } from "react";
 import AddFriend from "./AddFriend";
 import Rename from "./Rename";
 import Confirm from "./Confirm";
+import "./MenuList.scss";
 
 export default function MenuList(props) {
-  const { friends, addUserToRoom, room, editRoom, deleteRoom } = props;
+  const { remainingMemberList, addUserToRoom, room, editRoom, deleteRoom } =
+    props;
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -41,7 +43,7 @@ export default function MenuList(props) {
       >
         <AddFriend
           close={handleClose}
-          friends={friends}
+          remainingMemberList={remainingMemberList}
           addUserToRoom={addUserToRoom}
           room={room}
         />

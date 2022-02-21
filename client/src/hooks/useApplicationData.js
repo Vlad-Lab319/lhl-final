@@ -115,7 +115,7 @@ export default function useApplicationData() {
         });
       });
 
-      // return () => socket.disconnect();
+      return () => socket.disconnect();
     }
   };
 
@@ -123,6 +123,15 @@ export default function useApplicationData() {
     initialFetch(state.user);
     socketMan(state.user);
   }, [state.user.id]);
+
+  useEffect(() => {
+    axios.get(`/api/rooms/members/${state.room.id || 1}`).then((members) => {
+      dispatch({
+        type: r.SET_ROOM_MEMBERS,
+        value: members.data,
+      });
+    });
+  }, [state.room]);
 
   //-------------------------LOGIN/LOGOUT---------------------------------------
   const registerUser = (name, email, password) => {
