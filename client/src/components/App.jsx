@@ -1,6 +1,6 @@
 //-------------------------------Helpers----------------------------------------
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { createContext, useEffect, useMemo, useState } from "react";
+import { createContext, useMemo, useState } from "react";
 import {
   attachUsersToMessages,
   getChannelsForRoom,
