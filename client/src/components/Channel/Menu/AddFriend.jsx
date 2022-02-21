@@ -33,7 +33,7 @@ const AddFriend = (props) => {
 
   const newFriends = remainingMemberList.map((friend) => {
     const newObj = {};
-    newObj["label"] = friend.username;
+    newObj["label"] = friend.name;
     newObj["id"] = friend.id;
     return newObj;
   });
