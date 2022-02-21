@@ -84,9 +84,9 @@ router.get("/friends/requests/:id", (req, res) => {
 router.get("/friends/:userID", (req, res) => {
   db.query(
     `
-    SELECT users.id AS id, users.username AS name, users.avatar_url AS avatar FROM friends
-    JOIN users ON friend_id = users.id
-    WHERE user_id = $1
+    SELECT users.id AS id, users.username AS name, users.avatar_url AS avatar FROM users
+    JOIN friends ON friends.friend_id = users.id
+    WHERE friends.user_id = $1
     ;`,
     [req.params.userID]
   ).then(({ rows: friends }) => {
@@ -209,9 +209,14 @@ router.post("/friends/accept", async (req, res) => {
       [user_id, friend_id, private_room_id]
     );
     await db.query(
-      `INSERT INTO friends (user_id, friend_id) SELECT $1,$2 WHERE NOT EXISTS(SELECT user_id, friend_id FROM friends WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1 )) RETURNING *;`,
+      `INSERT INTO friends (user_id, friend_id) VALUES($1,$2),($2,$1);`,
       [user_id, friend_id]
     );
+
+    // await db.query(
+    //   `INSERT INTO friends (user_id, friend_id) SELECT $1,$2 WHERE NOT EXISTS(SELECT user_id, friend_id FROM friends WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1 )) RETURNING *;`,
+    //   [user_id, friend_id]
+    // );
     res.sendStatus(200);
   } catch (error) {
     console.log(error);
