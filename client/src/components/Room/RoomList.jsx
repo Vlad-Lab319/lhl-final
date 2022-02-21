@@ -10,7 +10,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Input from "@mui/material/Input";
 // React
-import { useEffect, useState } from "react";
+import { useState } from "react";
 // Styles
 import "./RoomList.scss";
 // Components
@@ -43,7 +43,7 @@ const RoomList = (props) => {
         id={room.id}
         name={room.name}
         icon={room.icon_url}
-        setRoom={() => setRoom( room, user,directMessage)}
+        setRoom={() => setRoom(room, user, directMessage)}
         selected={room.id === value.id}
       />
     );
@@ -61,8 +61,8 @@ const RoomList = (props) => {
 
   const addButton = (
     <div className="room-container">
-      <IconButton color="inherit">
-        <AddCircleIcon onClick={toggleNewRoom} />
+      <IconButton color="inherit" onClick={toggleNewRoom}>
+        <AddCircleIcon />
       </IconButton>
       <Dialog open={open} onClose={toggleNewRoom}>
         <DialogTitle>Create new room</DialogTitle>
@@ -87,11 +87,11 @@ const RoomList = (props) => {
   );
 
   const friendButton = (
-    <div className="room-container">
-      <IconButton
-        color="inherit"
-        onClick={() => toggleDirectMessage(directMessage)}
-      >
+    <div
+      className="room-container"
+      onClick={() => toggleDirectMessage(directMessage)}
+    >
+      <IconButton color="inherit">
         {directMessage ? (
           <PersonIcon className="room-icon" />
         ) : (
