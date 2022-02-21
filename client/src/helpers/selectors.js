@@ -39,7 +39,19 @@ const getMessagesForPrivateRoom = (privateRoom, state) => {
 
 const getFilteredListForAddFriend = (state) => {
   axios.get(`/api/rooms/members/${state.room.id}`).then((members) => {
-    console.log(members);
+    console.log("members: ", members);
+
+    const friends = state.friends;
+
+    console.log("friends: ", friends);
+
+    const filteredMembers = friends.filter((friend) => {
+      return members.some((member) => {
+        return member.id === friend.id;
+      });
+    });
+
+    console.log("filter: ", filteredMembers);
   });
 };
 
