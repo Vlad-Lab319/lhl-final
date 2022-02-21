@@ -211,10 +211,9 @@ export default function useApplicationData() {
   };
 
   const setPrivateRoom = async (user, friend) => {
-    const { data } = await axios.get(
-      `api/users/privateroom/${user.id}/${friend.id}`
-    );
-    console.log(data);
+    const {
+      data: { id, participants },
+    } = await axios.get(`api/users/privateroom/${user.id}/${friend.id}`);
     dispatch({
       type: r.SET_DIRECT_MESSAGE,
       value: true,
@@ -223,7 +222,7 @@ export default function useApplicationData() {
     dispatch({ type: r.SET_CHANNEL, value: {} });
     dispatch({
       type: r.SET_PRIVATE_ROOM,
-      value: { id: data.id, participants: data.participants },
+      value: { id, participants },
     });
     state.socket.emit("updateActiveUsers", {
       type: r.SET_ACTIVE_USERS,

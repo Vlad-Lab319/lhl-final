@@ -60,9 +60,9 @@ const RoomList = (props) => {
   }
 
   const addButton = (
-    <div className="room-container">
+    <div className="list-item">
       <IconButton color="inherit" onClick={toggleNewRoom}>
-        <AddCircleIcon className="room-icon" />
+        <AddCircleIcon className="list-icon" />
       </IconButton>
       <Dialog open={open} onClose={toggleNewRoom}>
         <DialogTitle>Create new room</DialogTitle>
@@ -88,14 +88,14 @@ const RoomList = (props) => {
 
   const friendButton = (
     <div
-      className="room-container"
+      className="list-item"
       onClick={() => toggleDirectMessage(directMessage)}
     >
       <IconButton color="inherit">
         {directMessage ? (
-          <PersonIcon className="room-icon" />
+          <PersonIcon className="list-icon-options" />
         ) : (
-          <GroupIcon className="room-icon" />
+          <GroupIcon className="list-icon" />
         )}
       </IconButton>
     </div>
@@ -103,12 +103,13 @@ const RoomList = (props) => {
 
   return (
     <div className="sidebar sidebar--rooms">
-      {friendButton}
-      <div className="room-separator"></div>
-      {rooms}
-      {rooms.length > 0 && <div className="room-separator"></div>}
-      {addButton}
-      {/* <ArrowDropDownOutlinedIcon /> */}
+      <div className="room-list">
+        {friendButton}
+        <div className="separator" />
+        {rooms}
+        {rooms.length > 0 && <div className="separator" />}
+        {addButton}
+      </div>
     </div>
   );
 };
