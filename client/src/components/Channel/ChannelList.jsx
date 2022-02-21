@@ -62,13 +62,13 @@ const ChannelList = (props) => {
   }
 
   const addButton = (
-    <>
-      <div className="channel-item" onClick={toggleOpen}>
-        <div className="channel-icon">
+    <div className="channel-list-item" onClick={toggleOpen}>
+      <span className="channel-list-info">
+        <div className="channel-list-icon">
           <AddBoxIcon />
         </div>
-        <span>Create a channel</span>
-      </div>
+        Create a channel
+      </span>
       <Dialog open={open} onClose={toggleOpen} className="add-channel-box">
         <DialogTitle className="add-channel-title">{room.name}</DialogTitle>
         <DialogContent className="add-channel-content">
@@ -95,7 +95,7 @@ const ChannelList = (props) => {
           </Button>
         </DialogActions>
       </Dialog>
-    </>
+    </div>
   );
 
   return (
@@ -104,19 +104,21 @@ const ChannelList = (props) => {
         <div className="channel-list">
           <h3 className="channel-list-title">
             <div className="channel-list-room-name">{room.name}</div>
-            <MenuList
-              remainingMemberList={remainingMemberList}
-              addUserToRoom={addUserToRoom}
-              room={room}
-              editRoom={editRoom}
-              deleteRoom={deleteRoom}
-            >
-              <SettingsIcon className="channel-list-channel-options" />
-            </MenuList>
+            <div className="channel-list-channel-options">
+              <MenuList
+                remainingMemberList={remainingMemberList}
+                addUserToRoom={addUserToRoom}
+                room={room}
+                editRoom={editRoom}
+                deleteRoom={deleteRoom}
+              >
+                <SettingsIcon className="channel-list-gear-icon" />
+              </MenuList>
+            </div>
           </h3>
           <div className="channel-list-separator" />
           {channels}
-          {channels.length !== 0 && <div className="channel-list-separator" />}
+          {channels.length > 0 && <div className="channel-list-separator" />}
           {addButton}
         </div>
       )}

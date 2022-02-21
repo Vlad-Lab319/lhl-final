@@ -7,7 +7,6 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import classNames from "classnames";
 import { useState } from "react";
 import "./ChannelList.scss";
 
@@ -81,22 +80,31 @@ const ChannelListItem = (props) => {
     </Dialog>
   );
 
-  const channelListClass = classNames(
-    "channel-item",
-    selected && "channel-item--selected"
-  );
-
-  const iconClass = classNames(
-    "channel-icon",
-    selected && "channel-icon--selected"
-  );
+  const channelInfoClass = selected
+    ? "channel-list-info channel-list-info-selected"
+    : "channel-list-info";
+  const channelIconClass = selected
+    ? "channel-list-icon channel-list-icon-selected"
+    : "channel-list-icon";
 
   return (
-    <div className={channelListClass} onClick={setChannel}>
-      <div className={iconClass}>{type === "text" && <TextsmsIcon />}</div>
-      <span>{name}</span>
-      <SettingsIcon onClick={toggleOpenEdit} />
-      <DeleteIcon onClick={toggleOpenConfirm} />
+    <div className="channel-list-item" onClick={setChannel}>
+      <div className={channelInfoClass}>
+        <div className={channelIconClass}>
+          {type === "text" && <TextsmsIcon />}
+        </div>
+        <span>{name}</span>
+      </div>
+      <div className="channel-list-channel-options">
+        <SettingsIcon
+          className="channel-gear-option"
+          onClick={toggleOpenEdit}
+        />
+        <DeleteIcon
+          className="channel-trash-option"
+          onClick={toggleOpenConfirm}
+        />
+      </div>
       {editMenu}
       {confirmMenu}
     </div>

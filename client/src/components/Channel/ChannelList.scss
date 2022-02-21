@@ -13,25 +13,36 @@
 
   .channel-list-title {
     display: inherit;
-    justify-content: center;
     align-items: center;
     margin: 1rem;
     height: 4rem;
     font-weight: bold;
     font-size: 1.25rem;
     text-transform: uppercase;
-    justify-content: flex-end;
 
     .channel-list-room-name {
-      position: absolute;
-      transform: translate(50%, 0%);
+      margin-left: 1rem;
     }
 
-    .channel-list-options {
+    .channel-list-channel-options {
+      display: inherit;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      right: 1.75rem;
+      height: 2rem;
+      width: 2rem;
+
+      .channel-list-gear-icon {
+        height: 2rem;
+        width: 2rem;
+        padding: 0rem;
+      }
     }
   }
 
   .channel-list-item {
+    color: $grey-text;
     display: inherit;
     flex-direction: row;
     align-items: center;
@@ -39,21 +50,33 @@
     width: inherit;
     height: 3rem;
 
-    .channel-list-channel-info {
+    .channel-list-info {
       height: 3rem;
       display: inherit;
+      flex-direction: row;
       align-items: center;
+      &-selected {
+        font-weight: bold;
+        color: white;
+      }
+      &:hover {
+        font-weight: bold;
+        cursor: pointer;
+      }
 
       .channel-list-icon {
         height: 2rem;
         width: 2rem;
-        margin: 0.5rem 1rem 0.5rem 1rem;
-        border-radius: 1rem;
+        // margin: 0.5rem 1rem 0.5rem 1rem;
+        margin: 0.5rem;
+        margin-left: 1rem;
+        &-selected {
+          color: $sig-color;
+        }
       }
     }
 
     .channel-list-channel-options {
-      height: 3rem;
       margin-right: 1rem;
       display: inherit;
       align-items: center;
@@ -67,6 +90,14 @@
         }
       }
 
+      .channel-trash-option {
+        color: rgb(200, 0, 0);
+
+        &:hover {
+          color: red;
+          cursor: pointer;
+        }
+      }
       .member-call-chat {
         color: rgba(0, 128, 0, 0.507);
         margin: 1rem 0rem 1rem 0rem;
