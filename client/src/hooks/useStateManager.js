@@ -176,7 +176,6 @@ export default function useStateManager() {
       case r.LOGOUT:
         return {
           ...initialState,
-          roomMembers: [],
         };
       default:
         return { ...state };
