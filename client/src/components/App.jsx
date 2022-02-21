@@ -51,6 +51,7 @@ const App = () => {
     cancelFriendRequest,
     acceptFriendRequest,
     setPrivateRoom,
+    takeMeHome,
   } = useApplicationData();
 
   // theme stuff
@@ -103,6 +104,7 @@ const App = () => {
                   logoutUser={() => logoutUser()}
                   toggle={colorMode.toggleColorMode}
                   theme={theme}
+                  takeMeHome={() => takeMeHome()}
                 />
               </header>
               <div className="main-container">

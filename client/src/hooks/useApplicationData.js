@@ -253,6 +253,12 @@ export default function useApplicationData() {
     setChannel({}, {}, state.user);
   };
 
+  const takeMeHome = () => {
+    dispatch({ type: r.SET_DIRECT_MESSAGE, value: false });
+    setRoom({}, state.user);
+    setChannel({}, {}, state.user);
+  };
+
   // -----------------------------WEBSOCKET-------------------------------------
 
   const sendFriendRequest = async (user_id, friend_id) => {
@@ -379,5 +385,6 @@ export default function useApplicationData() {
     cancelFriendRequest,
     acceptFriendRequest,
     setPrivateRoom,
+    takeMeHome,
   };
 }
