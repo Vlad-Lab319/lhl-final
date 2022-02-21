@@ -94,6 +94,26 @@ router.get("/friends/requests/:id", (req, res) => {
   });
 });
 
+router.get("/privateroom/:user_id/:friend_id", async (req, res) => {
+  const { user_id, friend_id } = req.params;
+  // const data = await db.query("SELECT * FROM private_rooms;");
+  // console.log(data);
+  // const data2 = await db.query("SELECT * FROM private_room_users;");
+  // console.log(data2);
+  const data = await db.query(
+    `
+    SELECT A.private_room_id
+FROM private_room_users A, private_room_users B
+WHERE (A.user_id = $1 AND B.user_id = $2)
+AND A.private_room_id = B.private_room_id
+
+    `,
+    [user_id, friend_id]
+  );
+  console.log("room id: ", data.rows[0]);
+  res.json(data.rows[0]);
+});
+
 router.post("/register", (req, res) => {
   const { name, email, password } = req.body;
   db.query(
@@ -184,14 +204,14 @@ router.post("/friends/accept", async (req, res) => {
       [user_id, friend_id]
     );
     const {
-      rows: { id: private_room_id },
-    } = await db.query(`INSERT INTO private_rooms DEFAULT VALUES RETURNING *;`);
+      rows: [{ id: private_room_id }],
+    } = await db.query(`INSERT INTO private_rooms VALUES(DEFAULT) RETURNING*;`);
     await db.query(
-      `INSERT INTO private_room_users (user_id, private_room_id) VALUES ($1, $3), ($2, $3)`,
+      `INSERT INTO private_room_users (user_id, private_room_id) VALUES ($1, $3), ($2, $3);`,
       [user_id, friend_id, private_room_id]
     );
     await db.query(
-      `INSERT INTO friends (user_id, friend_id) SELECT $1,$2 WHERE NOT EXISTS(SELECT user_id, friend_id FROM friends WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1 )) RETURNING *`,
+      `INSERT INTO friends (user_id, friend_id) SELECT $1,$2 WHERE NOT EXISTS(SELECT user_id, friend_id FROM friends WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1 )) RETURNING *;`,
       [user_id, friend_id]
     );
     res.sendStatus(200);

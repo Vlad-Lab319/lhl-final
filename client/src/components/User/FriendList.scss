@@ -68,6 +68,22 @@
         color: green;
         margin: 1rem 0rem 1rem 0rem;
       }
+      .friend-text-chat {
+        color: $grey-text;
+        margin: 1rem 0.5rem 1rem 0rem;
+        &:hover {
+          color: white;
+          cursor: pointer;
+        }
+      }
+      .friend-call-chat {
+        color: rgba(0, 128, 0, 0.507);
+        margin: 1rem 0rem 1rem 0rem;
+        &:hover {
+          color: green;
+          cursor: pointer;
+        }
+      }
     }
   }
   .friend-list-separator {

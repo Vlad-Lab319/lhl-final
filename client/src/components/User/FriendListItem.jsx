@@ -1,5 +1,7 @@
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import PhoneIcon from "@mui/icons-material/Phone";
 import DoNotDisturbAltIcon from "@mui/icons-material/DoNotDisturbAlt";
+import TextsmsIcon from "@mui/icons-material/Textsms";
 import { useState } from "react";
 import "./FriendList.scss";
 
@@ -13,6 +15,9 @@ const FriendListItem = (props) => {
     requestStatus,
     cancelFriendRequest,
     acceptFriendRequest,
+    user,
+    friend,
+    setPrivateRoom,
   } = props;
 
   const [status, setStatus] = useState("Pending");
@@ -43,6 +48,20 @@ const FriendListItem = (props) => {
     );
   };
 
+  const contactOptions =  () => {
+    return <div className="friend-request-container">
+        <TextsmsIcon
+          className="friend-text-chat"
+          onClick={() => setPrivateRoom(user,friend)}
+        />
+        <PhoneIcon
+          className="friend-call-chat"
+          // onClick={acceptFriendRequest}
+        />
+      </div>
+    ;
+  }
+
   return (
     <div className="friend-list-item">
       <div className="friend-list-user-info">
@@ -54,6 +73,7 @@ const FriendListItem = (props) => {
         {name}
       </div>
       {isRequest && requestOptions(requestStatus)}
+      {!isRequest && contactOptions()}
     </div>
   );
 };

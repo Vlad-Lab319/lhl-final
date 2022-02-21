@@ -154,7 +154,6 @@ export default function useApplicationData() {
       type: r.SET_ACTIVE_USERS,
       value: {
         ...user,
-        room_id: room.id,
         channel_id: channel.id,
       },
     });
@@ -164,21 +163,44 @@ export default function useApplicationData() {
     dispatch({ type: r.SET_RECIPIENT, value: recipient });
   };
 
-  const setRoom = (channel, room, user) => {
-    state.directMessage &&
-      dispatch({ type: r.TOGGLE_DIRECT_MESSAGE, value: !state.directMessage });
+  const setRoom = (room, user, directMessage) => {
+    directMessage &&
+      dispatch({ type: r.SET_DIRECT_MESSAGE, value: !directMessage });
     dispatch({ type: r.SET_ROOM, value: room });
+    dispatch({ type: r.SET_PRIVATE_ROOM, value: {} });
     dispatch({ type: r.SET_CHANNEL, value: {} });
     dispatch({
       type: r.SET_USER,
-      value: { ...user, room_id: room.id, channel_id: channel.id },
+      value: { ...user, room_id: room.id, channel_id: null },
     });
     state.socket.emit("updateActiveUsers", {
       type: r.SET_ACTIVE_USERS,
       value: {
         ...user,
         room_id: room.id,
-        channel_id: channel.id,
+        channel_id: null,
+      },
+    });
+  };
+
+  const setPrivateRoom = async (user, friend) => {
+    const { data } = await axios.get(
+      `api/users/privateroom/${user.id}/${friend.id}`
+    );
+    console.log(data);
+    dispatch({
+      type: r.SET_DIRECT_MESSAGE,
+      value: true,
+    });
+    dispatch({ type: r.SET_ROOM, value: {} });
+    dispatch({ type: r.SET_CHANNEL, value: {} });
+    dispatch({ type: r.SET_PRIVATE_ROOM, value: data });
+    state.socket.emit("updateActiveUsers", {
+      type: r.SET_ACTIVE_USERS,
+      value: {
+        ...user,
+        room_id: null,
+        channel_id: null,
       },
     });
   };
@@ -187,9 +209,9 @@ export default function useApplicationData() {
     dispatch({ type: r.SET_SOCKET, value: socket });
   };
 
-  const toggleDirectMessage = () => {
-    dispatch({ type: r.TOGGLE_DIRECT_MESSAGE, value: !state.directMessage });
-    setRoom({}, {}, state.user);
+  const toggleDirectMessage = (directMessage) => {
+    dispatch({ type: r.SET_DIRECT_MESSAGE, value: !directMessage });
+    setRoom({}, state.user);
     setChannel({}, {}, state.user);
   };
 
@@ -300,5 +322,6 @@ export default function useApplicationData() {
     sendFriendRequest,
     cancelFriendRequest,
     acceptFriendRequest,
+    setPrivateRoom,
   };
 }

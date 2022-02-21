@@ -17,10 +17,11 @@ export default function useStateManager() {
     SET_APPLICATION_DATA: "SET_APPLICATION_DATA",
     SET_ERRORS: "SET_ERRORS",
     SET_ACTIVE_USERS: "SET_ACTIVE_USERS",
-    TOGGLE_DIRECT_MESSAGE: "TOGGLE_DIRECT_MESSAGE",
+    SET_DIRECT_MESSAGE: "SET_DIRECT_MESSAGE",
     SET_FRIEND_REQUEST: "SET_FRIEND_REQUEST",
     CANCEL_FRIEND_REQUEST: "CANCEL_FRIEND_REQUEST",
     ADD_FRIEND: "ADD_FRIEND",
+    SET_PRIVATE_ROOM: "SET_PRIVATE_ROOM",
   };
 
   const r = reducerVariables;
@@ -31,6 +32,7 @@ export default function useStateManager() {
     activeUsers: {},
     socket: null,
     room: {},
+    privateRoom: {},
     channel: {},
     rooms: [],
     channels: [],
@@ -70,6 +72,11 @@ export default function useStateManager() {
         return {
           ...state,
           room: action.value,
+        };
+      case r.SET_PRIVATE_ROOM:
+        return {
+          ...state,
+          privateRoom: action.value,
         };
       case r.SET_ROOMS:
         return {
@@ -126,7 +133,7 @@ export default function useStateManager() {
           ...state,
           errors: action.value,
         };
-      case r.TOGGLE_DIRECT_MESSAGE:
+      case r.SET_DIRECT_MESSAGE:
         return {
           ...state,
           directMessage: action.value,

@@ -12,6 +12,7 @@ const FriendList = (props) => {
     friendRequests,
     cancelFriendRequest,
     acceptFriendRequest,
+    setPrivateRoom
   } = props;
 
   const friends = friendList.map((friend) => {
@@ -22,6 +23,10 @@ const FriendList = (props) => {
         setRecipient={() => setRecipient(friend)}
         selected={friend.id === value}
         avatar={friend.avatar}
+        isRequest={false}
+        setPrivateRoom={setPrivateRoom}
+        user={user}
+        friend={friend}
       />
     );
   });
