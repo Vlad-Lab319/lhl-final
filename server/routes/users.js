@@ -96,20 +96,24 @@ router.get("/friends/:userID", (req, res) => {
 
 router.get("/privateroom/:user_id/:friend_id", async (req, res) => {
   const { user_id, friend_id } = req.params;
-  const data = await db.query(
-    `
-    SELECT A.private_room_id AS id
-FROM private_room_users A, private_room_users B
-WHERE (A.user_id = $1 AND B.user_id = $2)
-AND A.private_room_id = B.private_room_id
-
-    `,
-    [user_id, friend_id]
-  );
-  res.json({
-    id: data.rows[0].id,
-    participants: [user_id, friend_id],
-  });
+  try {
+    const {
+      rows: [{ id }],
+    } = await db.query(
+      `SELECT A.private_room_id AS id
+      FROM private_room_users A, private_room_users B
+      WHERE (A.user_id = $1 AND B.user_id = $2)
+      AND A.private_room_id = B.private_room_id;`,
+      [user_id, friend_id]
+    );
+    res.json({
+      id: id,
+      participants: [user_id, friend_id],
+    });
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
 });
 
 router.post("/register", async (req, res) => {
@@ -119,10 +123,10 @@ router.post("/register", async (req, res) => {
       rows: [{ id, username, avatar_url }],
     } = await db.query(
       `INSERT INTO users (username, email, password, avatar_url)
-    VALUES ($1, $2, $3, 'https://i.pinimg.com/736x/f5/23/3a/f5233afc4af9c7be02cc1c673c7c93e9.jpg') RETURNING id, username, avatar_url;`,
+      VALUES ($1, $2, $3, 'https://i.pinimg.com/736x/f5/23/3a/f5233afc4af9c7be02cc1c673c7c93e9.jpg')
+      RETURNING id, username, avatar_url;`,
       [name, email, bcrypt.hashSync(password, 10)]
     );
-
     res.json({
       type: "SET_USER",
       value: {
@@ -132,6 +136,7 @@ router.post("/register", async (req, res) => {
       },
     });
   } catch (err) {
+    console.log(err);
     res.json({
       type: "SET_ERRORS",
       value:
@@ -140,41 +145,44 @@ router.post("/register", async (req, res) => {
   }
 });
 
-router.post("/login", (req, res) => {
+router.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  db.query(`SELECT * FROM users WHERE email = $1;`, [email]).then((data) => {
-    const dbResponse = data.rows[0];
-    if (dbResponse && bcrypt.compareSync(password, dbResponse.password)) {
-      res.json({
-        action: {
+  try {
+    const {
+      rows: [{ id, name, avatar, hashed }],
+    } = await db.query(
+      `SELECT id, username AS name, avatar_url AS avatar, password AS hashed FROM users WHERE email = $1;`,
+      [email]
+    );
+    id
+      ? bcrypt.compareSync(password, hashed) &&
+        res.json({
           type: "SET_USER",
           value: {
-            id: dbResponse.id,
-            name: dbResponse.username,
-            avatar: dbResponse.avatar_url,
+            id,
+            name,
+            avatar,
           },
-        },
-      });
-    } else {
-      res.json({
-        action: { type: "SET_ERRORS", value: "Email/Password is incorrect" },
-      });
-    }
-  });
+        })
+      : res.json({ type: "SET_ERRORS", value: "Email/Password is incorrect" });
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
 });
 
-router.post("/friends/add", (req, res) => {
+router.post("/friends/add", async (req, res) => {
   const { user_id, friend_id } = req.body;
-  db.query(
-    `INSERT INTO friend_requests (user_id, friend_id) SELECT $1,$2 WHERE NOT EXISTS(SELECT user_id, friend_id FROM friend_requests WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1 )) RETURNING *`,
-    [user_id, friend_id]
-  ).then((data) => {
-    if (data.rows.length) {
-      res.sendStatus(200);
-    } else {
-      res.sendStatus(500);
-    }
-  });
+  try {
+    const { rows } = await db.query(
+      `INSERT INTO friend_requests (user_id, friend_id) SELECT $1,$2 WHERE NOT EXISTS(SELECT user_id, friend_id FROM friend_requests WHERE (user_id = $1 AND friend_id = $2) OR (user_id = $2 AND friend_id = $1 )) RETURNING *`,
+      [user_id, friend_id]
+    );
+    rows.length ? res.sendStatus(200) : res.sendStatus(500);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
 });
 
 router.post("/friends/delete", async (req, res) => {

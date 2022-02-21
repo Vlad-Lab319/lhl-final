@@ -115,7 +115,7 @@ export default function useApplicationData() {
         });
       });
 
-      // return () => socket.disconnect();
+      return () => socket.disconnect();
     }
   };
 
@@ -127,26 +127,32 @@ export default function useApplicationData() {
   //-------------------------LOGIN/LOGOUT---------------------------------------
   const registerUser = async (name, email, password) => {
     clearErrors();
-    const {
-      data: {
-        action: { type, value },
-      },
-    } = await axios.post(`api/users/register`, {
-      name,
-      email,
-      password,
-    });
-    dispatch({ type, value });
+    try {
+      const {
+        data: { type, value },
+      } = await axios.post(`api/users/register`, {
+        name,
+        email,
+        password,
+      });
+      dispatch({ type, value });
+    } catch (err) {
+      console.log(err);
+    }
   };
   // TODO: UNCOMMENT - uncomment for deploy
   const loginUser = async (id) => {
     clearErrors();
-    const {
-      data: {
-        action: { type, value },
-      },
-    } = await axios.get(`api/users/login/${id}`);
-    dispatch({ type, value });
+    try {
+      const {
+        data: {
+          action: { type, value },
+        },
+      } = await axios.get(`api/users/login/${id}`);
+      dispatch({ type, value });
+    } catch (err) {
+      console.log(err);
+    }
   };
   // const loginUser = (email, password) => {
   //   clearErrors();
