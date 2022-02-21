@@ -19,9 +19,9 @@ const RoomMembersList = (props) => {
     <section className="sidebar sidebar--room-members">
       <ul className="member-list">
         <h3 className="member-list-title">
-          {room.name && room.name}
+          {room.name && room.name}&ensp;&raquo;
           {room.name && (
-            <span className="member-list-online">{members.length}</span>
+            <span className="member-list-online">&ensp;{members.length}</span>
           )}
         </h3>
         {room.name && <span className="member-list-separator" />}
