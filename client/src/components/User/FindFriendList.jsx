@@ -21,6 +21,10 @@ const FindFriendList = (props) => {
     }
   }, [searchValue]);
 
+  const clearSearch = () => {
+    setSearchValue("");
+  };
+
   const findFriendList = searchResults.map((foundUser) => {
     console.log(foundUser);
     return (
@@ -31,6 +35,7 @@ const FindFriendList = (props) => {
         name={foundUser.name}
         avatar={foundUser.avatar}
         sendFriendRequest={sendFriendRequest}
+        clearSearch={clearSearch}
       />
     );
   });
@@ -47,6 +52,7 @@ const FindFriendList = (props) => {
             id="input-with-sx"
             placeholder="Find new friends..."
             variant="standard"
+            value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
             autoComplete="off"
           />
