@@ -1,15 +1,15 @@
-import TextsmsIcon from "@mui/icons-material/Textsms";
-import classNames from "classnames";
-import "./ChannelListItem.scss";
-import SettingsIcon from "@mui/icons-material/Settings";
 import DeleteIcon from "@mui/icons-material/Delete";
+import SettingsIcon from "@mui/icons-material/Settings";
+import TextsmsIcon from "@mui/icons-material/Textsms";
 import { Input } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
-import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import classNames from "classnames";
 import { useState } from "react";
+import "./ChannelList.scss";
 
 const ChannelListItem = (props) => {
   const {

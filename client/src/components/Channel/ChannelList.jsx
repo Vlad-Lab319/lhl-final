@@ -10,7 +10,6 @@ import Input from "@mui/material/Input";
 import { useState } from "react";
 import "./ChannelList.scss";
 import ChannelListItem from "./ChannelListItem";
-import "./ChannelListItem.scss";
 import MenuList from "./Menu/MenuList";
 
 const ChannelList = (props) => {
@@ -102,8 +101,9 @@ const ChannelList = (props) => {
   return (
     <div className="sidebar sidebar--channels">
       {room.name && (
-        <>
-          <h3 className="channel-title">
+        <div className="channel-list">
+          <h3 className="channel-list-title">
+            <div className="channel-list-room-name">{room.name}</div>
             <MenuList
               remainingMemberList={remainingMemberList}
               addUserToRoom={addUserToRoom}
@@ -111,15 +111,14 @@ const ChannelList = (props) => {
               editRoom={editRoom}
               deleteRoom={deleteRoom}
             >
-              {room.name}
-              <SettingsIcon className="room-options" />
+              <SettingsIcon className="channel-list-channel-options" />
             </MenuList>
           </h3>
-          <div className="channel-separator"></div>
+          <div className="channel-list-separator" />
           {channels}
-          {channels.length !== 0 && <div className="channel-separator"></div>}
+          {channels.length !== 0 && <div className="channel-list-separator" />}
           {addButton}
-        </>
+        </div>
       )}
     </div>
   );
