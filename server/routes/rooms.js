@@ -29,12 +29,12 @@ router.get("/members/:roomID", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-  const { userID, newRoomName, icon } = req.body;
+  const { userID, newRoomName, description, checked, icon } = req.body;
   db.query(
     `
-      INSERT INTO rooms (user_id, name, icon_url) VALUES ($1, $2, $3) RETURNING *;
+      INSERT INTO rooms (user_id, name, description, is_private, icon_url) VALUES ($1, $2, $3, $4, $5) RETURNING *;
     `,
-    [userID, newRoomName, icon]
+    [userID, newRoomName, description, checked, icon]
   )
     .then(({ rows: rooms }) => {
       res.json(rooms);
