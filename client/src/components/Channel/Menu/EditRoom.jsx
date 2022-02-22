@@ -70,8 +70,12 @@ const EditRoom = (props) => {
           </Stack>
         </DialogContent>
         <DialogActions>
-          <Button onClick={toggleOpen}>Cancel</Button>
-          <Button onClick={edit}>Edit</Button>
+          <Button variant="contained" color="error" onClick={toggleOpen}>
+            Cancel
+          </Button>
+          <Button variant="contained" color="success" onClick={edit}>
+            Edit
+          </Button>
         </DialogActions>
       </Dialog>
     </>

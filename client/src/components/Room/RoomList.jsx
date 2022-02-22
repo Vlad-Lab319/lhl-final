@@ -116,8 +116,12 @@ const RoomList = (props) => {
           </Stack>
         </DialogContent>
         <DialogActions>
-          <Button onClick={toggleNewRoom}>Cancel</Button>
-          <Button onClick={create}>Create</Button>
+          <Button variant="contained" color="error" onClick={toggleNewRoom}>
+            Cancel
+          </Button>
+          <Button variant="contained" color="success" onClick={create}>
+            Create
+          </Button>
         </DialogActions>
       </Dialog>
     </div>

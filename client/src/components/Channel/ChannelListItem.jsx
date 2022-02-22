@@ -51,8 +51,12 @@ const ChannelListItem = (props) => {
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={toggleOpenEdit}>Cancel</Button>
-        <Button onClick={edit}>Submit</Button>
+        <Button variant="contained" color="error" onClick={toggleOpenEdit}>
+          Cancel
+        </Button>
+        <Button variant="contained" color="success" onClick={edit}>
+          Submit
+        </Button>
       </DialogActions>
     </Dialog>
   );

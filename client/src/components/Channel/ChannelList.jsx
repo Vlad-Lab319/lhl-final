@@ -87,10 +87,10 @@ const ChannelList = (props) => {
           />
         </DialogContent>
         <DialogActions>
-          <Button variant="outlined" color="error" onClick={toggleOpen}>
+          <Button variant="contained" color="error" onClick={toggleOpen}>
             Cancel
           </Button>
-          <Button variant="outlined" color="success" onClick={create}>
+          <Button variant="contained" color="success" onClick={create}>
             Add
           </Button>
         </DialogActions>
