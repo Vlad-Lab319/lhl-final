@@ -4,7 +4,6 @@ import classNames from "classnames";
 import { useEffect } from "react";
 import stringAvatar from "../../helpers/helpers";
 import "./RoomList.scss";
-// TODO: RoomListItem needs new message notifications implemented, consider incrementing a message count as new messages come in and when the user is in the room currently don't increment the counter or reset it or something
 
 const RoomListItem = (props) => {
   const {
