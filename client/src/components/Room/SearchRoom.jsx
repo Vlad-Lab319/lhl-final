@@ -15,26 +15,26 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 const SearchRoom = (props) => {
   const { publicRooms, user, addUserToRoom } = props;
 
   const userID = user.id;
 
-  // const options = publicRooms.map((room) => {
-  //   const option = {};
-  //   option["label"] = room.name;
-  //   option["id"] = room.id;
-  //   option["description"] = room.description;
-  //   return option;
-  // });
-
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [inputValue, setInputValue] = useState("");
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    axios.get(`/api/rooms/public`).then((res) => console.log(res.data));
+  });
 
   const openDialog = () => {
+    setInputValue("");
+    setValue(null);
     setOpen(true);
   };
 
