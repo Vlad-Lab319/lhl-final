@@ -1,7 +1,7 @@
 //mui material
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { Button, DialogActions, TextField } from "@mui/material";
+import { Button, DialogActions, Grid, TextField } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
@@ -87,12 +87,18 @@ const ChannelList = (props) => {
           />
         </DialogContent>
         <DialogActions>
-          <Button variant="contained" color="error" onClick={toggleOpen}>
-            Cancel
-          </Button>
-          <Button variant="contained" color="success" onClick={create}>
-            Add
-          </Button>
+          <Grid container direction="row" justifyContent="space-around">
+            <Grid item>
+              <Button variant="contained" color="error" onClick={toggleOpen}>
+                Cancel
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button variant="contained" color="success" onClick={create}>
+                Add
+              </Button>
+            </Grid>
+          </Grid>
         </DialogActions>
       </Dialog>
     </div>

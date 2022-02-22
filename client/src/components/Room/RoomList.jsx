@@ -2,7 +2,7 @@
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import GroupIcon from "@mui/icons-material/Group";
 import PersonIcon from "@mui/icons-material/Person";
-import { IconButton, Stack, TextField } from "@mui/material";
+import { Grid, IconButton, Stack, TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -116,12 +116,18 @@ const RoomList = (props) => {
           </Stack>
         </DialogContent>
         <DialogActions>
-          <Button variant="contained" color="error" onClick={toggleNewRoom}>
-            Cancel
-          </Button>
-          <Button variant="contained" color="success" onClick={create}>
-            Create
-          </Button>
+          <Grid container direction="row" justifyContent="space-around">
+            <Grid item>
+              <Button variant="contained" color="error" onClick={toggleNewRoom}>
+                Cancel
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button variant="contained" color="success" onClick={create}>
+                Edit
+              </Button>
+            </Grid>
+          </Grid>
         </DialogActions>
       </Dialog>
     </div>
