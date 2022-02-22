@@ -18,6 +18,8 @@ app.use(
 );
 
 const PORT = process.env.PORT || 8080;
+const buildPath = path.join(__dirname, '..', 'build'); 
+app.use(express.static(buildPath));
 
 const usersRoutes = require("./routes/users");
 const roomsRoutes = require("./routes/rooms");
