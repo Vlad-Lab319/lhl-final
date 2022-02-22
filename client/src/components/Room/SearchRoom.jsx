@@ -33,7 +33,7 @@ const SearchRoom = (props) => {
       console.log(res.data);
       setData(res.data);
     });
-  }, []);
+  }, [open]);
 
   const openDialog = () => {
     setInputValue("");
