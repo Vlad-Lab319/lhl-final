@@ -1,5 +1,5 @@
 //mui material
-import { Grid, Input, MenuItem, Stack, Switch, TextField } from "@mui/material";
+import { Grid, MenuItem, Stack, Switch, TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -8,19 +8,14 @@ import DialogContent from "@mui/material/DialogContent";
 import { useState } from "react";
 
 const EditRoom = (props) => {
-  const { room, editRoom } = props;
+  const { room, editRoom, openEdit, toggleOpenEdit } = props;
 
-  const [open, setOpen] = useState(false);
   const [newRoomName, setNewRoomName] = useState(room.name);
   const [description, setDescription] = useState(room.description);
   const [checked, setChecked] = useState(room.is_public);
 
   const toggleSwitch = (event) => {
     setChecked(event.target.checked);
-  };
-
-  const toggleOpen = () => {
-    setOpen(!open);
   };
 
   function edit() {
@@ -31,60 +26,56 @@ const EditRoom = (props) => {
     };
 
     editRoom(roomData, room.id);
-    toggleOpen();
+    toggleOpenEdit();
   }
 
   return (
-    <>
-      <MenuItem onClick={toggleOpen}>Edit</MenuItem>
-      <Dialog open={open} onClose={toggleOpen}>
-        <DialogTitle>Edit Room</DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            type="text"
-            label="Name"
-            fullWidth
-            variant="standard"
-            value={newRoomName}
-            onChange={(event) => setNewRoomName(event.target.value)}
+    <Dialog open={openEdit} onClose={toggleOpenEdit}>
+      <DialogTitle>Edit Room</DialogTitle>
+      <DialogContent>
+        <TextField
+          margin="dense"
+          type="text"
+          label="Name"
+          fullWidth
+          variant="standard"
+          value={newRoomName}
+          onChange={(event) => setNewRoomName(event.target.value)}
+        />
+        <TextField
+          margin="dense"
+          type="text"
+          label="Description"
+          fullWidth
+          variant="standard"
+          value={description}
+          onChange={(event) => setDescription(event.target.value)}
+        />
+        <Stack direction="row" spacing={1} alignItems="center">
+          Private
+          <Switch
+            checked={checked}
+            onChange={toggleSwitch}
+            inputProps={{ "aria-label": "controlled" }}
           />
-          <TextField
-            margin="dense"
-            type="text"
-            label="Description"
-            fullWidth
-            variant="standard"
-            value={description}
-            onChange={(event) => setDescription(event.target.value)}
-          />
-          <Stack direction="row" spacing={1} alignItems="center">
-            Private
-            <Switch
-              checked={checked}
-              onChange={toggleSwitch}
-              inputProps={{ "aria-label": "controlled" }}
-            />
-            Public
-          </Stack>
-        </DialogContent>
-        <DialogActions>
-          <Grid container direction="row" justifyContent="space-around">
-            <Grid item>
-              <Button variant="contained" color="error" onClick={toggleOpen}>
-                Cancel
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button variant="contained" color="success" onClick={edit}>
-                Edit
-              </Button>
-            </Grid>
+          Public
+        </Stack>
+      </DialogContent>
+      <DialogActions>
+        <Grid container direction="row" justifyContent="space-around">
+          <Grid item>
+            <Button variant="contained" color="error" onClick={toggleOpenEdit}>
+              Cancel
+            </Button>
           </Grid>
-        </DialogActions>
-      </Dialog>
-    </>
+          <Grid item>
+            <Button variant="contained" color="success" onClick={edit}>
+              Edit
+            </Button>
+          </Grid>
+        </Grid>
+      </DialogActions>
+    </Dialog>
   );
 };
 

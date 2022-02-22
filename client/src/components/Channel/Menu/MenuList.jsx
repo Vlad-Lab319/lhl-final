@@ -1,4 +1,4 @@
-import { Box, Button, Menu } from "@mui/material";
+import { Box, Button, Menu, MenuItem } from "@mui/material";
 import { useState } from "react";
 import AddFriend from "./AddFriend";
 import EditRoom from "./EditRoom";
@@ -24,39 +24,53 @@ export default function MenuList(props) {
     setAnchorEl(null);
   };
 
+  const [openEdit, setOpenEdit] = useState(false);
+
+  const toggleOpenEdit = () => {
+    setOpenEdit(!openEdit);
+  };
+
   return (
-    <Box>
-      <Button
-        id="basic-button"
-        aria-controls={open ? "basic-menu" : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? "true" : undefined}
-        onClick={handleClick}
-        sx={{
-          color: "white",
-        }}
-      >
-        {props.children}
-      </Button>
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          "aria-labelledby": "basic-button",
-        }}
-      >
-        <AddFriend
-          close={handleClose}
-          getFilteredArray={getFilteredArray}
-          friends={friends}
-          addUserToRoom={addUserToRoom}
-          room={room}
-        />
-        <EditRoom room={room} editRoom={editRoom} />
-        <DeleteRoom room={room} deleteRoom={deleteRoom} />
-      </Menu>
-    </Box>
+    <>
+      <Box>
+        <Button
+          id="basic-button"
+          aria-controls={open ? "basic-menu" : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? "true" : undefined}
+          onClick={handleClick}
+          sx={{
+            color: "white",
+          }}
+        >
+          {props.children}
+        </Button>
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            "aria-labelledby": "basic-button",
+          }}
+        >
+          <AddFriend
+            close={handleClose}
+            getFilteredArray={getFilteredArray}
+            friends={friends}
+            addUserToRoom={addUserToRoom}
+            room={room}
+          />
+          <MenuItem onClick={toggleOpenEdit}>Edit</MenuItem>
+          <DeleteRoom room={room} deleteRoom={deleteRoom} />
+        </Menu>
+      </Box>
+      <EditRoom
+        room={room}
+        editRoom={editRoom}
+        openEdit={openEdit}
+        toggleOpenEdit={toggleOpenEdit}
+      />
+    </>
   );
 }

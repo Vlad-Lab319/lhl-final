@@ -8,12 +8,13 @@ import ClarionLogo from "../ClarionLogo";
 import "./Header.scss";
 
 const Header = (props) => {
-  const { user, logoutUser, toggle, theme, takeMeHome } = props;
+  const { user, logoutUser, takeMeHome } = props;
   return (
     <div className="container">
       <div className="nav-options">
-        <ClarionLogo className="clarion-small" />
-        <HomeIcon className="home-button" onClick={takeMeHome} />
+        <IconButton onClick={takeMeHome} disableRipple={true}>
+          <ClarionLogo className="clarion-small" />
+        </IconButton>
       </div>
       <div className="user-options">
         {user ? (
@@ -21,13 +22,6 @@ const Header = (props) => {
             <span className="logout-btn" onClick={logoutUser}>
               Logout
             </span>
-            <IconButton sx={{ ml: 1 }} onClick={toggle} color="inherit">
-              {theme.palette.mode === "dark" ? (
-                <Brightness7Icon />
-              ) : (
-                <Brightness4Icon />
-              )}
-            </IconButton>
 
             {user.avatar ? (
               <img
