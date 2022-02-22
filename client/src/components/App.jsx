@@ -52,6 +52,7 @@ const App = () => {
     acceptFriendRequest,
     setPrivateRoom,
     takeMeHome,
+    setSeenMessages,
   } = useApplicationData();
 
   // theme stuff
@@ -110,6 +111,7 @@ const App = () => {
               <div className="main-container">
                 <RoomList
                   setRoom={setRoom}
+                  setSeenMessages={setSeenMessages}
                   roomList={state.rooms}
                   value={state.room}
                   createRoom={createRoom}
@@ -183,6 +185,7 @@ const App = () => {
                     />
                     <ChatInput
                       channel={state.channel}
+                      room={state.room}
                       user={state.user}
                       sendMessage={sendMessage}
                     />

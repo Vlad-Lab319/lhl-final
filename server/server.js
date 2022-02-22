@@ -177,10 +177,7 @@ io.on("connection", (socket) => {
 
   socket.on("privatemessage", (messageData) => {
     const { value, participants } = messageData;
-    console.log(participants);
-    console.log("Value: ", value);
     const receivingUserId = participants.filter((id) => id != value.user_id)[0];
-    console.log("receivingUserId: ", receivingUserId);
     const receiverUser = users[receivingUserId];
     if (receiverUser) {
       console.log("receiverUser: ", receiverUser);

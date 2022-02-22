@@ -25,6 +25,7 @@ const RoomList = (props) => {
     createRoom,
     directMessage,
     toggleDirectMessage,
+    setSeenMessages,
   } = props;
   const userID = user.id;
 
@@ -43,8 +44,13 @@ const RoomList = (props) => {
         id={room.id}
         name={room.name}
         icon={room.icon_url}
-        setRoom={() => setRoom(room, user, directMessage)}
+        setRoom={() => {
+          setSeenMessages(user, room, null, room.messageCount);
+          setRoom(room, user, directMessage);
+        }}
         selected={room.id === value.id}
+        messageCount={room.messageCount}
+        messagesSeen={room.messagesSeen}
       />
     );
   });
@@ -95,7 +101,7 @@ const RoomList = (props) => {
         {directMessage ? (
           <PersonIcon className="list-icon-options" />
         ) : (
-          <GroupIcon className="list-icon" />
+          <GroupIcon className="list-icon-options" />
         )}
       </IconButton>
     </div>

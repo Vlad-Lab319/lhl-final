@@ -18,6 +18,7 @@ export default function useApplicationData() {
           { data: friends },
           { data: friendRequests },
           { data: privateMessages },
+          { data: messagesSeen },
         ] = await Promise.all([
           axios.get(`/api/users/`),
           axios.get(`/api/rooms/${user.id}`),
@@ -26,12 +27,30 @@ export default function useApplicationData() {
           axios.get(`/api/users/friends/${user.id}`),
           axios.get(`/api/users/friends/requests/${user.id}`),
           axios.get(`/api/messages/private/${user.id}`),
+          axios.get(`/api/messages/seen/public/${user.id}`),
         ]);
+        const messageCountRooms = rooms.map((room) => {
+          return {
+            ...room,
+            messageCount: messages.length
+              ? messages.filter((message) => message.room_id === room.id).length
+              : 0,
+          };
+        });
+        const messagesSeenRooms = messageCountRooms.map((room) => {
+          return {
+            ...room,
+            messagesSeen: messagesSeen.messagesSeen
+              ? messagesSeen.find((record) => record.room_id === room.id)
+                  .messagesSeen
+              : 0,
+          };
+        });
         dispatch({
           type: r.SET_APPLICATION_DATA,
           value: {
             users,
-            rooms,
+            rooms: messagesSeenRooms,
             channels,
             messages,
             friends,
@@ -116,12 +135,8 @@ export default function useApplicationData() {
           value: action.value,
         });
       });
-    } else {
-      if (state.socket) {
-        state.socket.disconnect();
-      }
+      // return () => state.socket.disconnect();
     }
-    return () => state.socket.disconnect();
   };
 
   useEffect(() => {
@@ -129,14 +144,14 @@ export default function useApplicationData() {
     initialFetch(state.user);
   }, [state.user.id]);
 
-  useEffect(() => {
-    axios.get(`/api/rooms/members/${state.room.id || 1}`).then((members) => {
-      dispatch({
-        type: r.SET_ROOM_MEMBERS,
-        value: members.data,
-      });
-    });
-  }, [state.room]);
+  // useEffect(() => {
+  //   axios.get(`/api/rooms/members/${state.room.id || 1}`).then((members) => {
+  //     dispatch({
+  //       type: r.SET_ROOM_MEMBERS,
+  //       value: members.data,
+  //     });
+  //   });
+  // }, [state.room]);
 
   //-------------------------LOGIN/LOGOUT---------------------------------------
   const registerUser = async (name, email, password) => {
@@ -185,6 +200,35 @@ export default function useApplicationData() {
   };
 
   // ---------------------------STATE SETTERS-----------------------------------
+
+  const setSeenMessages = async (user, room, privateRoom, messageCount) => {
+    try {
+      if (room) {
+        dispatch({
+          type: r.SET_ROOM_SEEN,
+          value: { id: room.id, messagesSeen: messageCount },
+        });
+        await axios.post("/api/messages/public/seen", {
+          user_id: user.id,
+          room_id: room.id,
+          messages_seen: messageCount,
+        });
+      } else {
+        dispatch({
+          type: r.PRIVATE_ROOMS,
+          value: { ...room, messagesSeen: messageCount },
+        });
+        await axios.post(`/api/messages/private/seen`, {
+          user_id: user.id,
+          private_room_id: privateRoom.id,
+          messages_seen: messageCount,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const setChannel = (channel, room, user) => {
     dispatch({ type: r.SET_CHANNEL, value: channel });
     dispatch({
@@ -307,7 +351,6 @@ export default function useApplicationData() {
       message,
     });
     const value = res.data;
-    console.log("USE APP DATA - SEND PM: ", value);
     dispatch({
       type: r.ADD_PRIVATE_MESSAGE,
       value: value,
@@ -391,5 +434,6 @@ export default function useApplicationData() {
     acceptFriendRequest,
     setPrivateRoom,
     takeMeHome,
+    setSeenMessages,
   };
 }

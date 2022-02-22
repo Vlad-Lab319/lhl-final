@@ -26,7 +26,6 @@ const FindFriendList = (props) => {
   };
 
   const findFriendList = searchResults.map((foundUser) => {
-    console.log(foundUser);
     return (
       <FindFriendListItem
         key={foundUser.id}
@@ -43,10 +42,7 @@ const FindFriendList = (props) => {
   return (
     <div className="sidebar sidebar--find-friend">
       <div className="find-friend-list">
-        <Box
-          // sx={{ display: "flex", alignItems: "flex-end" }}
-          className="find-friend-list-title"
-        >
+        <Box className="find-friend-list-title">
           <AccountCircle className="find-friend-list-title-icon" />
           <TextField
             id="input-with-sx"
