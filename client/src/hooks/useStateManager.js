@@ -24,6 +24,7 @@ export default function useStateManager() {
     ADD_FRIEND: "ADD_FRIEND",
     SET_PRIVATE_ROOM: "SET_PRIVATE_ROOM",
     ADD_PRIVATE_MESSAGE: "ADD_PRIVATE_MESSAGE",
+    LOGOUT: "LOGOUT",
   };
 
   const r = reducerVariables;
@@ -34,7 +35,7 @@ export default function useStateManager() {
     activeUsers: {},
     socket: null,
     room: {},
-    roomMembers: {},
+    roomMembers: [],
     privateRoom: {},
     channel: {},
     rooms: [],
@@ -171,6 +172,10 @@ export default function useStateManager() {
         return {
           ...state,
           friends: [...state.friends, action.value],
+        };
+      case r.LOGOUT:
+        return {
+          ...initialState,
         };
       default:
         return { ...state };

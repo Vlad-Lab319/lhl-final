@@ -22,9 +22,23 @@ function stringAvatar(name) {
   return {
     sx: {
       bgcolor: stringToColor(name),
+      fontWeight: "bold",
     },
-    children: `${name.split(" ")[0][0]}`,
+    children: `${formatName(name)}`,
+    fontSize: "inherit",
+    color: "inherit",
   };
 }
+const formatName = (name) => {
+  const newName = name;
+  return newName
+    .split(" ")
+    .map((word, index) => {
+      if (index < 3) {
+        return word.length > 1 ? word[0].toUpperCase() : word.toUpperCase();
+      }
+    })
+    .join(" ");
+};
 
 export default stringAvatar;

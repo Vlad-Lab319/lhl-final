@@ -1,15 +1,14 @@
-import TextsmsIcon from "@mui/icons-material/Textsms";
-import classNames from "classnames";
-import "./ChannelListItem.scss";
-import SettingsIcon from "@mui/icons-material/Settings";
 import DeleteIcon from "@mui/icons-material/Delete";
+import SettingsIcon from "@mui/icons-material/Settings";
+import TextsmsIcon from "@mui/icons-material/Textsms";
 import { Input } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
-import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
 import { useState } from "react";
+import "./ChannelList.scss";
 
 const ChannelListItem = (props) => {
   const {
@@ -81,22 +80,31 @@ const ChannelListItem = (props) => {
     </Dialog>
   );
 
-  const channelListClass = classNames(
-    "channel-item",
-    selected && "channel-item--selected"
-  );
-
-  const iconClass = classNames(
-    "channel-icon",
-    selected && "channel-icon--selected"
-  );
+  const channelInfoClass = selected
+    ? "channel-list-info channel-list-info-selected"
+    : "channel-list-info";
+  const channelIconClass = selected
+    ? "channel-list-icon channel-list-icon-selected"
+    : "channel-list-icon";
 
   return (
-    <div className={channelListClass} onClick={setChannel}>
-      <div className={iconClass}>{type === "text" && <TextsmsIcon />}</div>
-      <span>{name}</span>
-      <SettingsIcon onClick={toggleOpenEdit} />
-      <DeleteIcon onClick={toggleOpenConfirm} />
+    <div className="channel-list-item">
+      <div className={channelInfoClass} onClick={setChannel}>
+        <div className={channelIconClass}>
+          {type === "text" && <TextsmsIcon />}
+        </div>
+        <span>{name}</span>
+      </div>
+      <div className="channel-list-channel-options">
+        <SettingsIcon
+          className="channel-gear-option"
+          onClick={toggleOpenEdit}
+        />
+        <DeleteIcon
+          className="channel-trash-option"
+          onClick={toggleOpenConfirm}
+        />
+      </div>
       {editMenu}
       {confirmMenu}
     </div>
