@@ -1,63 +1,111 @@
-@import "../App.scss";
+@import "../../styles/variables.scss";
 
-.add-channel {
-  font-size: 1rem;
-  margin-left: 1rem;
-  color: rgb(100, 100, 100);
-  padding: 0;
-}
-
-.add-channel-box {
-  border: 2px solid black;
-  border-radius: 1rem;
-}
-
-h2.add-channel-title {
-  text-align: center;
-  font-weight: bold;
-  background-color: $sig-color;
-  text-transform: capitalize;
-}
-
-div.add-channel-content {
-  background-color: lighten($dark-background, 5);
-  height: $header-height * 2;
+.channel-list {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-}
 
-p.add-channel-text {
-  color: white;
-  font-weight: bold;
-}
+  .channel-list-separator {
+    margin-left: 1rem;
+    border: 1px solid lighten($dark-background, 20);
+    border-radius: 2.5px;
+    margin-right: 1rem;
+  }
 
-.add-channel-btn-container {
-  display: flex;
-  flex-direction: row;
-  background-color: darken($dark-background, 5);
-  align-items: center;
-  justify-content: space-evenly;
-}
+  .channel-list-title {
+    display: inherit;
+    align-items: center;
+    margin: 1rem;
+    height: 4rem;
+    font-weight: bold;
+    font-size: 1.25rem;
+    text-transform: uppercase;
 
-.add-channel-btn {
-  width: 50%;
-  padding: 0.5rem;
-  font-weight: bold;
-  color: white;
-  background-color: $dark-background;
-  border: 1px solid black;
-}
+    .channel-list-room-name {
+      margin-left: 1rem;
+    }
 
-.room-options {
-  color: grey;
-  margin: 0.5rem;
-}
+    .channel-list-channel-options {
+      display: inherit;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      right: 1.75rem;
+      height: 2rem;
+      width: 2rem;
 
-.channel-separator {
-  margin-left: 1rem;
-  border: 1px solid lighten($dark-background, 20);
-  border-radius: 2.5px;
-  margin-right: 1rem;
+      .channel-list-gear-icon {
+        height: 2rem;
+        width: 2rem;
+        padding: 0rem;
+      }
+    }
+  }
+
+  .channel-list-item {
+    color: $grey-text;
+    display: inherit;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: inherit;
+    height: 3rem;
+
+    .channel-list-info {
+      height: 3rem;
+      display: inherit;
+      flex-direction: row;
+      align-items: center;
+      &-selected {
+        font-weight: bold;
+        color: white;
+      }
+      &:hover {
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .channel-list-icon {
+        height: 2rem;
+        width: 2rem;
+        // margin: 0.5rem 1rem 0.5rem 1rem;
+        margin: 0.5rem;
+        margin-left: 1rem;
+        &-selected {
+          color: $sig-color;
+        }
+      }
+    }
+
+    .channel-list-channel-options {
+      margin-right: 1rem;
+      display: inherit;
+      align-items: center;
+
+      .channel-gear-option {
+        color: $grey-text;
+        margin: 1rem 0.5rem 1rem 0rem;
+        &:hover {
+          color: white;
+          cursor: pointer;
+        }
+      }
+
+      .channel-trash-option {
+        color: rgb(200, 0, 0);
+
+        &:hover {
+          color: red;
+          cursor: pointer;
+        }
+      }
+      .member-call-chat {
+        color: rgba(0, 128, 0, 0.507);
+        margin: 1rem 0rem 1rem 0rem;
+        &:hover {
+          color: green;
+          cursor: pointer;
+        }
+      }
+    }
+  }
 }

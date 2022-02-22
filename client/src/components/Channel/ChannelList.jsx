@@ -10,7 +10,6 @@ import Input from "@mui/material/Input";
 import { useState } from "react";
 import "./ChannelList.scss";
 import ChannelListItem from "./ChannelListItem";
-import "./ChannelListItem.scss";
 import MenuList from "./Menu/MenuList";
 
 const ChannelList = (props) => {
@@ -63,13 +62,13 @@ const ChannelList = (props) => {
   }
 
   const addButton = (
-    <>
-      <div className="channel-item" onClick={toggleOpen}>
-        <div className="channel-icon">
+    <div className="channel-list-item" onClick={toggleOpen}>
+      <span className="channel-list-info">
+        <div className="channel-list-icon">
           <AddBoxIcon />
         </div>
-        <span>Create a channel</span>
-      </div>
+        Create a channel
+      </span>
       <Dialog open={open} onClose={toggleOpen} className="add-channel-box">
         <DialogTitle className="add-channel-title">{room.name}</DialogTitle>
         <DialogContent className="add-channel-content">
@@ -96,30 +95,32 @@ const ChannelList = (props) => {
           </Button>
         </DialogActions>
       </Dialog>
-    </>
+    </div>
   );
 
   return (
     <div className="sidebar sidebar--channels">
       {room.name && (
-        <>
-          <h3 className="channel-title">
-            <MenuList
-              remainingMemberList={remainingMemberList}
-              addUserToRoom={addUserToRoom}
-              room={room}
-              editRoom={editRoom}
-              deleteRoom={deleteRoom}
-            >
-              {room.name}
-              <SettingsIcon className="room-options" />
-            </MenuList>
+        <div className="channel-list">
+          <h3 className="channel-list-title">
+            <div className="channel-list-room-name">{room.name}</div>
+            <div className="channel-list-channel-options">
+              <MenuList
+                remainingMemberList={remainingMemberList}
+                addUserToRoom={addUserToRoom}
+                room={room}
+                editRoom={editRoom}
+                deleteRoom={deleteRoom}
+              >
+                <SettingsIcon className="channel-list-gear-icon" />
+              </MenuList>
+            </div>
           </h3>
-          <div className="channel-separator"></div>
+          <div className="channel-list-separator" />
           {channels}
-          {channels.length !== 0 && <div className="channel-separator"></div>}
+          {channels.length > 0 && <div className="channel-list-separator" />}
           {addButton}
-        </>
+        </div>
       )}
     </div>
   );
