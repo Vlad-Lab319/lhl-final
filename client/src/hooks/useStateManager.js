@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useReducer } from "react";
 
 export default function useStateManager() {
@@ -98,17 +99,31 @@ export default function useStateManager() {
           rooms: action.value,
         };
       case r.SET_ROOM_SEEN:
-        const roomsCopySeen = [...state.rooms];
-        const updatedRoomsSeen = roomsCopySeen.map((room) => {
-          return room.id === action.value.id
-            ? { ...room, messagesSeen: action.value.messagesSeen }
-            : { ...room };
-        });
-        return {
-          ...state,
-          rooms: updatedRoomsSeen,
-        };
+        console.log(action.value);
+        if (action.value.id) {
+          const roomsCopySeen = [...state.rooms];
+          const updatedRoomsSeen = roomsCopySeen.map((room) => {
+            return room.id === action.value.id
+              ? { ...room, messagesSeen: room.messageCount }
+              : { ...room };
+          });
 
+          console.log(updatedRoomsSeen);
+          const room = updatedRoomsSeen.find((room) => {
+            return room.id === action.value.id;
+          });
+          console.log(room);
+          axios.post("/api/messages/public/seen", {
+            user_id: state.user.id,
+            room_id: action.value.id,
+            messages_seen: room.messageCount,
+          });
+          return {
+            ...state,
+            rooms: updatedRoomsSeen,
+          };
+        }
+        return { ...state };
       case r.SET_ROOM_MESSAGE_COUNT:
         const roomsCopyCount = [...state.rooms];
         const oldCount = roomsCopyCount.find(

@@ -31,6 +31,7 @@ export default function useApplicationData() {
           axios.get(`/api/messages/seen/public/${user.id}`),
           axios.get(`/api/rooms/public`),
         ]);
+
         const messageCountRooms = rooms.map((room) => {
           return {
             ...room,
@@ -42,29 +43,17 @@ export default function useApplicationData() {
         const messageSeenRooms = messageCountRooms.map((room) => {
           return {
             ...room,
-            messagesSeen:
-              (messagesSeen.length &&
-                messagesSeen.find((record) => {
-                  return room.id === record.room_id;
-                })) ||
-              0,
+            messagesSeen: messagesSeen.find((record) => {
+              return room.id === record.room_id;
+            }).messages_seen,
           };
         });
-
-        const final = messageSeenRooms.map((room) => {
-          return {
-            ...room,
-            messagesSeen:
-              room.messagesSeen === 0 ? 0 : room.messagesSeen.messages_seen,
-          };
-        });
-        console.log(final);
 
         dispatch({
           type: r.SET_APPLICATION_DATA,
           value: {
             users,
-            rooms: final,
+            rooms: messageSeenRooms,
             channels,
             messages,
             friends,
@@ -101,16 +90,35 @@ export default function useApplicationData() {
         dispatch({ type: action.type, value: action.value });
       });
 
-      socket.on("updateRooms", (id) => {
-        axios.get(`/api/rooms/${state.user.id}`).then((rooms) => {
-          dispatch({
-            type: r.SET_ROOMS,
-            value: rooms.data,
-          });
-          dispatch({
-            type: r.SET_ROOM,
-            value: rooms.data.find((room) => room.id === id.id) || {},
-          });
+      socket.on("updateRooms", async (id) => {
+        const { data: rooms } = await axios.get(`/api/rooms/${state.user.id}`);
+        const { data: messages } = await axios.get(`/api/messages/`);
+        const { data: messagesSeen } = await axios.get(
+          `/api/messages/seen/public/${user.id}`
+        );
+        const messageCountRooms = rooms.map((room) => {
+          return {
+            ...room,
+            messageCount: messages.length
+              ? messages.filter((message) => message.room_id === room.id).length
+              : 0,
+          };
+        });
+        const messageSeenRooms = messageCountRooms.map((room) => {
+          return {
+            ...room,
+            messagesSeen: messagesSeen.find((record) => {
+              return room.id === record.room_id;
+            }).messages_seen,
+          };
+        });
+        dispatch({
+          type: r.SET_ROOMS,
+          value: messageSeenRooms,
+        });
+        dispatch({
+          type: r.SET_ROOM,
+          value: messageSeenRooms.find((room) => room.id === id.id) || {},
         });
       });
 
@@ -124,7 +132,6 @@ export default function useApplicationData() {
       });
 
       socket.on("message", (message) => {
-        console.log(message);
         dispatch({
           type: r.ADD_MESSAGES,
           value: message,
@@ -133,6 +140,14 @@ export default function useApplicationData() {
           type: r.SET_ROOM_MESSAGE_COUNT,
           value: { id: message.room_id },
         });
+        if (state.room.id && message.room_id === state.room.id) {
+          dispatch({
+            type: r.SET_ROOM_SEEN,
+            value: {
+              id: message.room_id,
+            },
+          });
+        }
       });
 
       socket.on("privatemessage", (action) => {
@@ -155,8 +170,8 @@ export default function useApplicationData() {
           value: action.value,
         });
       });
-      return () => socket.disconnect();
     }
+    return () => state.socket.disconnect();
   };
 
   useEffect(() => {
@@ -221,22 +236,17 @@ export default function useApplicationData() {
 
   // ---------------------------STATE SETTERS-----------------------------------
 
-  const setSeenMessages = async (user, room, privateRoom, messageCount) => {
+  const setSeenMessages = async (user, room, privateRoom) => {
     try {
-      if (room) {
+      if (room.id) {
         dispatch({
           type: r.SET_ROOM_SEEN,
-          value: { id: room.id, messagesSeen: messageCount },
-        });
-        await axios.post("/api/messages/public/seen", {
-          user_id: user.id,
-          room_id: room.id,
-          messages_seen: room.messageCount,
+          value: { id: room.id },
         });
       } else {
         dispatch({
           type: r.PRIVATE_ROOMS,
-          value: { ...room, messagesSeen: messageCount },
+          value: { ...room, messagesSeen: privateRoom.messageCount },
         });
         await axios.post(`/api/messages/private/seen`, {
           user_id: user.id,
@@ -254,6 +264,10 @@ export default function useApplicationData() {
     dispatch({
       type: r.SET_USER,
       value: { ...user, room_id: room.id, channel_id: channel.id },
+    });
+    dispatch({
+      type: r.SET_ROOM_SEEN,
+      value: { id: room.id },
     });
     state.socket.emit("updateActiveUsers", {
       type: r.SET_ACTIVE_USERS,
@@ -278,6 +292,12 @@ export default function useApplicationData() {
       type: r.SET_USER,
       value: { ...user, room_id: room.id, channel_id: null },
     });
+    if (!directMessage) {
+      dispatch({
+        type: r.SET_ROOM_SEEN,
+        value: { id: room.id },
+      });
+    }
     state.socket.emit("updateActiveUsers", {
       type: r.SET_ACTIVE_USERS,
       value: {
@@ -352,14 +372,22 @@ export default function useApplicationData() {
     });
   };
 
-  const sendMessage = (messageData) => {
-    return axios.post(`/api/messages`, messageData).then((message) => {
-      dispatch({
-        type: r.ADD_MESSAGES,
-        value: message.data[0],
-      });
-      state.socket.emit("message", message.data[0]);
+  const sendMessage = async (messageData) => {
+    const { data: message } = await axios.post(`/api/messages`, messageData);
+    console.log(message);
+    dispatch({
+      type: r.ADD_MESSAGES,
+      value: message[0],
     });
+    dispatch({
+      type: r.SET_ROOM_MESSAGE_COUNT,
+      value: { id: message[0].room_id },
+    });
+    dispatch({
+      type: r.SET_ROOM_SEEN,
+      value: { id: message[0].room_id },
+    });
+    state.socket.emit("message", message[0]);
   };
 
   const sendPrivateMessage = async (messageData) => {
@@ -385,7 +413,11 @@ export default function useApplicationData() {
     return axios.post(`/api/rooms`, roomData).then((room) => {
       dispatch({
         type: r.ADD_ROOMS,
-        value: room.data[0],
+        value: { ...room.data[0], messageCount: 0, messagesSeen: 0 },
+      });
+      dispatch({
+        type: r.SET_ROOM_SEEN,
+        value: { id: room.data[0].id },
       });
     });
   };

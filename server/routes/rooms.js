@@ -39,49 +39,61 @@ router.get("/:userID", (req, res) => {
   });
 });
 
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
   const { userID, newRoomName, description, checked, icon } = req.body;
-  db.query(
-    `
-      INSERT INTO rooms (user_id, name, description, is_public, icon_url) VALUES ($1, $2, $3, $4, $5) RETURNING *;
-    `,
-    [userID, newRoomName, description, checked, icon]
-  )
-    .then(({ rows: rooms }) => {
-      res.json(rooms);
-      db.query(
-        `
-          INSERT INTO room_users (user_id, room_id) VALUES ($1, $2);
-        `,
-        [userID, rooms[0].id]
-      );
-    })
-    .catch((error) => console.log(error));
+  try {
+    const { rows: rooms } = await db.query(
+      `INSERT INTO rooms(user_id, name, description, is_public, icon_url) VALUES ($1, $2, $3, $4, $5)
+      RETURNING *;`,
+      [userID, newRoomName, description, checked, icon]
+    );
+
+    await db.query(
+      `INSERT INTO room_users(user_id, room_id)
+      VALUES ($1, $2);`,
+      [userID, rooms[0].id]
+    );
+
+    await db.query(
+      `INSERT INTO seen_messages(user_id,room_id)
+      VALUES($1,$2);`,
+      [userID, rooms[0].id]
+    );
+    res.json(rooms);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
 });
 
-router.post("/adduser", (req, res) => {
+router.post("/adduser", async (req, res) => {
   const { userID, roomID } = req.body;
-  db.query(
-    `
-    INSERT INTO room_users (user_id, room_id)
+  try {
+    await db.query(
+      `INSERT INTO room_users (user_id, room_id)
       SELECT $1, $2
-    WHERE NOT EXISTS (
-      SELECT 1 FROM room_users WHERE user_id=$1 AND room_id=$2
-    )
-    ;
-    `,
-    [userID, roomID]
-  ).then(() => {
+      WHERE NOT EXISTS (
+        SELECT 1 FROM room_users WHERE user_id=$1 AND room_id=$2
+        );`,
+      [userID, roomID]
+    );
+    await db.query(
+      `INSERT INTO seen_messages(user_id,room_id)
+      VALUES($1,$2);`,
+      [userID, roomID]
+    );
     res.json({});
-  });
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
 });
 
 router.post("/edit", (req, res) => {
   const { name, id } = req.body;
   db.query(
-    `
-      UPDATE rooms SET name=$1 where id=$2;
-    `,
+    `UPDATE rooms SET name=$1 where id=$2;
+  `,
     [name, id]
   )
     .then(() => {
@@ -93,8 +105,7 @@ router.post("/edit", (req, res) => {
 router.post("/delete", (req, res) => {
   const { id } = req.body;
   db.query(
-    `
-      DELETE FROM rooms where id=$1;
+    `DELETE FROM rooms where id=$1;
     `,
     [id]
   )
