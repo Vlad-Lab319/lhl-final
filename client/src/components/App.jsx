@@ -175,6 +175,7 @@ const App = () => {
                       memberList={memberList}
                       activeUser={state.user}
                       room={state.room}
+                      sendFriendRequest={sendFriendRequest}
                     />
                   </>
                 )}

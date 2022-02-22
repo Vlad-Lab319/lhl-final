@@ -3,15 +3,21 @@ import "./RoomMembersList.scss";
 import RoomMembersListItem from "./RoomMembersListItem";
 
 const RoomMembersList = (props) => {
-  const { activeUser, memberList, room } = props;
+  const { activeUser, memberList, room, friendList, sendFriendRequest } = props;
 
   const members = memberList.map((user) => {
+    const isFriend = friendList.find((friend) => friend.id === user.id)
+      ? true
+      : false;
     return (
       <RoomMembersListItem
         key={user.id}
         name={user.name}
         avatar={user.avatar}
         isUser={activeUser.id === user.id}
+        isFriend={isFriend}
+        user={activeUser}
+        sendFriendRequest={sendFriendRequest}
       />
     );
   });
