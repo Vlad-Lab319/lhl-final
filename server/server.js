@@ -210,6 +210,6 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(PORT, () => {
-  console.log("SERVER RUNNING", PORT);
+server.listen(process.env.PORT, () => {
+  console.log("SERVER RUNNING", process.env.PORT);
 });
