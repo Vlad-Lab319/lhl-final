@@ -116,9 +116,9 @@ router.get("/seen/public/:user_id", async (req, res) => {
 router.post("/", (req, res) => {
   const { userID, channelID, room_id, message } = req.body;
   db.query(
-    `
-      INSERT INTO messages (user_id, channel_id, room_id, message) VALUES ($1, $2, $3,$4) RETURNING *;
-    `,
+    `INSERT INTO messages(user_id, channel_id, room_id, message)
+    VALUES ($1, $2, $3, $4)
+    RETURNING *;`,
     [userID, channelID, room_id, message]
   )
     .then(({ rows: messages }) => {
@@ -164,37 +164,14 @@ router.post("/public/seen", async (req, res) => {
   try {
     const { rows } = await db.query(
       `
-      SELECT *
-      FROM seen_messages
-      WHERE user_id = $2 AND room_id = $1;
-      `,
-      [room_id, user_id]
-    );
-    console.log(rows);
-    if (rows.length) {
-      const { rows } = await db.query(
-        `
       UPDATE seen_messages
       SET messages_seen = $1
-      WHERE user_id = $3 AND room_id = $2
-      RETURNING *;
+      WHERE user_id = $3 AND room_id = $2;
       `,
-        [messages_seen, room_id, user_id]
-      );
-      console.log(rows);
+      [messages_seen, room_id, user_id]
+    );
 
-      res.sendStatus(200);
-    } else {
-      const { rows } = await db.query(
-        `
-      INSERT INTO seen_messages(user_id, room_id, messages_seen)
-      VALUES($3, $2, $1)
-      `,
-        [messages_seen, room_id, user_id]
-      );
-      console.log(rows);
-      res.sendStatus(200);
-    }
+    res.sendStatus(200);
   } catch (err) {
     console.log(err);
     res.sendStatus(500);

@@ -54,14 +54,16 @@ const RoomList = (props) => {
         key={room.id}
         id={room.id}
         name={room.name}
+        room={room}
+        user={user}
         icon={room.icon_url}
         setRoom={() => {
-          setSeenMessages(user, room, null, room.messageCount);
           setRoom(room, user, directMessage);
         }}
         selected={room.id === value.id}
         messageCount={room.messageCount}
         messagesSeen={room.messagesSeen}
+        setSeenMessages={setSeenMessages}
       />
     );
   });
