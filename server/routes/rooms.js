@@ -2,19 +2,6 @@ const express = require("express");
 const db = require("../db/index");
 const router = express.Router();
 
-router.get("/:userID", (req, res) => {
-  db.query(
-    `
-    SELECT rooms.* FROM rooms
-    JOIN room_users ON rooms.id = room_id
-    WHERE room_users.user_id = $1
-    ;`,
-    [req.params.userID]
-  ).then(({ rows: rooms }) => {
-    res.json(rooms);
-  });
-});
-
 router.get("/members/:roomID", (req, res) => {
   db.query(
     `
@@ -28,13 +15,37 @@ router.get("/members/:roomID", (req, res) => {
   });
 });
 
-router.post("/", (req, res) => {
-  const { userID, newRoomName, icon } = req.body;
+router.get("/public", (req, res) => {
   db.query(
     `
-      INSERT INTO rooms (user_id, name, icon_url) VALUES ($1, $2, $3) RETURNING *;
+    SELECT * FROM rooms
+    WHERE is_public = true
+    ;`
+  ).then(({ rows: rooms }) => {
+    res.json(rooms);
+  });
+});
+
+router.get("/:userID", (req, res) => {
+  db.query(
+    `
+    SELECT rooms.* FROM rooms
+    JOIN room_users ON rooms.id = room_id
+    WHERE room_users.user_id = $1
+    ;`,
+    [req.params.userID]
+  ).then(({ rows: rooms }) => {
+    res.json(rooms);
+  });
+});
+
+router.post("/", (req, res) => {
+  const { userID, newRoomName, description, checked, icon } = req.body;
+  db.query(
+    `
+      INSERT INTO rooms (user_id, name, description, is_public, icon_url) VALUES ($1, $2, $3, $4, $5) RETURNING *;
     `,
-    [userID, newRoomName, icon]
+    [userID, newRoomName, description, checked, icon]
   )
     .then(({ rows: rooms }) => {
       res.json(rooms);

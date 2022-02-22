@@ -19,6 +19,7 @@ export default function useApplicationData() {
           { data: friendRequests },
           { data: privateMessages },
           { data: messagesSeen },
+          { data: publicRooms },
         ] = await Promise.all([
           axios.get(`/api/users/`),
           axios.get(`/api/rooms/${user.id}`),
@@ -28,6 +29,7 @@ export default function useApplicationData() {
           axios.get(`/api/users/friends/requests/${user.id}`),
           axios.get(`/api/messages/private/${user.id}`),
           axios.get(`/api/messages/seen/public/${user.id}`),
+          axios.get(`/api/rooms/public`),
         ]);
         const messageCountRooms = rooms.map((room) => {
           return {
@@ -68,6 +70,7 @@ export default function useApplicationData() {
             friends,
             friendRequests,
             privateMessages,
+            publicRooms,
           },
         });
       } catch (err) {
@@ -421,10 +424,10 @@ export default function useApplicationData() {
     });
   };
 
-  const addUserToRoom = (id, room) => {
+  const addUserToRoom = (userID, roomID) => {
     return axios
-      .post("/api/rooms/adduser", { userID: id, roomID: room.id })
-      .then(state.socket.emit("updateRooms", { id: room.id }));
+      .post("/api/rooms/adduser", { userID, roomID })
+      .then(state.socket.emit("updateRooms", { id: roomID }));
   };
 
   return {
