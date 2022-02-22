@@ -7,6 +7,7 @@ const bodyParser = require("body-parser");
 const http = require("http");
 const cors = require("cors");
 const { Server, Socket } = require("socket.io");
+const path = require("path");
 
 const app = express();
 app.use(cors());
@@ -17,7 +18,7 @@ app.use(
   })
 );
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8081;
 const buildPath = path.join(__dirname, '..', 'build'); 
 app.use(express.static(buildPath));
 
