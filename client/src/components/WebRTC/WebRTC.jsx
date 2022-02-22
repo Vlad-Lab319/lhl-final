@@ -15,7 +15,7 @@ const guestUser = {
 }
 
 const WebRtc = (props) => {
-  const { } = props;
+  const { makeCall } = props;
 
   const [callContact, setCallContact] = useState();
   const [callerInfo, setCallerInfo] = useState();
@@ -46,6 +46,12 @@ const WebRtc = (props) => {
     setCallContact(undefined);
   }, []);
 
+  const closeButton = (
+    <div className="stream-button" onClick={makeCall}>
+      End meeting
+    </div>
+  );
+
   return (
     <div className="webrtc" draggable={true}>
       <div className="webrtc-container">
@@ -53,6 +59,8 @@ const WebRtc = (props) => {
        
       </div>
       <div className="webrtc-buttons-container">
+
+        {closeButton}
 
         {callContact ? (
           <Meeting
