@@ -20,7 +20,7 @@ const RoomMembersListItem = (props) => {
       <div className="member-list-user-options">
         <TextsmsIcon className="member-text-chat" />
         <PhoneIcon className="member-call-chat" onClick={() => makeCall(id)} />
-        {call && <WebRTC />}
+        {call && <WebRTC makeCall={makeCall}/>}
       </div>
     );
   };
