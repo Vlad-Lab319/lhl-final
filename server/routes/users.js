@@ -125,7 +125,7 @@ router.post("/register", async (req, res) => {
       `
       INSERT INTO users (username, email, password)
       VALUES ($1, $2, $3)
-      RETURNING id, username, avatar_url;`,
+      RETURNING id, username, avatar_url,password;`,
       [name, email, bcrypt.hashSync(password, 10)]
     );
 

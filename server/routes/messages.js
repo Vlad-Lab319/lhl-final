@@ -160,7 +160,6 @@ router.post("/private/seen", async (req, res) => {
 
 router.post("/public/seen", async (req, res) => {
   const { user_id, room_id, messages_seen } = req.body;
-  console.log(user_id, room_id, messages_seen);
   try {
     const { rows } = await db.query(
       `
