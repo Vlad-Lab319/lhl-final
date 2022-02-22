@@ -109,9 +109,14 @@ export default function useApplicationData() {
       });
 
       socket.on("message", (message) => {
+        console.log(message);
         dispatch({
           type: r.ADD_MESSAGES,
           value: message,
+        });
+        dispatch({
+          type: r.SET_ROOM_MESSAGE_COUNT,
+          value: { id: message.room_id },
         });
       });
 
@@ -135,7 +140,7 @@ export default function useApplicationData() {
           value: action.value,
         });
       });
-      // return () => state.socket.disconnect();
+      return () => socket.disconnect();
     }
   };
 

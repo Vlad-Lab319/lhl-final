@@ -26,6 +26,7 @@ export default function useStateManager() {
     ADD_PRIVATE_MESSAGE: "ADD_PRIVATE_MESSAGE",
     LOGOUT: "LOGOUT",
     SET_ROOM_SEEN: "SET_ROOM_SEEN",
+    SET_ROOM_MESSAGE_COUNT: "SET_ROOM_MESSAGE_COUNT",
   };
 
   const r = reducerVariables;
@@ -95,16 +96,32 @@ export default function useStateManager() {
           rooms: action.value,
         };
       case r.SET_ROOM_SEEN:
-        const roomsCopy = [...state.rooms];
-        const updatedRooms = roomsCopy.map((room) => {
+        const roomsCopySeen = [...state.rooms];
+        const updatedRoomsSeen = roomsCopySeen.map((room) => {
           return room.id === action.value.id
             ? { ...room, messagesSeen: action.value.messagesSeen }
             : { ...room };
         });
         return {
           ...state,
-          rooms: updatedRooms,
+          rooms: updatedRoomsSeen,
         };
+
+      case r.SET_ROOM_MESSAGE_COUNT:
+        const roomsCopyCount = [...state.rooms];
+        const oldCount = roomsCopyCount.find(
+          (room) => room.id === action.value.id
+        ).messageCount;
+        const updatedRoomsCount = roomsCopyCount.map((room) => {
+          return room.id === action.value.id
+            ? { ...room, messageCount: oldCount + 1 }
+            : { ...room };
+        });
+        return {
+          ...state,
+          rooms: updatedRoomsCount,
+        };
+
       case r.SET_CHANNEL:
         return {
           ...state,
