@@ -1,5 +1,12 @@
 //mui material
-import { IconButton } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardActionArea,
+  CardContent,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import SearchIcon from "@mui/icons-material/Search";
 import Button from "@mui/material/Button";
@@ -15,12 +22,13 @@ const SearchRoom = (props) => {
 
   const userID = user.id;
 
-  const options = publicRooms.map((room) => {
-    const newObj = {};
-    newObj["label"] = room.name;
-    newObj["id"] = room.id;
-    return newObj;
-  });
+  // const options = publicRooms.map((room) => {
+  //   const option = {};
+  //   option["label"] = room.name;
+  //   option["id"] = room.id;
+  //   option["description"] = room.description;
+  //   return option;
+  // });
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
@@ -58,7 +66,24 @@ const SearchRoom = (props) => {
             onInputChange={(event, newInputValue) => {
               setInputValue(newInputValue);
             }}
-            options={options}
+            options={publicRooms}
+            getOptionLabel={(option) => `${option.name}`}
+            renderOption={(props, option) => (
+              <Box component="li" {...props}>
+                <Card sx={{ width: 300, backgroundColor: "#262626" }}>
+                  <CardActionArea>
+                    <CardContent>
+                      <Typography gutterBottom variant="h5" component="div">
+                        {option.name}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {option.description}
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              </Box>
+            )}
             sx={{ width: 300 }}
             isOptionEqualToValue={(option, value) => option.id === value.id}
             renderInput={(params) => <TextField {...params} label="Rooms" />}
