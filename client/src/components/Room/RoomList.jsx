@@ -2,6 +2,7 @@
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import GroupIcon from "@mui/icons-material/Group";
 import PersonIcon from "@mui/icons-material/Person";
+import SearchIcon from "@mui/icons-material/Search";
 import { IconButton } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -95,7 +96,7 @@ const RoomList = (props) => {
         {directMessage ? (
           <PersonIcon className="list-icon-options" />
         ) : (
-          <GroupIcon className="list-icon" />
+          <GroupIcon className="list-icon-options" />
         )}
       </IconButton>
     </div>
@@ -109,11 +110,7 @@ const RoomList = (props) => {
       }}
     >
       <IconButton color="inherit">
-        {directMessage ? (
-          <PersonIcon className="list-icon-options" />
-        ) : (
-          <GroupIcon className="list-icon" />
-        )}
+        <SearchIcon className="list-icon-options" />
       </IconButton>
     </div>
   );
@@ -122,6 +119,7 @@ const RoomList = (props) => {
     <div className="sidebar sidebar--rooms">
       <div className="room-list">
         {friendButton}
+        {searchRooms}
         <div className="separator" />
         {rooms}
         {rooms.length > 0 && <div className="separator" />}
