@@ -1,7 +1,7 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import SettingsIcon from "@mui/icons-material/Settings";
 import TextsmsIcon from "@mui/icons-material/Textsms";
-import { Input } from "@mui/material";
+import { Grid, Input } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -51,8 +51,18 @@ const ChannelListItem = (props) => {
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={toggleOpenEdit}>Cancel</Button>
-        <Button onClick={edit}>Submit</Button>
+        <Grid container direction="row" justifyContent="space-around">
+          <Grid item>
+            <Button variant="contained" color="error" onClick={toggleOpenEdit}>
+              Cancel
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button variant="contained" color="success" onClick={edit}>
+              Submit
+            </Button>
+          </Grid>
+        </Grid>
       </DialogActions>
     </Dialog>
   );

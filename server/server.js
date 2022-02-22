@@ -168,7 +168,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("updateChannels", () => {
-    socket.broadcast.emit("updateChannels");
+    io.emit("updateChannels");
   });
 
   socket.on("message", (messageData) => {
@@ -180,7 +180,6 @@ io.on("connection", (socket) => {
     const receivingUserId = participants.filter((id) => id != value.user_id)[0];
     const receiverUser = users[receivingUserId];
     if (receiverUser) {
-      console.log("receiverUser: ", receiverUser);
       io.to(receiverUser.socketID).emit("privatemessage", {
         type: r.ADD_PRIVATE_MESSAGE,
         value: value,

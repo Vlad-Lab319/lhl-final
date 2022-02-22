@@ -122,11 +122,27 @@ router.post("/register", async (req, res) => {
     const {
       rows: [{ id, username, avatar_url }],
     } = await db.query(
-      `INSERT INTO users (username, email, password)
+      `
+      INSERT INTO users (username, email, password)
       VALUES ($1, $2, $3)
-      RETURNING id, username, avatar_url;`,
+      RETURNING id, username, avatar_url,password;`,
       [name, email, bcrypt.hashSync(password, 10)]
     );
+
+    await db.query(
+      `
+      INSERT INTO room_users(room_id, user_id)
+      VALUES(1,$1);`,
+      [id]
+    );
+
+    await db.query(
+      `
+    INSERT INTO seen_messages(room_id, user_id)
+    VALUES(1,$1);`,
+      [id]
+    );
+
     res.json({
       type: "SET_USER",
       value: {

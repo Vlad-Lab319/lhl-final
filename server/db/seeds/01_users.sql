@@ -1,5 +1,3 @@
 INSERT INTO users (username, email, password)
-VALUES ('Alice', 'some@email.com', '123'),
-('Kira', 'email@email.com', 'password'),
-('Bob', 'bob@email.com', 'password')
+VALUES ('Clarion Official', 'ADMIN@ADMIN', '$2a$10$yC35Jts.t84orUpx7Oq1nOHtFgP5eGhRoAUnnfuqWYXNPdIcZnw32')
 ;

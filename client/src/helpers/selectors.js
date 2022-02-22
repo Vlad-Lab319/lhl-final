@@ -35,17 +35,14 @@ const getMessagesForPrivateRoom = (privateRoom, state) => {
   });
 };
 
-const getFilteredFriends = (state) => {
-  const friends = state.friends;
-  const members = state.roomMembers;
-
-  const filteredMembers = friends.filter((friend) => {
-    return !members.find((member) => {
-      return member.id === friend.id;
+const getFilteredArray = (main, filter) => {
+  const filteredData = main.filter((arr1) => {
+    return !filter.find((arr2) => {
+      return arr2.id === arr1.id;
     });
   });
 
-  return filteredMembers;
+  return filteredData;
 };
 
 const addTotalMessagesToGroups = () => {};
@@ -57,5 +54,5 @@ export {
   getDirectMessages,
   getUsersForRoom,
   getMessagesForPrivateRoom,
-  getFilteredFriends,
+  getFilteredArray,
 };

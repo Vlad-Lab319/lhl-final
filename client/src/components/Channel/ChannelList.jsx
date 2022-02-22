@@ -1,12 +1,11 @@
 //mui material
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { Button, DialogActions } from "@mui/material";
+import { Button, DialogActions, Grid, TextField } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import Input from "@mui/material/Input";
 import { useState } from "react";
 import "./ChannelList.scss";
 import ChannelListItem from "./ChannelListItem";
@@ -20,7 +19,8 @@ const ChannelList = (props) => {
     value,
     room,
     createChannel,
-    remainingMemberList,
+    friends,
+    getFilteredArray,
     addUserToRoom,
     editRoom,
     editChannel,
@@ -75,24 +75,30 @@ const ChannelList = (props) => {
           <DialogContentText className="add-channel-text">
             Create new channel
           </DialogContentText>
-          <Input
+          <TextField
             autoFocus
             margin="dense"
             type="text"
+            label="Name"
             fullWidth
             variant="standard"
-            id="room_id"
             value={newChannelName}
             onChange={(event) => setNewChannelName(event.target.value)}
           />
         </DialogContent>
         <DialogActions>
-          <Button variant="outlined" color="error" onClick={toggleOpen}>
-            Cancel
-          </Button>
-          <Button variant="outlined" color="success" onClick={create}>
-            Add
-          </Button>
+          <Grid container direction="row" justifyContent="space-around">
+            <Grid item>
+              <Button variant="contained" color="error" onClick={toggleOpen}>
+                Cancel
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button variant="contained" color="success" onClick={create}>
+                Add
+              </Button>
+            </Grid>
+          </Grid>
         </DialogActions>
       </Dialog>
     </div>
@@ -106,7 +112,8 @@ const ChannelList = (props) => {
             <div className="channel-list-room-name">{room.name}</div>
             <div className="channel-list-channel-options">
               <MenuList
-                remainingMemberList={remainingMemberList}
+                getFilteredArray={getFilteredArray}
+                friends={friends}
                 addUserToRoom={addUserToRoom}
                 room={room}
                 editRoom={editRoom}

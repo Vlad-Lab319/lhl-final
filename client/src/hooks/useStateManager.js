@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useReducer } from "react";
 
 export default function useStateManager() {
@@ -8,7 +9,6 @@ export default function useStateManager() {
     SET_ROOM: "SET_ROOM",
     SET_ROOM_MEMBERS: "SET_ROOM_MEMBERS",
     SET_ROOMS: "SET_ROOMS",
-    SET_PUBLIC_ROOMS: "SET_PUBLIC_ROOMS",
     SET_CHANNEL: "SET_CHANNEL",
     SET_CHANNELS: "SET_CHANNELS",
     SET_FRIENDS: "SET_FRIENDS",
@@ -42,7 +42,6 @@ export default function useStateManager() {
     privateRoom: {},
     channel: {},
     rooms: [],
-    publicRooms: [],
     channels: [],
     friends: [],
     recipient: {},
@@ -98,17 +97,31 @@ export default function useStateManager() {
           rooms: action.value,
         };
       case r.SET_ROOM_SEEN:
-        const roomsCopySeen = [...state.rooms];
-        const updatedRoomsSeen = roomsCopySeen.map((room) => {
-          return room.id === action.value.id
-            ? { ...room, messagesSeen: action.value.messagesSeen }
-            : { ...room };
-        });
-        return {
-          ...state,
-          rooms: updatedRoomsSeen,
-        };
+        console.log(action.value);
+        if (action.value.id) {
+          const roomsCopySeen = [...state.rooms];
+          const updatedRoomsSeen = roomsCopySeen.map((room) => {
+            return room.id === action.value.id
+              ? { ...room, messagesSeen: room.messageCount }
+              : { ...room };
+          });
 
+          console.log(updatedRoomsSeen);
+          const room = updatedRoomsSeen.find((room) => {
+            return room.id === action.value.id;
+          });
+          console.log(room);
+          axios.post("/api/messages/public/seen", {
+            user_id: state.user.id,
+            room_id: action.value.id,
+            messages_seen: room.messageCount,
+          });
+          return {
+            ...state,
+            rooms: updatedRoomsSeen,
+          };
+        }
+        return { ...state };
       case r.SET_ROOM_MESSAGE_COUNT:
         const roomsCopyCount = [...state.rooms];
         const oldCount = roomsCopyCount.find(
@@ -122,12 +135,6 @@ export default function useStateManager() {
         return {
           ...state,
           rooms: updatedRoomsCount,
-        };
-
-      case r.SET_PUBLIC_ROOMS:
-        return {
-          ...state,
-          publicRooms: action.value,
         };
       case r.SET_CHANNEL:
         return {
@@ -179,7 +186,6 @@ export default function useStateManager() {
           messages: action.value.messages,
           friendRequests: action.value.friendRequests,
           privateMessages: action.value.privateMessages,
-          publicRooms: action.value.publicRooms,
         };
       case r.SET_ERRORS:
         return {

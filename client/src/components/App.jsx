@@ -5,7 +5,7 @@ import {
   attachUsersToMessages,
   getChannelsForRoom,
   getDirectMessages,
-  getFilteredFriends,
+  getFilteredArray,
   getMessagesForChannel,
   getMessagesForPrivateRoom,
   getUsersForRoom,
@@ -91,7 +91,6 @@ const App = () => {
     privateMessageList,
     state
   );
-  const remainingMemberList = getFilteredFriends(state);
 
   return (
     <ColorModeContext.Provider value={colorMode}>
@@ -119,8 +118,8 @@ const App = () => {
                   channel={state.channel}
                   directMessage={state.directMessage}
                   toggleDirectMessage={toggleDirectMessage}
-                  publicRooms={state.publicRooms}
                   addUserToRoom={addUserToRoom}
+                  getFilteredArray={getFilteredArray}
                 />
                 {state.directMessage && (
                   <>
@@ -163,8 +162,9 @@ const App = () => {
                       value={state.channel}
                       room={state.room}
                       user={state.user}
+                      friends={state.friends}
                       createChannel={createChannel}
-                      remainingMemberList={remainingMemberList}
+                      getFilteredArray={getFilteredArray}
                       addUserToRoom={addUserToRoom}
                       editRoom={editRoom}
                       editChannel={editChannel}

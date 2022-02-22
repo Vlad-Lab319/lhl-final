@@ -2,7 +2,7 @@
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import GroupIcon from "@mui/icons-material/Group";
 import PersonIcon from "@mui/icons-material/Person";
-import { IconButton, Stack, TextField } from "@mui/material";
+import { Grid, IconButton, Stack, TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -27,8 +27,8 @@ const RoomList = (props) => {
     directMessage,
     toggleDirectMessage,
     setSeenMessages,
-    publicRooms,
     addUserToRoom,
+    getFilteredArray,
   } = props;
   const userID = user.id;
 
@@ -39,6 +39,8 @@ const RoomList = (props) => {
 
   const toggleNewRoom = () => {
     setNewRoomName("");
+    setDescription("");
+    setChecked(true);
     setOpen(!open);
   };
 
@@ -52,14 +54,16 @@ const RoomList = (props) => {
         key={room.id}
         id={room.id}
         name={room.name}
+        room={room}
+        user={user}
         icon={room.icon_url}
         setRoom={() => {
-          setSeenMessages(user, room, null, room.messageCount);
           setRoom(room, user, directMessage);
         }}
         selected={room.id === value.id}
         messageCount={room.messageCount}
         messagesSeen={room.messagesSeen}
+        setSeenMessages={setSeenMessages}
       />
     );
   });
@@ -114,8 +118,18 @@ const RoomList = (props) => {
           </Stack>
         </DialogContent>
         <DialogActions>
-          <Button onClick={toggleNewRoom}>Cancel</Button>
-          <Button onClick={create}>Create</Button>
+          <Grid container direction="row" justifyContent="space-around">
+            <Grid item>
+              <Button variant="contained" color="error" onClick={toggleNewRoom}>
+                Cancel
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button variant="contained" color="success" onClick={create}>
+                Edit
+              </Button>
+            </Grid>
+          </Grid>
         </DialogActions>
       </Dialog>
     </div>
@@ -136,25 +150,13 @@ const RoomList = (props) => {
     </div>
   );
 
-  // const searchRooms = (
-  //   <div
-  //     className="list-item"
-  //     onClick={() => {
-  //       console.log("clicky");
-  //     }}
-  //   >
-  //     <IconButton color="inherit">
-  //       <SearchIcon className="list-icon-options" />
-  //     </IconButton>
-  //   </div>
-  // );
-
   return (
     <div className="sidebar sidebar--rooms">
       <div className="room-list">
         {friendButton}
         <SearchRoom
-          publicRooms={publicRooms}
+          getFilteredArray={getFilteredArray}
+          roomList={roomList}
           user={user}
           addUserToRoom={addUserToRoom}
         />
