@@ -1,4 +1,5 @@
 let dbParams = {};
+
 if (process.env.DATABASE_URL) {
   dbParams = {
     connectionString: process.env.DATABASE_URL,
