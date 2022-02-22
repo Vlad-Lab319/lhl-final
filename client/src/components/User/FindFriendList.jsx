@@ -42,7 +42,7 @@ const FindFriendList = (props) => {
   return (
     <div className="sidebar sidebar--find-friend">
       <div className="find-friend-list">
-        <Box className="find-friend-list-title">
+        <Box className="find-friend-list-title" zIndex={10}>
           <AccountCircle className="find-friend-list-title-icon" />
           <TextField
             id="input-with-sx"

@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useCallStream } from "../../hooks/useCallStream";
 import { useCallTimer } from "../../hooks/useCallTimer";
 import "./WebRTC.scss";
@@ -9,7 +9,6 @@ const CONNECTING = "CONNECTING";
 
 const Meeting = (props) => {
   const { hangup, contact, answerCallId, currentUser } = props;
-
 
   const [callStatus, setCallStatus] = useState(CONNECTING);
   const [answeredStream, setAnsweredStream] = useState();
@@ -80,14 +79,19 @@ const Meeting = (props) => {
     setCallStatus(ANSWERED);
   }, []);
 
-
   return (
-    <div className="webrtc" draggable={true}>
+    <div className="webrtc">
       <div className="webrtc-container">
         <div className="videos">
           <span>
             <h3>Host Stream</h3>
-            <video autoPlay playsInline ref={webCam} muted={true} controls></video>
+            <video
+              autoPlay
+              playsInline
+              ref={webCam}
+              muted={true}
+              controls
+            ></video>
           </span>
           <span>
             <h3>Guest Stream</h3>
@@ -96,26 +100,22 @@ const Meeting = (props) => {
         </div>
       </div>
       <div className="webrtc-buttons-container">
-        {
-          callStatus === CALLING && answerCallId && (
-            <button
-              className="stream-button"
-              onClick={() => joinMeeting(answerCallId)}
-            >
-              Join meeting
-            </button>
-          )}
+        {callStatus === CALLING && answerCallId && (
+          <button
+            className="stream-button"
+            onClick={() => joinMeeting(answerCallId)}
+          >
+            Join meeting
+          </button>
+        )}
         <span className="call--overlay--header--status">
           {callStatus === CALLING
             ? `Waiting for ${contact.name}`
             : callStatus === CONNECTING
-              ? "Connecting..."
-              : callTimer}
+            ? "Connecting..."
+            : callTimer}
         </span>
-        <button
-          className="stream-button"
-          onClick={hangup}
-        >
+        <button className="stream-button" onClick={hangup}>
           Hangup
         </button>
       </div>
