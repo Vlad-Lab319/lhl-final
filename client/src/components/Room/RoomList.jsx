@@ -39,6 +39,8 @@ const RoomList = (props) => {
 
   const toggleNewRoom = () => {
     setNewRoomName("");
+    setDescription("");
+    setChecked(true);
     setOpen(!open);
   };
 

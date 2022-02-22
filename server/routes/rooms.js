@@ -77,12 +77,12 @@ router.post("/adduser", (req, res) => {
 });
 
 router.post("/edit", (req, res) => {
-  const { name, id } = req.body;
+  const { name, description, is_public, id } = req.body;
   db.query(
     `
-      UPDATE rooms SET name=$1 where id=$2;
+      UPDATE rooms SET name=$1, description=$2, is_public=$3 WHERE id=$4;
     `,
-    [name, id]
+    [name, description, is_public, id]
   )
     .then(() => {
       res.json({});

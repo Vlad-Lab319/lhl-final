@@ -376,8 +376,8 @@ export default function useApplicationData() {
     });
   };
 
-  const editRoom = (name, id) => {
-    return axios.post(`/api/rooms/edit`, { name, id }).then(() => {
+  const editRoom = (roomData, id) => {
+    return axios.post(`/api/rooms/edit`, { ...roomData, id }).then(() => {
       state.socket.emit("updateRooms", { id });
     });
   };
