@@ -5,6 +5,7 @@ const ChatInput = (props) => {
   const [message, setMessage] = useState("");
   const {
     channel,
+    room,
     privateRoom,
     user,
     friend,
@@ -27,9 +28,11 @@ const ChatInput = (props) => {
     } else {
       const userID = user.id;
       const channelID = channel.id;
+      const room_id = room.id;
       const messageData = {
         userID,
         channelID,
+        room_id,
         message,
       };
 
