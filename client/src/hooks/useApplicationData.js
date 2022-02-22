@@ -121,7 +121,6 @@ export default function useApplicationData() {
       });
 
       socket.on("message", (message) => {
-        console.log(message);
         dispatch({
           type: r.ADD_MESSAGES,
           value: message,

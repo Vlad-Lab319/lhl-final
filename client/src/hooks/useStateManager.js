@@ -171,7 +171,6 @@ export default function useStateManager() {
           messages: action.value.messages,
           friendRequests: action.value.friendRequests,
           privateMessages: action.value.privateMessages,
-          publicRooms: action.value.publicRooms,
         };
       case r.SET_ERRORS:
         return {
