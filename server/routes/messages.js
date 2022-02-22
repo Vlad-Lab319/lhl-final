@@ -160,7 +160,7 @@ router.post("/private/seen", async (req, res) => {
 
 router.post("/public/seen", async (req, res) => {
   const { user_id, room_id, messages_seen } = req.body;
-  console.log(user_id);
+  console.log(user_id, room_id, messages_seen);
   try {
     const { rows } = await db.query(
       `
@@ -170,24 +170,29 @@ router.post("/public/seen", async (req, res) => {
       `,
       [room_id, user_id]
     );
+    console.log(rows);
     if (rows.length) {
-      await db.query(
+      const { rows } = await db.query(
         `
       UPDATE seen_messages
-      SET messages_seen = $3
-      WHERE user_id = $2 AND room_id = $1;
+      SET messages_seen = $1
+      WHERE user_id = $3 AND room_id = $2
+      RETURNING *;
       `,
         [messages_seen, room_id, user_id]
       );
+      console.log(rows);
+
       res.sendStatus(200);
     } else {
-      await db.query(
+      const { rows } = await db.query(
         `
       INSERT INTO seen_messages(user_id, room_id, messages_seen)
       VALUES($3, $2, $1)
       `,
         [messages_seen, room_id, user_id]
       );
+      console.log(rows);
       res.sendStatus(200);
     }
   } catch (err) {

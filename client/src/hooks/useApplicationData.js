@@ -37,20 +37,32 @@ export default function useApplicationData() {
               : 0,
           };
         });
-        const messagesSeenRooms = messageCountRooms.map((room) => {
+        const messageSeenRooms = messageCountRooms.map((room) => {
           return {
             ...room,
-            messagesSeen: messagesSeen.messagesSeen
-              ? messagesSeen.find((record) => record.room_id === room.id)
-                  .messagesSeen
-              : 0,
+            messagesSeen:
+              (messagesSeen.length &&
+                messagesSeen.find((record) => {
+                  return room.id === record.room_id;
+                })) ||
+              0,
           };
         });
+
+        const final = messageSeenRooms.map((room) => {
+          return {
+            ...room,
+            messagesSeen:
+              room.messagesSeen === 0 ? 0 : room.messagesSeen.messages_seen,
+          };
+        });
+        console.log(final);
+
         dispatch({
           type: r.SET_APPLICATION_DATA,
           value: {
             users,
-            rooms: messagesSeenRooms,
+            rooms: final,
             channels,
             messages,
             friends,
@@ -216,7 +228,7 @@ export default function useApplicationData() {
         await axios.post("/api/messages/public/seen", {
           user_id: user.id,
           room_id: room.id,
-          messages_seen: messageCount,
+          messages_seen: room.messageCount,
         });
       } else {
         dispatch({
@@ -226,7 +238,7 @@ export default function useApplicationData() {
         await axios.post(`/api/messages/private/seen`, {
           user_id: user.id,
           private_room_id: privateRoom.id,
-          messages_seen: messageCount,
+          messages_seen: privateRoom.messageCount,
         });
       }
     } catch (err) {
