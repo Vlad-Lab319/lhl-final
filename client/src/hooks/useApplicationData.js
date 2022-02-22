@@ -19,7 +19,6 @@ export default function useApplicationData() {
           { data: friendRequests },
           { data: privateMessages },
           { data: messagesSeen },
-          { data: publicRooms },
         ] = await Promise.all([
           axios.get(`/api/users/`),
           axios.get(`/api/rooms/${user.id}`),
@@ -58,7 +57,6 @@ export default function useApplicationData() {
               room.messagesSeen === 0 ? 0 : room.messagesSeen.messages_seen,
           };
         });
-        console.log(final);
 
         dispatch({
           type: r.SET_APPLICATION_DATA,
@@ -70,7 +68,6 @@ export default function useApplicationData() {
             friends,
             friendRequests,
             privateMessages,
-            publicRooms,
           },
         });
       } catch (err) {
@@ -163,15 +160,6 @@ export default function useApplicationData() {
     socketMan(state.user);
     initialFetch(state.user);
   }, [state.user.id]);
-
-  // useEffect(() => {
-  //   axios.get(`/api/rooms/members/${state.room.id || 1}`).then((members) => {
-  //     dispatch({
-  //       type: r.SET_ROOM_MEMBERS,
-  //       value: members.data,
-  //     });
-  //   });
-  // }, [state.room]);
 
   //-------------------------LOGIN/LOGOUT---------------------------------------
   const registerUser = async (name, email, password) => {

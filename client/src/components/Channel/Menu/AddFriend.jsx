@@ -7,23 +7,28 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 const AddFriend = (props) => {
-  const { close, remainingMemberList, addUserToRoom, room } = props;
-
-  const options = remainingMemberList.map((friend) => {
-    const newObj = {};
-    newObj["label"] = friend.name;
-    newObj["id"] = friend.id;
-    return newObj;
-  });
+  const { close, getFilteredArray, friends, addUserToRoom, room } = props;
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [inputValue, setInputValue] = useState("");
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    axios.get(`/api/rooms/members/${room.id}`).then((res) => {
+      setData(res.data);
+    });
+  }, [open]);
+
+  const options = getFilteredArray(friends, data);
 
   const openDialog = () => {
+    setInputValue("");
+    setValue(null);
     setOpen(true);
   };
 
@@ -53,6 +58,7 @@ const AddFriend = (props) => {
               setInputValue(newInputValue);
             }}
             options={options}
+            getOptionLabel={(option) => `${option.name}`}
             sx={{ width: 300 }}
             isOptionEqualToValue={(option, value) => option.id === value.id}
             renderInput={(params) => <TextField {...params} label="Friends" />}

@@ -20,7 +20,8 @@ const ChannelList = (props) => {
     value,
     room,
     createChannel,
-    remainingMemberList,
+    friends,
+    getFilteredArray,
     addUserToRoom,
     editRoom,
     editChannel,
@@ -106,7 +107,8 @@ const ChannelList = (props) => {
             <div className="channel-list-room-name">{room.name}</div>
             <div className="channel-list-channel-options">
               <MenuList
-                remainingMemberList={remainingMemberList}
+                getFilteredArray={getFilteredArray}
+                friends={friends}
                 addUserToRoom={addUserToRoom}
                 room={room}
                 editRoom={editRoom}

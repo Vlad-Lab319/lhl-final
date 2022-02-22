@@ -27,8 +27,8 @@ const RoomList = (props) => {
     directMessage,
     toggleDirectMessage,
     setSeenMessages,
-    publicRooms,
     addUserToRoom,
+    getFilteredArray,
   } = props;
   const userID = user.id;
 
@@ -154,7 +154,8 @@ const RoomList = (props) => {
       <div className="room-list">
         {friendButton}
         <SearchRoom
-          publicRooms={publicRooms}
+          getFilteredArray={getFilteredArray}
+          roomList={roomList}
           user={user}
           addUserToRoom={addUserToRoom}
         />

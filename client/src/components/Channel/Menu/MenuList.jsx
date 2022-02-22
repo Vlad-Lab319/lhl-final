@@ -6,8 +6,14 @@ import Confirm from "./Confirm";
 import "./MenuList.scss";
 
 export default function MenuList(props) {
-  const { remainingMemberList, addUserToRoom, room, editRoom, deleteRoom } =
-    props;
+  const {
+    getFilteredArray,
+    friends,
+    addUserToRoom,
+    room,
+    editRoom,
+    deleteRoom,
+  } = props;
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -43,7 +49,8 @@ export default function MenuList(props) {
       >
         <AddFriend
           close={handleClose}
-          remainingMemberList={remainingMemberList}
+          getFilteredArray={getFilteredArray}
+          friends={friends}
           addUserToRoom={addUserToRoom}
           room={room}
         />
