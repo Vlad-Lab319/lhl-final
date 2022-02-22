@@ -192,20 +192,6 @@ export default function useApplicationData() {
       console.log(err);
     }
   };
-  // TODO: UNCOMMENT - uncomment for deploy
-  // const loginUser = async (id) => {
-  //   clearErrors();
-  //   try {
-  //     const {
-  //       data: {
-  //         action: { type, value },
-  //       },
-  //     } = await axios.get(`api/users/login/${id}`);
-  //     dispatch({ type, value });
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
 
   const loginUser = async (email, password) => {
     clearErrors();

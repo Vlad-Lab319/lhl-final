@@ -5,6 +5,7 @@ import TextsmsIcon from "@mui/icons-material/Textsms";
 import { Avatar } from "@mui/material";
 import { useState } from "react";
 import stringAvatar from "../../helpers/helpers";
+import WebRTC from "../WebRTC/WebRTC";
 import "./FriendList.scss";
 
 const FriendListItem = (props) => {
@@ -19,6 +20,11 @@ const FriendListItem = (props) => {
     friend,
     setPrivateRoom,
   } = props;
+
+  const [call, setCall] = useState(false);
+  const makeCall = () => {
+    setCall(!call);
+  };
 
   const [status, setStatus] = useState("Pending");
 
@@ -55,7 +61,11 @@ const FriendListItem = (props) => {
           className="friend-text-chat"
           onClick={() => setPrivateRoom(user, friend)}
         />
-        <PhoneIcon className="friend-call-chat" />
+        <PhoneIcon
+          className="friend-call-chat"
+          onClick={() => makeCall(friend.id)}
+        />
+        {call && <WebRTC makeCall={makeCall} />}
       </div>
     );
   };
