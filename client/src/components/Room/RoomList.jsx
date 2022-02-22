@@ -126,7 +126,7 @@ const RoomList = (props) => {
             </Grid>
             <Grid item>
               <Button variant="contained" color="success" onClick={create}>
-                Edit
+                Create
               </Button>
             </Grid>
           </Grid>
