@@ -193,25 +193,33 @@ export default function useApplicationData() {
     }
   };
   // TODO: UNCOMMENT - uncomment for deploy
-  const loginUser = async (id) => {
+  // const loginUser = async (id) => {
+  //   clearErrors();
+  //   try {
+  //     const {
+  //       data: {
+  //         action: { type, value },
+  //       },
+  //     } = await axios.get(`api/users/login/${id}`);
+  //     dispatch({ type, value });
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+
+  const loginUser = async (email, password) => {
     clearErrors();
     try {
-      const {
-        data: {
-          action: { type, value },
-        },
-      } = await axios.get(`api/users/login/${id}`);
-      dispatch({ type, value });
+      const { data: action } = await axios.post(`api/users/login`, {
+        email,
+        password,
+      });
+      console.log(action);
+      dispatch(action);
     } catch (err) {
       console.log(err);
     }
   };
-  // const loginUser = (email, password) => {
-  //   clearErrors();
-  //   axios.post(`api/users/login`, { email, password }).then((user) => {
-  //     dispatch(user.data.action);
-  //   });
-  // };
   const logoutUser = () => {
     dispatch({ type: r.LOGOUT });
     if (state.socket) {
