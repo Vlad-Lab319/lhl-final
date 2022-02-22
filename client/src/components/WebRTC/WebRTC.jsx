@@ -1,18 +1,18 @@
-import { useState, useEffect, useCallback } from "react";
-import Meeting from "./Meeting";
+import { useCallback, useEffect, useState } from "react";
 import { onCall } from "../../services/signaling";
+import Meeting from "./Meeting";
 import "./WebRTC.scss";
 
 // dummy load
 const currentUser = {
   id: `${+new Date()}`,
   name: "Emily",
-}
+};
 
 const guestUser = {
   id: `${+new Date()}`,
   name: "Haris",
-}
+};
 
 const WebRtc = (props) => {
   const { makeCall } = props;
@@ -37,7 +37,6 @@ const WebRtc = (props) => {
     });
   }, []);
 
-
   const startMeeting = useCallback((contact) => {
     setCallContact(contact);
   }, []);
@@ -53,13 +52,11 @@ const WebRtc = (props) => {
   );
 
   return (
-    <div className="webrtc" draggable={true}>
+    <div className="webrtc">
       <div className="webrtc-container">
         <h2>Video meeting</h2>
-       
       </div>
       <div className="webrtc-buttons-container">
-
         {closeButton}
 
         {callContact ? (
@@ -70,7 +67,6 @@ const WebRtc = (props) => {
             currentUser={currentUser}
           />
         ) : (
-
           <button
             className="stream-button"
             onClick={() => startMeeting(guestUser)}
