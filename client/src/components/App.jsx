@@ -117,6 +117,7 @@ const App = () => {
                   channel={state.channel}
                   directMessage={state.directMessage}
                   toggleDirectMessage={toggleDirectMessage}
+                  publicRooms={state.publicRooms}
                 />
                 {state.directMessage && (
                   <>

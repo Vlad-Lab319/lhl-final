@@ -11,10 +11,18 @@ import TextField from "@mui/material/TextField";
 import { useState } from "react";
 
 const SearchRoom = (props) => {
-  const {} = props;
+  const { publicRooms } = props;
+
+  const options = publicRooms.map((room) => {
+    const newObj = {};
+    newObj["label"] = room.name;
+    newObj["id"] = room.id;
+    return newObj;
+  });
 
   const [open, setOpen] = useState(false);
-  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [value, setValue] = useState(null);
+  const [inputValue, setInputValue] = useState("");
 
   const openDialog = () => {
     setOpen(true);
@@ -24,19 +32,10 @@ const SearchRoom = (props) => {
     setOpen(false);
   };
 
-  const handleChange = (event, value) => setSelectedOptions(value);
-
   const handleSubmit = () => {
     // addUserToRoom(selectedOptions.id, room);
     closeDialog();
   };
-
-  // const newFriends = remainingMemberList.map((friend) => {
-  //   const newObj = {};
-  //   newObj["label"] = friend.name;
-  //   newObj["id"] = friend.id;
-  //   return newObj;
-  // });
 
   return (
     <>
@@ -49,16 +48,23 @@ const SearchRoom = (props) => {
         <DialogTitle>Public Rooms</DialogTitle>
         <DialogContent>
           <Autocomplete
-            id="combo-box-demo"
-            // options={newFriends}
-            onChange={handleChange}
+            value={value}
+            onChange={(event, newValue) => {
+              setValue(newValue);
+            }}
+            inputValue={inputValue}
+            onInputChange={(event, newInputValue) => {
+              setInputValue(newInputValue);
+            }}
+            options={options}
             sx={{ width: 300 }}
-            renderInput={(params) => <TextField {...params} label="Friends" />}
+            isOptionEqualToValue={(option, value) => option.id === value.id}
+            renderInput={(params) => <TextField {...params} label="Rooms" />}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={closeDialog}>Cancel</Button>
-          <Button onClick={handleSubmit}>Add</Button>
+          <Button onClick={handleSubmit}>Join</Button>
         </DialogActions>
       </Dialog>
     </>

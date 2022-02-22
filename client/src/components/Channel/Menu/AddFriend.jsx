@@ -12,8 +12,16 @@ import { useState } from "react";
 const AddFriend = (props) => {
   const { close, remainingMemberList, addUserToRoom, room } = props;
 
+  const options = remainingMemberList.map((friend) => {
+    const newObj = {};
+    newObj["label"] = friend.name;
+    newObj["id"] = friend.id;
+    return newObj;
+  });
+
   const [open, setOpen] = useState(false);
-  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [value, setValue] = useState(null);
+  const [inputValue, setInputValue] = useState("");
 
   const openDialog = () => {
     setOpen(true);
@@ -24,19 +32,10 @@ const AddFriend = (props) => {
     close();
   };
 
-  const handleChange = (event, value) => setSelectedOptions(value);
-
   const handleSubmit = () => {
-    addUserToRoom(selectedOptions.id, room);
+    addUserToRoom(value.id, room);
     closeDialog();
   };
-
-  const newFriends = remainingMemberList.map((friend) => {
-    const newObj = {};
-    newObj["label"] = friend.name;
-    newObj["id"] = friend.id;
-    return newObj;
-  });
 
   return (
     <>
@@ -45,10 +44,17 @@ const AddFriend = (props) => {
         <DialogTitle>Add Friend</DialogTitle>
         <DialogContent>
           <Autocomplete
-            id="combo-box-demo"
-            options={newFriends}
-            onChange={handleChange}
+            value={value}
+            onChange={(event, newValue) => {
+              setValue(newValue);
+            }}
+            inputValue={inputValue}
+            onInputChange={(event, newInputValue) => {
+              setInputValue(newInputValue);
+            }}
+            options={options}
             sx={{ width: 300 }}
+            isOptionEqualToValue={(option, value) => option.id === value.id}
             renderInput={(params) => <TextField {...params} label="Friends" />}
           />
         </DialogContent>

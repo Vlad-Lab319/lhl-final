@@ -26,6 +26,7 @@ const RoomList = (props) => {
     createRoom,
     directMessage,
     toggleDirectMessage,
+    publicRooms,
   } = props;
   const userID = user.id;
 
@@ -64,8 +65,7 @@ const RoomList = (props) => {
       checked,
       icon: null,
     };
-    // createRoom(roomData);
-    console.log(roomData);
+    createRoom(roomData);
     toggleNewRoom();
   }
 
@@ -146,7 +146,7 @@ const RoomList = (props) => {
     <div className="sidebar sidebar--rooms">
       <div className="room-list">
         {friendButton}
-        <SearchRoom />
+        <SearchRoom publicRooms={publicRooms} />
         <div className="separator" />
         {rooms}
         {rooms.length > 0 && <div className="separator" />}
