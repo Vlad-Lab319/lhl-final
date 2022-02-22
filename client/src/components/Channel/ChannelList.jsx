@@ -1,12 +1,11 @@
 //mui material
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { Button, DialogActions } from "@mui/material";
+import { Button, DialogActions, TextField } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import Input from "@mui/material/Input";
 import { useState } from "react";
 import "./ChannelList.scss";
 import ChannelListItem from "./ChannelListItem";
@@ -76,13 +75,13 @@ const ChannelList = (props) => {
           <DialogContentText className="add-channel-text">
             Create new channel
           </DialogContentText>
-          <Input
+          <TextField
             autoFocus
             margin="dense"
             type="text"
+            label="Name"
             fullWidth
             variant="standard"
-            id="room_id"
             value={newChannelName}
             onChange={(event) => setNewChannelName(event.target.value)}
           />

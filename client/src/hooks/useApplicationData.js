@@ -28,7 +28,6 @@ export default function useApplicationData() {
           axios.get(`/api/users/friends/requests/${user.id}`),
           axios.get(`/api/messages/private/${user.id}`),
           axios.get(`/api/messages/seen/public/${user.id}`),
-          axios.get(`/api/rooms/public`),
         ]);
         const messageCountRooms = rooms.map((room) => {
           return {

@@ -136,19 +136,6 @@ const RoomList = (props) => {
     </div>
   );
 
-  // const searchRooms = (
-  //   <div
-  //     className="list-item"
-  //     onClick={() => {
-  //       console.log("clicky");
-  //     }}
-  //   >
-  //     <IconButton color="inherit">
-  //       <SearchIcon className="list-icon-options" />
-  //     </IconButton>
-  //   </div>
-  // );
-
   return (
     <div className="sidebar sidebar--rooms">
       <div className="room-list">
