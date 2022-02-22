@@ -19,7 +19,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const SearchRoom = (props) => {
-  const { publicRooms, user, addUserToRoom } = props;
+  const { user, addUserToRoom } = props;
 
   const userID = user.id;
 
@@ -29,8 +29,11 @@ const SearchRoom = (props) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    axios.get(`/api/rooms/public`).then((res) => console.log(res.data));
-  });
+    axios.get(`/api/rooms/public`).then((res) => {
+      console.log(res.data);
+      setData(res.data);
+    });
+  }, []);
 
   const openDialog = () => {
     setInputValue("");
@@ -66,7 +69,7 @@ const SearchRoom = (props) => {
             onInputChange={(event, newInputValue) => {
               setInputValue(newInputValue);
             }}
-            options={publicRooms}
+            options={data}
             getOptionLabel={(option) => `${option.name}`}
             renderOption={(props, option) => (
               <Box component="li" {...props}>
