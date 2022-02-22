@@ -1,4 +1,3 @@
-// TODO: RoomMembersListItem needs to be implemented
 import PhoneIcon from "@mui/icons-material/Phone";
 import TextsmsIcon from "@mui/icons-material/Textsms";
 import { Avatar } from "@mui/material";
