@@ -1,4 +1,4 @@
-// TODO: RoomMembersList needs the users present in the room that the user is currently in
+
 import "./RoomMembersList.scss";
 import RoomMembersListItem from "./RoomMembersListItem";
 

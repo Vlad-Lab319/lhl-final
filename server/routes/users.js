@@ -2,11 +2,6 @@ const express = require("express");
 const db = require("../db/index");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
-// Encrypt
-
-// Decrypt
-// bcrypt.compareSync("plaintextpassword", hashedPassword);
-// returns true
 
 router.get("/", (req, res) => {
   db.query(
@@ -16,30 +11,6 @@ router.get("/", (req, res) => {
       return { ...user, room_id: null, channel_id: null };
     });
     res.json(updatedUsers);
-  });
-});
-
-// TODO: REMOVE - Remove for deploy
-// get single user
-
-router.get("/login/:id", (req, res) => {
-  db.query(
-    `SELECT id, username AS name, avatar_url AS avatar FROM users WHERE id = $1;`,
-    [req.params.id]
-  ).then(({ rows: users }) => {
-    const user = users[0];
-    res.json({
-      action: {
-        type: "SET_USER",
-        value: {
-          id: user.id,
-          name: user.name,
-          avatar: user.avatar,
-          room_id: null,
-          channel_id: null,
-        },
-      },
-    });
   });
 });
 
@@ -170,20 +141,24 @@ router.post("/login", async (req, res) => {
       `SELECT id, username AS name, avatar_url AS avatar, password AS hashed FROM users WHERE email = $1;`,
       [email]
     );
-    id
-      ? bcrypt.compareSync(password, hashed) &&
-        res.json({
-          type: "SET_USER",
-          value: {
-            id,
-            name,
-            avatar,
-          },
-        })
-      : res.json({ type: "SET_ERRORS", value: "Email/Password is incorrect" });
+    if (id) {
+      bcrypt.compareSync(password, hashed)
+        ? res.json({
+            type: "SET_USER",
+            value: {
+              id,
+              name,
+              avatar,
+            },
+          })
+        : res.json({ type: "SET_ERRORS", value: "Incorrect password!" });
+    }
   } catch (err) {
     console.log(err);
-    res.sendStatus(500);
+    res.json({
+      type: "SET_ERRORS",
+      value: "That email has not been registered, create an account first",
+    });
   }
 });
 

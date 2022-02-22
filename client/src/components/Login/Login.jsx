@@ -1,11 +1,15 @@
 import classnames from "classnames";
 import { useState } from "react";
 import "./Login.scss";
+
+// TODO: IMPORTANT - REMOVE ENV BEFORE DEPLOY
 const Login = (props) => {
   const { loginUser, toggleView, errors, clearErrors } = props;
   const [value, setValue] = useState(1);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState(process.env.REACT_APP_ADMIN_EMAIL || "");
+  const [password, setPassword] = useState(
+    process.env.REACT_APP_ADMIN_PASSWORD || ""
+  );
 
   const messageClass = classnames(
     "login-message",
@@ -21,25 +25,10 @@ const Login = (props) => {
         autoComplete="off"
         onSubmit={(e) => {
           e.preventDefault();
-          // loginUser(email, password);
-          loginUser(value);
+          loginUser(email, password);
         }}
       >
         <span className="input-item">
-          <label className="input-label" htmlFor="id">
-            User ID:
-          </label>
-          <input
-            className="login-input"
-            name="id"
-            type="text"
-            value={value}
-            placeholder="USER ID"
-            onChange={(e) => setValue(e.target.value)}
-          />
-        </span>
-
-        {/* <span className="input-item">
           <label className="input-label" htmlFor="email">
             Email:
           </label>
@@ -70,7 +59,7 @@ const Login = (props) => {
             }}
             required
           />
-        </span> */}
+        </span>
         <button type="submit" className="login-btn">
           LOGIN
         </button>
