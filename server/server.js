@@ -168,7 +168,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("updateChannels", () => {
-    socket.broadcast.emit("updateChannels");
+    io.emit("updateChannels");
   });
 
   socket.on("message", (messageData) => {

@@ -1,13 +1,12 @@
 //mui material
-import { Input, MenuItem } from "@mui/material";
+import { MenuItem } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
 import { useState } from "react";
 
-const Confirm = (props) => {
+const DeleteRoom = (props) => {
   const { room, deleteRoom } = props;
 
   const [open, setOpen] = useState(false);
@@ -35,4 +34,4 @@ const Confirm = (props) => {
   );
 };
 
-export default Confirm;
+export default DeleteRoom;
