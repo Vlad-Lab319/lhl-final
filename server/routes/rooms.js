@@ -2,19 +2,6 @@ const express = require("express");
 const db = require("../db/index");
 const router = express.Router();
 
-router.get("/:userID", (req, res) => {
-  db.query(
-    `
-    SELECT rooms.* FROM rooms
-    JOIN room_users ON rooms.id = room_id
-    WHERE room_users.user_id = $1
-    ;`,
-    [req.params.userID]
-  ).then(({ rows: rooms }) => {
-    res.json(rooms);
-  });
-});
-
 router.get("/members/:roomID", (req, res) => {
   db.query(
     `
@@ -25,6 +12,30 @@ router.get("/members/:roomID", (req, res) => {
     [req.params.roomID]
   ).then(({ rows: users }) => {
     res.json(users);
+  });
+});
+
+router.get("/public", (req, res) => {
+  db.query(
+    `
+    SELECT * FROM rooms
+    WHERE is_public = true
+    ;`
+  ).then(({ rows: rooms }) => {
+    res.json(rooms);
+  });
+});
+
+router.get("/:userID", (req, res) => {
+  db.query(
+    `
+    SELECT rooms.* FROM rooms
+    JOIN room_users ON rooms.id = room_id
+    WHERE room_users.user_id = $1
+    ;`,
+    [req.params.userID]
+  ).then(({ rows: rooms }) => {
+    res.json(rooms);
   });
 });
 

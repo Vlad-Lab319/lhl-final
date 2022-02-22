@@ -5,5 +5,5 @@ CREATE TABLE rooms (
   name VARCHAR(255) NOT NULL,
   description TEXT,
   icon_url VARCHAR(255),
-  is_private BOOLEAN DEFAULT false
+  is_public BOOLEAN DEFAULT true
 );

@@ -8,6 +8,7 @@ export default function useStateManager() {
     SET_ROOM: "SET_ROOM",
     SET_ROOM_MEMBERS: "SET_ROOM_MEMBERS",
     SET_ROOMS: "SET_ROOMS",
+    SET_PUBLIC_ROOMS: "SET_PUBLIC_ROOMS",
     SET_CHANNEL: "SET_CHANNEL",
     SET_CHANNELS: "SET_CHANNELS",
     SET_FRIENDS: "SET_FRIENDS",
@@ -39,6 +40,7 @@ export default function useStateManager() {
     privateRoom: {},
     channel: {},
     rooms: [],
+    publicRooms: [],
     channels: [],
     friends: [],
     recipient: {},
@@ -93,6 +95,11 @@ export default function useStateManager() {
           ...state,
           rooms: action.value,
         };
+      case r.SET_PUBLIC_ROOMS:
+        return {
+          ...state,
+          publicRooms: action.value,
+        };
       case r.SET_CHANNEL:
         return {
           ...state,
@@ -143,6 +150,7 @@ export default function useStateManager() {
           messages: action.value.messages,
           friendRequests: action.value.friendRequests,
           privateMessages: action.value.privateMessages,
+          publicRooms: action.value.publicRooms,
         };
       case r.SET_ERRORS:
         return {

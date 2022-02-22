@@ -18,6 +18,7 @@ export default function useApplicationData() {
           { data: friends },
           { data: friendRequests },
           { data: privateMessages },
+          { data: publicRooms },
         ] = await Promise.all([
           axios.get(`/api/users/`),
           axios.get(`/api/rooms/${user.id}`),
@@ -26,6 +27,7 @@ export default function useApplicationData() {
           axios.get(`/api/users/friends/${user.id}`),
           axios.get(`/api/users/friends/requests/${user.id}`),
           axios.get(`/api/messages/private/${user.id}`),
+          axios.get(`/api/rooms/public`),
         ]);
         dispatch({
           type: r.SET_APPLICATION_DATA,
@@ -37,6 +39,7 @@ export default function useApplicationData() {
             friends,
             friendRequests,
             privateMessages,
+            publicRooms,
           },
         });
       } catch (err) {

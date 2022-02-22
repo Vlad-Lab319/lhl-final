@@ -2,7 +2,6 @@
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import GroupIcon from "@mui/icons-material/Group";
 import PersonIcon from "@mui/icons-material/Person";
-import SearchIcon from "@mui/icons-material/Search";
 import { IconButton, Stack, TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import Switch from "@mui/material/Switch";
@@ -16,6 +15,7 @@ import { useState } from "react";
 import "./RoomList.scss";
 // Components
 import RoomListItem from "./RoomListItem";
+import SearchRoom from "./SearchRoom";
 
 const RoomList = (props) => {
   const {
@@ -64,7 +64,8 @@ const RoomList = (props) => {
       checked,
       icon: null,
     };
-    createRoom(roomData);
+    // createRoom(roomData);
+    console.log(roomData);
     toggleNewRoom();
   }
 
@@ -128,24 +129,24 @@ const RoomList = (props) => {
     </div>
   );
 
-  const searchRooms = (
-    <div
-      className="list-item"
-      onClick={() => {
-        console.log("clicky");
-      }}
-    >
-      <IconButton color="inherit">
-        <SearchIcon className="list-icon-options" />
-      </IconButton>
-    </div>
-  );
+  // const searchRooms = (
+  //   <div
+  //     className="list-item"
+  //     onClick={() => {
+  //       console.log("clicky");
+  //     }}
+  //   >
+  //     <IconButton color="inherit">
+  //       <SearchIcon className="list-icon-options" />
+  //     </IconButton>
+  //   </div>
+  // );
 
   return (
     <div className="sidebar sidebar--rooms">
       <div className="room-list">
         {friendButton}
-        {searchRooms}
+        <SearchRoom />
         <div className="separator" />
         {rooms}
         {rooms.length > 0 && <div className="separator" />}
