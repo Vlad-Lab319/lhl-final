@@ -42,13 +42,9 @@
 }
 
 video {
-  // width: 10vw;
-  // width: 30rem;
   width: 90%;
   height: 90%;
-  // height: 75%;
   margin: 2rem;
-  // background: #2c3e50;
   background-color: lighten($dark-background, 10);
   border-radius: 1rem;
 }
@@ -56,15 +52,11 @@ video {
 .stream-button {
   display: flex;
   margin: 0.2rem;
-  width: 30%;
+  width: 100%;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   color: white;
   background-color: lighten($dark-background, 10);
   border-radius: 0.5rem;
-  // color: rgb(100, 100, 100);
-  // &--selected {
-  //   color: white;
-  // }
 }
