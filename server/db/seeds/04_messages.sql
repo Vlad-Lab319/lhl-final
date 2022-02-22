@@ -1,5 +1,2 @@
--- INSERT INTO messages (user_id, channel_id, message)
--- VALUES ('1', '1', 'this is the first ever message'),
--- ('2', '1', 'wow this is cool'),
--- ('2', '2', 'a message yo')
--- ;
+INSERT INTO messages (user_id, channel_id, message)
+VALUES ('1', '1', 'Welcome to Clarion! Chat here, create a room of your own or connect with your friends through private message. Clarion, Hear The Call!')

@@ -1,4 +1,3 @@
-// TODO: RoomMembersListItem needs to be implemented
 import PhoneIcon from "@mui/icons-material/Phone";
 import TextsmsIcon from "@mui/icons-material/Textsms";
 import { Avatar } from "@mui/material";
@@ -20,7 +19,7 @@ const RoomMembersListItem = (props) => {
       <div className="member-list-user-options">
         <TextsmsIcon className="member-text-chat" />
         <PhoneIcon className="member-call-chat" onClick={() => makeCall(id)} />
-        {call && <WebRTC />}
+        {call && <WebRTC makeCall={makeCall}/>}
       </div>
     );
   };

@@ -7,8 +7,6 @@ import { useState } from "react";
 import stringAvatar from "../../helpers/helpers";
 import "./FriendList.scss";
 
-// TODO: Add avatar
-
 const FriendListItem = (props) => {
   const {
     avatar,
