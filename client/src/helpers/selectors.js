@@ -1,7 +1,5 @@
 // TODO: getUsersForRoom needs to be implemented
 
-import axios from "axios";
-
 const getChannelsForRoom = (room, state) => {
   return state.channels.filter((channel) => channel.room_id === room.id);
 };
@@ -49,6 +47,8 @@ const getFilteredFriends = (state) => {
 
   return filteredMembers;
 };
+
+const addTotalMessagesToGroups = () => {};
 
 export {
   getChannelsForRoom,

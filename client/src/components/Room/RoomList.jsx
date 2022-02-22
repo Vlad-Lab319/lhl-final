@@ -4,11 +4,11 @@ import GroupIcon from "@mui/icons-material/Group";
 import PersonIcon from "@mui/icons-material/Person";
 import { IconButton, Stack, TextField } from "@mui/material";
 import Button from "@mui/material/Button";
-import Switch from "@mui/material/Switch";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
+import Switch from "@mui/material/Switch";
 // React
 import { useState } from "react";
 // Styles
@@ -26,6 +26,7 @@ const RoomList = (props) => {
     createRoom,
     directMessage,
     toggleDirectMessage,
+    setSeenMessages,
     publicRooms,
     addUserToRoom,
   } = props;
@@ -52,8 +53,13 @@ const RoomList = (props) => {
         id={room.id}
         name={room.name}
         icon={room.icon_url}
-        setRoom={() => setRoom(room, user, directMessage)}
+        setRoom={() => {
+          setSeenMessages(user, room, null, room.messageCount);
+          setRoom(room, user, directMessage);
+        }}
         selected={room.id === value.id}
+        messageCount={room.messageCount}
+        messagesSeen={room.messagesSeen}
       />
     );
   });
