@@ -364,10 +364,10 @@ export default function useApplicationData() {
     });
   };
 
-  const addUserToRoom = (id, room) => {
+  const addUserToRoom = (userID, roomID) => {
     return axios
-      .post("/api/rooms/adduser", { userID: id, roomID: room.id })
-      .then(state.socket.emit("updateRooms", { id: room.id }));
+      .post("/api/rooms/adduser", { userID, roomID })
+      .then(state.socket.emit("updateRooms", { id: roomID }));
   };
 
   return {

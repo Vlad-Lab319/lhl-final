@@ -27,6 +27,7 @@ const RoomList = (props) => {
     directMessage,
     toggleDirectMessage,
     publicRooms,
+    addUserToRoom,
   } = props;
   const userID = user.id;
 
@@ -146,7 +147,11 @@ const RoomList = (props) => {
     <div className="sidebar sidebar--rooms">
       <div className="room-list">
         {friendButton}
-        <SearchRoom publicRooms={publicRooms} />
+        <SearchRoom
+          publicRooms={publicRooms}
+          user={user}
+          addUserToRoom={addUserToRoom}
+        />
         <div className="separator" />
         {rooms}
         {rooms.length > 0 && <div className="separator" />}

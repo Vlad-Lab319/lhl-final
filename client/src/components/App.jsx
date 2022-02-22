@@ -118,6 +118,7 @@ const App = () => {
                   directMessage={state.directMessage}
                   toggleDirectMessage={toggleDirectMessage}
                   publicRooms={state.publicRooms}
+                  addUserToRoom={addUserToRoom}
                 />
                 {state.directMessage && (
                   <>

@@ -11,7 +11,9 @@ import TextField from "@mui/material/TextField";
 import { useState } from "react";
 
 const SearchRoom = (props) => {
-  const { publicRooms } = props;
+  const { publicRooms, user, addUserToRoom } = props;
+
+  const userID = user.id;
 
   const options = publicRooms.map((room) => {
     const newObj = {};
@@ -33,7 +35,7 @@ const SearchRoom = (props) => {
   };
 
   const handleSubmit = () => {
-    // addUserToRoom(selectedOptions.id, room);
+    addUserToRoom(userID, value.id);
     closeDialog();
   };
 

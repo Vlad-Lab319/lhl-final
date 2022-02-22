@@ -33,7 +33,7 @@ const AddFriend = (props) => {
   };
 
   const handleSubmit = () => {
-    addUserToRoom(value.id, room);
+    addUserToRoom(value.id, room.id);
     closeDialog();
   };
 
