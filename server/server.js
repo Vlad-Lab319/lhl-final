@@ -17,7 +17,7 @@ app.use(
   })
 );
 
-const PORT = process.env.SERVER_PORT || 8081;
+const PORT = process.env.PORT || 8081;
 const buildPath = path.join(__dirname, '..', 'build'); 
 app.use(express.static(buildPath));
 
@@ -222,6 +222,6 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(PORT, () => {
-  console.log("SERVER RUNNING");
+server.listen(process.env.PORT, () => {
+  console.log("SERVER RUNNING", process.env.PORT);
 });
