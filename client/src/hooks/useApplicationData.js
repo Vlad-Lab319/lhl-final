@@ -479,6 +479,8 @@ export default function useApplicationData() {
     state.socket.emit("updateRoomMembership", {
       user: userCopy,
     });
+    const { data: messages } = await axios.get(`/api/messages/`);
+    dispatch({ type: r.SET_MESSAGES, value: messages });
   };
 
   return {
