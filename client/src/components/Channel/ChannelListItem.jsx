@@ -19,6 +19,8 @@ const ChannelListItem = (props) => {
     editChannel,
     channel,
     deleteChannel,
+    room,
+    user,
   } = props;
 
   const [newChannelName, setNewChannelName] = useState(channel.name);
@@ -105,16 +107,18 @@ const ChannelListItem = (props) => {
         </div>
         <span>{name}</span>
       </div>
-      <div className="channel-list-channel-options">
-        <SettingsIcon
-          className="channel-gear-option"
-          onClick={toggleOpenEdit}
-        />
-        <DeleteIcon
-          className="channel-trash-option"
-          onClick={toggleOpenConfirm}
-        />
-      </div>
+      {user.id === room.user_id && (
+        <div className="channel-list-channel-options">
+          <SettingsIcon
+            className="channel-gear-option"
+            onClick={toggleOpenEdit}
+          />
+          <DeleteIcon
+            className="channel-trash-option"
+            onClick={toggleOpenConfirm}
+          />
+        </div>
+      )}
       {editMenu}
       {confirmMenu}
     </div>

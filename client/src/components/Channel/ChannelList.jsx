@@ -47,6 +47,8 @@ const ChannelList = (props) => {
         editChannel={editChannel}
         channel={channel}
         deleteChannel={deleteChannel}
+        user={user}
+        room={room}
       />
     );
   });
