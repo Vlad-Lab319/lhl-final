@@ -86,8 +86,22 @@ const ChannelListItem = (props) => {
     <Dialog open={openConfirm} onClose={toggleOpenConfirm}>
       <DialogTitle>Are you sure you want to delete the channel?</DialogTitle>
       <DialogActions>
-        <Button onClick={toggleOpenConfirm}>Cancel</Button>
-        <Button onClick={confirm}>Confirm</Button>
+        <Grid container direction="row" justifyContent="space-around">
+          <Grid item>
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={toggleOpenConfirm}
+            >
+              Cancel
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button variant="contained" color="error" onClick={confirm}>
+              Confirm
+            </Button>
+          </Grid>
+        </Grid>
       </DialogActions>
     </Dialog>
   );
