@@ -464,9 +464,21 @@ export default function useApplicationData() {
     });
   };
 
-  const addUserToRoom = async (userID, roomID) => {
-    await axios.post("/api/rooms/adduser", { userID, roomID });
+  const addUserToRoom = async (user, roomID) => {
+    await axios.post("/api/rooms/adduser", { userID: user.id, roomID });
     state.socket.emit("updateRooms", { id: roomID });
+    const userCopy = {
+      ...user,
+    };
+    console.log("USER: ", user);
+    userCopy.memberOfRooms.push(roomID);
+    dispatch({
+      type: r.SET_USER,
+      value: userCopy,
+    });
+    state.socket.emit("updateRoomMembership", {
+      user: userCopy,
+    });
   };
 
   return {

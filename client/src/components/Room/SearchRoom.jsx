@@ -1,4 +1,5 @@
 //mui material
+import SearchIcon from "@mui/icons-material/Search";
 import {
   Box,
   Card,
@@ -9,15 +10,14 @@ import {
   Typography,
 } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
-import SearchIcon from "@mui/icons-material/Search";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
-import { useState, useEffect } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
 const SearchRoom = (props) => {
   const { user, addUserToRoom, getFilteredArray, roomList } = props;
@@ -48,7 +48,7 @@ const SearchRoom = (props) => {
   };
 
   const handleSubmit = () => {
-    addUserToRoom(userID, value.id);
+    addUserToRoom(user, value.id);
     closeDialog();
   };
 
