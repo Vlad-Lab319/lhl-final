@@ -22,8 +22,6 @@ import { useEffect, useState } from "react";
 const SearchRoom = (props) => {
   const { user, addUserToRoom, getFilteredArray, roomList } = props;
 
-  const userID = user.id;
-
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [inputValue, setInputValue] = useState("");
@@ -91,7 +89,9 @@ const SearchRoom = (props) => {
             )}
             sx={{ width: 300 }}
             isOptionEqualToValue={(option, value) => option.id === value.id}
-            renderInput={(params) => <TextField {...params} label="Rooms" />}
+            renderInput={(params) => (
+              <TextField {...params} label="Rooms" variant="standard" />
+            )}
           />
         </DialogContent>
         <DialogActions>

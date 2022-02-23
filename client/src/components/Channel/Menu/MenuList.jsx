@@ -63,10 +63,10 @@ export default function MenuList(props) {
             room={room}
           />
           {user.id === room.user_id && (
-            <>
-              <MenuItem onClick={toggleOpenEdit}>Edit</MenuItem>
-              <DeleteRoom room={room} deleteRoom={deleteRoom} />
-            </>
+            <MenuItem onClick={toggleOpenEdit}>Edit</MenuItem>
+          )}
+          {user.id === room.user_id && (
+            <DeleteRoom room={room} deleteRoom={deleteRoom} />
           )}
         </Menu>
       </Box>
