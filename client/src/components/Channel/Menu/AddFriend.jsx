@@ -38,7 +38,7 @@ const AddFriend = (props) => {
   };
 
   const handleSubmit = () => {
-    addUserToRoom(value.id, room.id);
+    addUserToRoom(value, room.id);
     closeDialog();
   };
 
@@ -61,7 +61,9 @@ const AddFriend = (props) => {
             getOptionLabel={(option) => `${option.name}`}
             sx={{ width: 300 }}
             isOptionEqualToValue={(option, value) => option.id === value.id}
-            renderInput={(params) => <TextField {...params} label="Friends" />}
+            renderInput={(params) => (
+              <TextField {...params} label="Friends" variant="standard" />
+            )}
           />
         </DialogContent>
         <DialogActions>

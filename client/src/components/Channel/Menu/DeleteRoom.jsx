@@ -1,5 +1,5 @@
 //mui material
-import { MenuItem } from "@mui/material";
+import { Grid, MenuItem } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -26,8 +26,18 @@ const DeleteRoom = (props) => {
       <Dialog open={open} onClose={toggleOpen}>
         <DialogTitle>Are you sure you want to delete the room?</DialogTitle>
         <DialogActions>
-          <Button onClick={toggleOpen}>Cancel</Button>
-          <Button onClick={confirm}>Confirm</Button>
+          <Grid container direction="row" justifyContent="space-around">
+            <Grid item>
+              <Button variant="outlined" color="error" onClick={toggleOpen}>
+                Cancel
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button variant="contained" color="error" onClick={confirm}>
+                Confirm
+              </Button>
+            </Grid>
+          </Grid>
         </DialogActions>
       </Dialog>
     </>
