@@ -460,10 +460,9 @@ export default function useApplicationData() {
     });
   };
 
-  const addUserToRoom = (userID, roomID) => {
-    return axios
-      .post("/api/rooms/adduser", { userID, roomID })
-      .then(state.socket.emit("updateRooms", { id: roomID }));
+  const addUserToRoom = async (userID, roomID) => {
+    await axios.post("/api/rooms/adduser", { userID, roomID });
+    state.socket.emit("updateRooms", { id: roomID });
   };
 
   return {
