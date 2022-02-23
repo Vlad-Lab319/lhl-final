@@ -116,6 +116,7 @@ const ChannelList = (props) => {
                 friends={friends}
                 addUserToRoom={addUserToRoom}
                 room={room}
+                user={user}
                 editRoom={editRoom}
                 deleteRoom={deleteRoom}
               >
