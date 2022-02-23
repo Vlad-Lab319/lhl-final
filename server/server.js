@@ -79,6 +79,14 @@ io.on("connection", (socket) => {
     });
   });
 
+  socket.on("updateRoomMembership", (action) => {
+    users[action.user.id] = { ...action.user, socketID: socket.id };
+    io.emit("updateActiveUsers", {
+      type: r.SET_ACTIVE_USERS,
+      value: users,
+    });
+  });
+
   socket.on("sendfriendrequest", (action) => {
     const sender = users[action.value.user_id];
     const receiver = users[action.value.friend_id];
