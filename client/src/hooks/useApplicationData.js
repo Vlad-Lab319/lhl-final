@@ -48,10 +48,15 @@ export default function useApplicationData() {
         });
 
         const userRooms = rooms.map((room) => room.id);
-
+        const updatedUser = {
+          ...user,
+          channel_id: null,
+          room_id: null,
+          memberOfRooms: userRooms,
+        };
         dispatch({
           type: r.SET_USER,
-          value: { ...user, memberOfRooms: userRooms },
+          value: updatedUser,
         });
 
         dispatch({
@@ -66,6 +71,7 @@ export default function useApplicationData() {
             privateMessages,
           },
         });
+        socketMan(updatedUser);
       } catch (err) {
         console.log(err);
       }
@@ -181,7 +187,6 @@ export default function useApplicationData() {
   useEffect(() => {
     (async () => {
       await initialFetch(state.user);
-      socketMan(state.user);
     })();
   }, [state.user.id]);
 
@@ -400,16 +405,28 @@ export default function useApplicationData() {
     });
   };
 
-  const createRoom = (roomData) => {
-    return axios.post(`/api/rooms`, roomData).then((room) => {
-      dispatch({
-        type: r.ADD_ROOMS,
-        value: { ...room.data[0], messageCount: 0, messagesSeen: 0 },
-      });
-      dispatch({
-        type: r.SET_ROOM_SEEN,
-        value: { id: room.data[0].id },
-      });
+  const createRoom = async (roomData, user) => {
+    const { data: room } = await axios.post(`/api/rooms`, roomData);
+    console.log(room);
+    dispatch({
+      type: r.ADD_ROOMS,
+      value: { ...room[0], messageCount: 0, messagesSeen: 0 },
+    });
+    dispatch({
+      type: r.SET_ROOM_SEEN,
+      value: { id: room[0].id },
+    });
+    const userCopy = {
+      ...user,
+    };
+    console.log("USER: ", user);
+    userCopy.memberOfRooms.push(room[0].id);
+    dispatch({
+      type: r.SET_USER,
+      value: userCopy,
+    });
+    state.socket.emit("updateRoomMembership", {
+      user: userCopy,
     });
   };
 
@@ -447,10 +464,23 @@ export default function useApplicationData() {
     });
   };
 
-  const addUserToRoom = (userID, roomID) => {
-    return axios
-      .post("/api/rooms/adduser", { userID, roomID })
-      .then(state.socket.emit("updateRooms", { id: roomID }));
+  const addUserToRoom = async (user, roomID) => {
+    await axios.post("/api/rooms/adduser", { userID: user.id, roomID });
+    state.socket.emit("updateRooms", { id: roomID });
+    const userCopy = {
+      ...user,
+    };
+    console.log("USER: ", user);
+    userCopy.memberOfRooms.push(roomID);
+    dispatch({
+      type: r.SET_USER,
+      value: userCopy,
+    });
+    state.socket.emit("updateRoomMembership", {
+      user: userCopy,
+    });
+    const { data: messages } = await axios.get(`/api/messages/`);
+    dispatch({ type: r.SET_MESSAGES, value: messages });
   };
 
   return {
