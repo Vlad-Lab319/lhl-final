@@ -1,6 +1,5 @@
 require("dotenv").config();
 const db = require("./db/index");
-// const socketServer = require("./socketServer");
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const bodyParser = require("body-parser");
@@ -182,7 +181,6 @@ io.on("connection", (socket) => {
         io.to(user.socketID).emit("message", messageData);
       }
     });
-    // socket.broadcast.emit("message", messageData);
   });
 
   socket.on("privatemessage", (messageData) => {
