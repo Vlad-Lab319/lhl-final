@@ -1,24 +1,6 @@
 const express = require("express");
-// const { send } = require("upgrade");
 const db = require("../db/index");
 const router = express.Router();
-
-// router.get("/:channelID", (req, res) => {
-//   db.query(`SELECT * FROM messages WHERE channel_id = $1;`, [
-//     req.params.channelID,
-//   ]).then(({ rows: messages }) => {
-//     res.json(messages);
-//   });
-// });
-
-// router.get("/:userID", (req, res) => {
-//   db.query(
-//     `SELECT DISTINCT(messages.*) FROM messages JOIN channels ON channels.id = messages.channel_id JOIN rooms ON channels.room_id = rooms.id JOIN room_users ON rooms.id = room_users.room_id JOIN users ON users.id = rooms.user_id WHERE users.id = $1 ORDER BY messages.created_at;`,
-//     [req.params.userID]
-//   ).then(({ rows: messages }) => {
-//     res.json(messages);
-//   });
-// });
 
 router.get("/", async (req, res) => {
   try {
@@ -70,48 +52,6 @@ router.get("/seen/public/:user_id", async (req, res) => {
     console.log(err);
   }
 });
-
-// router.get("/private/seen/:private_room_id/:user_id", async (req, res) => {
-//   const { private_room_id, user_id } = req.params;
-//   try {
-//     const {
-//       rows: [{ id: messages_seen }],
-//     } = await db.query(
-//       `
-//     SELECT messages_seen
-//     FROM seen_messages
-//     JOIN users ON seen_messages.user_id = users.id
-//     JOIN private_room_users ON users.id = private_room_users.user_id
-//     WHERE private_room_users.private_room_id = $1 AND seen_messages.user_id = $2
-//     `,
-//       [private_room_id, user_id]
-//     );
-//     res.json(messages_seen);
-//   } catch (err) {
-//     console.log(err);
-//   }
-// });
-
-// router.get("/public/seen/:room_id/:user_id", async (req, res) => {
-//   const { room_id, user_id } = req.params;
-//   try {
-//     const {
-//       rows: [{ id: messages_seen }],
-//     } = await db.query(
-//       `
-//     SELECT messages_seen
-//     FROM seen_messages
-//     JOIN users ON seen_messages.user_id = users.id
-//     JOIN room_users ON users.id = room_users.user_id
-//     WHERE room_users.room_id = $1 AND seen_messages.user_id = $2
-//     `,
-//       [room_id, user_id]
-//     );
-//     res.json(messages_seen);
-//   } catch (err) {
-//     console.log(err);
-//   }
-// });
 
 router.post("/", (req, res) => {
   const { userID, channelID, room_id, message } = req.body;

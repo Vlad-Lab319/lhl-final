@@ -209,7 +209,6 @@ export default function useApplicationData() {
         email,
         password,
       });
-      console.log(action);
       dispatch(action);
     } catch (err) {
       console.log(err);
@@ -367,7 +366,6 @@ export default function useApplicationData() {
 
   const sendMessage = async (messageData) => {
     const { data: message } = await axios.post(`/api/messages`, messageData);
-    console.log(message);
     dispatch({
       type: r.ADD_MESSAGES,
       value: message[0],

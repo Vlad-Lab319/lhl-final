@@ -5,7 +5,6 @@ import "./Login.scss";
 // TODO: IMPORTANT - REMOVE ENV BEFORE DEPLOY
 const Login = (props) => {
   const { loginUser, toggleView, errors, clearErrors } = props;
-  const [value, setValue] = useState(1);
   const [email, setEmail] = useState(process.env.REACT_APP_ADMIN_EMAIL || "");
   const [password, setPassword] = useState(
     process.env.REACT_APP_ADMIN_PASSWORD || ""

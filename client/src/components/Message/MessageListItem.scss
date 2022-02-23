@@ -3,7 +3,6 @@
 .message-item {
   display: flex;
   flex-direction: row;
-  // width: 100%;
   height: fit-content;
   margin: 0.5rem;
 
@@ -28,9 +27,7 @@
   .message-icon {
     height: 3rem;
     width: 3rem;
-    // border: 2px solid black;
     border-radius: 1.5rem;
-    // background-color: $dark-background;
   }
 
   .message-content {
@@ -39,10 +36,5 @@
     margin-left: 1rem;
     word-break: break-all;
     width: 90%;
-  }
-
-  .message {
-    // word-wrap: break-word;
-    // width: 75%;
   }
 }
