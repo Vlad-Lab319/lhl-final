@@ -1,5 +1,5 @@
 const ClarionLogo = (props) => {
-  const { className } = props;
+  const { className, onClick } = props;
   return (
     <svg
       className={className}
@@ -8,6 +8,7 @@ const ClarionLogo = (props) => {
       height="3.38983in"
       viewBox="0 0 400 400"
       aria-labelledby="title"
+      onClick={onClick}
     >
       <title id="title">Clarion Logo</title>
       <path
