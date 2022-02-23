@@ -47,6 +47,8 @@ const ChannelList = (props) => {
         editChannel={editChannel}
         channel={channel}
         deleteChannel={deleteChannel}
+        user={user}
+        room={room}
       />
     );
   });
@@ -116,6 +118,7 @@ const ChannelList = (props) => {
                 friends={friends}
                 addUserToRoom={addUserToRoom}
                 room={room}
+                user={user}
                 editRoom={editRoom}
                 deleteRoom={deleteRoom}
               >
@@ -126,7 +129,7 @@ const ChannelList = (props) => {
           <div className="channel-list-separator" />
           {channels}
           {channels.length > 0 && <div className="channel-list-separator" />}
-          {addButton}
+          {user.id === room.user_id && addButton}
         </div>
       )}
     </div>

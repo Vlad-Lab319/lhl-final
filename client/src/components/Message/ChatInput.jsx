@@ -8,7 +8,6 @@ const ChatInput = (props) => {
     room,
     privateRoom,
     user,
-    friend,
     sendMessage,
     sendPrivateMessage,
     isPrivate,

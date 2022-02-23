@@ -102,8 +102,6 @@ const App = () => {
                 <Header
                   user={state.user}
                   logoutUser={() => logoutUser()}
-                  toggle={colorMode.toggleColorMode}
-                  theme={theme}
                   takeMeHome={() => takeMeHome()}
                 />
               </header>

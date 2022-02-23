@@ -9,7 +9,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  // justify-content: center;
   position: relative;
   width: 100%;
   height: 100%;
@@ -21,14 +20,10 @@
     justify-content: center;
     align-items: center;
     width: 40rem;
-    // height: 40rem;
     margin: 1rem;
   }
 
   .logo-text {
-    // font-family: "Redressed", cursive;
-    // font-family: "Lobster", cursive;
-    // font-family: "Permanent Marker", cursive;
     font-family: "Righteous", cursive;
     margin: 0.5rem;
     text-align: center;
@@ -76,7 +71,6 @@
   }
 
   .input-label {
-    // width: 5rem;
   }
 
   .input-item {

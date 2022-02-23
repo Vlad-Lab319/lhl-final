@@ -1,4 +1,3 @@
-// import classNames from "classnames";
 import MessageListItem from "../MessageListItem";
 import "./MessageList.scss";
 

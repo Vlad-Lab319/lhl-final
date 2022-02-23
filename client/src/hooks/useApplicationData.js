@@ -47,6 +47,13 @@ export default function useApplicationData() {
           };
         });
 
+        const userRooms = rooms.map((room) => room.id);
+
+        dispatch({
+          type: r.SET_USER,
+          value: { ...user, memberOfRooms: userRooms },
+        });
+
         dispatch({
           type: r.SET_APPLICATION_DATA,
           value: {
@@ -172,8 +179,10 @@ export default function useApplicationData() {
   };
 
   useEffect(() => {
-    socketMan(state.user);
-    initialFetch(state.user);
+    (async () => {
+      await initialFetch(state.user);
+      socketMan(state.user);
+    })();
   }, [state.user.id]);
 
   //-------------------------LOGIN/LOGOUT---------------------------------------
@@ -200,18 +209,19 @@ export default function useApplicationData() {
         email,
         password,
       });
-      console.log(action);
       dispatch(action);
     } catch (err) {
       console.log(err);
     }
   };
+
   const logoutUser = () => {
     dispatch({ type: r.LOGOUT });
-    if (state.socket) {
+    if (state.socket && state.socket.connected) {
       state.socket.disconnect();
     }
   };
+
   const clearErrors = () => {
     dispatch({ type: r.SET_ERRORS, value: null });
   };
@@ -356,7 +366,6 @@ export default function useApplicationData() {
 
   const sendMessage = async (messageData) => {
     const { data: message } = await axios.post(`/api/messages`, messageData);
-    console.log(message);
     dispatch({
       type: r.ADD_MESSAGES,
       value: message[0],

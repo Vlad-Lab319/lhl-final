@@ -10,6 +10,10 @@
   color: white;
   background-color: $dark-background;
   height: $header-height;
+
+  svg {
+    cursor: pointer;
+  }
 }
 
 .container {

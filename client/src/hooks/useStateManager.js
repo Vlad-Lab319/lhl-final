@@ -97,7 +97,6 @@ export default function useStateManager() {
           rooms: action.value,
         };
       case r.SET_ROOM_SEEN:
-        console.log(action.value);
         if (action.value.id) {
           const roomsCopySeen = [...state.rooms];
           const updatedRoomsSeen = roomsCopySeen.map((room) => {
@@ -106,11 +105,9 @@ export default function useStateManager() {
               : { ...room };
           });
 
-          console.log(updatedRoomsSeen);
           const room = updatedRoomsSeen.find((room) => {
             return room.id === action.value.id;
           });
-          console.log(room);
           axios.post("/api/messages/public/seen", {
             user_id: state.user.id,
             room_id: action.value.id,
