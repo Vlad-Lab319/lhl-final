@@ -11,6 +11,7 @@ export default function MenuList(props) {
     friends,
     addUserToRoom,
     room,
+    user,
     editRoom,
     deleteRoom,
   } = props;
@@ -61,8 +62,12 @@ export default function MenuList(props) {
             addUserToRoom={addUserToRoom}
             room={room}
           />
-          <MenuItem onClick={toggleOpenEdit}>Edit</MenuItem>
-          <DeleteRoom room={room} deleteRoom={deleteRoom} />
+          {user.id === room.user_id && (
+            <>
+              <MenuItem onClick={toggleOpenEdit}>Edit</MenuItem>
+              <DeleteRoom room={room} deleteRoom={deleteRoom} />
+            </>
+          )}
         </Menu>
       </Box>
       <EditRoom

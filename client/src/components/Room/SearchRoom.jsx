@@ -4,6 +4,7 @@ import {
   Card,
   CardActionArea,
   CardContent,
+  Grid,
   IconButton,
   Typography,
 } from "@mui/material";
@@ -94,8 +95,22 @@ const SearchRoom = (props) => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={closeDialog}>Cancel</Button>
-          <Button onClick={handleSubmit}>Join</Button>
+          <Grid container direction="row" justifyContent="space-around">
+            <Grid item>
+              <Button variant="contained" color="error" onClick={closeDialog}>
+                Cancel
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                variant="contained"
+                color="success"
+                onClick={handleSubmit}
+              >
+                Join
+              </Button>
+            </Grid>
+          </Grid>
         </DialogActions>
       </Dialog>
     </>
