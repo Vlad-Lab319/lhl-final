@@ -27,6 +27,7 @@ const Register = (props) => {
             className="login-input"
             name="name"
             type="text"
+            minlength="5"
             value={name}
             placeholder="Username"
             onChange={(e) => {
