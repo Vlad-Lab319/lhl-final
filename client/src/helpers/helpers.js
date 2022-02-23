@@ -37,7 +37,7 @@ const formatName = (name) => {
     return newName
       .split(" ")
       .map((word, index) => {
-        if (index < 3) {
+        if (index < 2) {
           return word.length > 1 ? word[0].toUpperCase() : word.toUpperCase();
         }
       })
