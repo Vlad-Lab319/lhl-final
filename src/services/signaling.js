@@ -2,12 +2,12 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 
 var firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.FIREBASE_PROJECT_ID,
-  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.FIREBASE_APP_ID,
+  apiKey: "AIzaSyAJ8IqOFiPI2duV_wvRv0oVTL9a6SMs31U",
+    authDomain: "webrtc-lhl-final.firebaseapp.com",
+    projectId: "webrtc-lhl-final",
+    storageBucket: "webrtc-lhl-final.appspot.com",
+    messagingSenderId: "860225798938",
+    appId: "1:860225798938:web:78fd53032b7826583da2a3"
 };
 
 if (!firebase.apps.length) {
