@@ -387,7 +387,6 @@ export default function useApplicationData() {
   };
 
   const sendPrivateMessage = async (messageData) => {
-    console.log("Message Data: ", messageData);
     const { user_id, private_room_id, message, participants } = messageData;
     const res = await axios.post(`/api/messages/private`, {
       user_id,
@@ -407,7 +406,6 @@ export default function useApplicationData() {
 
   const createRoom = async (roomData, user) => {
     const { data: room } = await axios.post(`/api/rooms`, roomData);
-    console.log(room);
     dispatch({
       type: r.ADD_ROOMS,
       value: { ...room[0], messageCount: 0, messagesSeen: 0 },
@@ -419,7 +417,6 @@ export default function useApplicationData() {
     const userCopy = {
       ...user,
     };
-    console.log("USER: ", user);
     userCopy.memberOfRooms.push(room[0].id);
     dispatch({
       type: r.SET_USER,
@@ -470,7 +467,6 @@ export default function useApplicationData() {
     const userCopy = {
       ...user,
     };
-    console.log("USER: ", user);
     userCopy.memberOfRooms.push(roomID);
     dispatch({
       type: r.SET_USER,
