@@ -129,7 +129,7 @@ const ChannelList = (props) => {
           <div className="channel-list-separator" />
           {channels}
           {channels.length > 0 && <div className="channel-list-separator" />}
-          {addButton}
+          {user.id === room.user_id && addButton}
         </div>
       )}
     </div>
