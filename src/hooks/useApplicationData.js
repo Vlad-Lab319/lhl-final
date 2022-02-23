@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import io from "socket.io-client";
 import useStateManager from "./useStateManager";
+import { API_URL } from "../utilities/constants";
 
 export default function useApplicationData() {
   const { state, dispatch, r } = useStateManager();
@@ -20,14 +21,14 @@ export default function useApplicationData() {
           { data: privateMessages },
           { data: messagesSeen },
         ] = await Promise.all([
-          axios.get(`/api/users/`),
-          axios.get(`/api/rooms/${user.id}`),
-          axios.get(`/api/channels/${user.id}`),
-          axios.get(`/api/messages/`),
-          axios.get(`/api/users/friends/${user.id}`),
-          axios.get(`/api/users/friends/requests/${user.id}`),
-          axios.get(`/api/messages/private/${user.id}`),
-          axios.get(`/api/messages/seen/public/${user.id}`),
+          axios.get(`${API_URL}/api/users/`),
+          axios.get(`${API_URL}/api/rooms/${user.id}`),
+          axios.get(`${API_URL}/api/channels/${user.id}`),
+          axios.get(`${API_URL}/api/messages/`),
+          axios.get(`${API_URL}/api/users/friends/${user.id}`),
+          axios.get(`${API_URL}/api/users/friends/requests/${user.id}`),
+          axios.get(`${API_URL}/api/messages/private/${user.id}`),
+          axios.get(`${API_URL}/api/messages/seen/public/${user.id}`),
         ]);
 
         const messageCountRooms = rooms.map((room) => {
@@ -101,10 +102,10 @@ export default function useApplicationData() {
       });
 
       socket.on("updateRooms", async (id) => {
-        const { data: rooms } = await axios.get(`/api/rooms/${state.user.id}`);
-        const { data: messages } = await axios.get(`/api/messages/`);
+        const { data: rooms } = await axios.get(`${API_URL}/api/rooms/${state.user.id}`);
+        const { data: messages } = await axios.get(`${API_URL}/api/messages/`);
         const { data: messagesSeen } = await axios.get(
-          `/api/messages/seen/public/${user.id}`
+          `${API_URL}/api/messages/seen/public/${user.id}`
         );
         const messageCountRooms = rooms.map((room) => {
           return {
@@ -136,7 +137,7 @@ export default function useApplicationData() {
       });
 
       socket.on("updateChannels", () => {
-        axios.get(`/api/channels/${user.id}`).then((channels) => {
+        axios.get(`${API_URL}/api/channels/${user.id}`).then((channels) => {
           dispatch({
             type: r.SET_CHANNELS,
             value: channels.data,
@@ -199,7 +200,7 @@ export default function useApplicationData() {
     try {
       const {
         data: { type, value },
-      } = await axios.post(`api/users/register`, {
+      } = await axios.post(`${API_URL}api/users/register`, {
         name,
         email,
         password,
@@ -213,7 +214,7 @@ export default function useApplicationData() {
   const loginUser = async (email, password) => {
     clearErrors();
     try {
-      const { data: action } = await axios.post(`api/users/login`, {
+      const { data: action } = await axios.post(`${API_URL}api/users/login`, {
         email,
         password,
       });
@@ -248,7 +249,7 @@ export default function useApplicationData() {
           type: r.PRIVATE_ROOMS,
           value: { ...room, messagesSeen: privateRoom.messageCount },
         });
-        await axios.post(`/api/messages/private/seen`, {
+        await axios.post(`${API_URL}/api/messages/private/seen`, {
           user_id: user.id,
           private_room_id: privateRoom.id,
           messages_seen: privateRoom.messageCount,
@@ -311,7 +312,7 @@ export default function useApplicationData() {
   const setPrivateRoom = async (user, friend) => {
     const {
       data: { id, participants },
-    } = await axios.get(`api/users/privateroom/${user.id}/${friend.id}`);
+    } = await axios.get(`${API_URL}api/users/privateroom/${user.id}/${friend.id}`);
     dispatch({
       type: r.SET_DIRECT_MESSAGE,
       value: true,
@@ -351,19 +352,19 @@ export default function useApplicationData() {
   // -----------------------------WEBSOCKET-------------------------------------
 
   const sendFriendRequest = async (user_id, friend_id) => {
-    await axios.post("/api/users/friends/add", { user_id, friend_id });
+    await axios.post(`${API_URL}/api/users/friends/add`, { user_id, friend_id });
     state.socket.emit("sendfriendrequest", { value: { user_id, friend_id } });
   };
 
   const cancelFriendRequest = async (user_id, friend_id) => {
-    await axios.post("/api/users/friends/delete", { user_id, friend_id });
+    await axios.post(`${API_URL}/api/users/friends/delete`, { user_id, friend_id });
     state.socket.emit("cancelfriendrequest", {
       value: { user_id, friend_id },
     });
   };
 
   const acceptFriendRequest = async (user_id, friend_id) => {
-    await axios.post("/api/users/friends/accept", { user_id, friend_id });
+    await axios.post(`${API_URL}/api/users/friends/accept`, { user_id, friend_id });
     state.socket.emit("acceptfriendrequest", {
       value: { user_id, friend_id },
     });
@@ -373,7 +374,7 @@ export default function useApplicationData() {
   };
 
   const sendMessage = async (messageData) => {
-    const { data: message } = await axios.post(`/api/messages`, messageData);
+    const { data: message } = await axios.post(`${API_URL}/api/messages`, messageData);
     dispatch({
       type: r.ADD_MESSAGES,
       value: message[0],
@@ -391,7 +392,7 @@ export default function useApplicationData() {
 
   const sendPrivateMessage = async (messageData) => {
     const { user_id, private_room_id, message, participants } = messageData;
-    const res = await axios.post(`/api/messages/private`, {
+    const res = await axios.post(`${API_URL}/api/messages/private`, {
       user_id,
       private_room_id,
       message,
@@ -408,7 +409,7 @@ export default function useApplicationData() {
   };
 
   const createRoom = async (roomData, user) => {
-    const { data: room } = await axios.post(`/api/rooms`, roomData);
+    const { data: room } = await axios.post(`${API_URL}/api/rooms`, roomData);
     dispatch({
       type: r.ADD_ROOMS,
       value: { ...room[0], messageCount: 0, messagesSeen: 0 },
@@ -431,31 +432,31 @@ export default function useApplicationData() {
   };
 
   const editRoom = (roomData, id) => {
-    return axios.post(`/api/rooms/edit`, { ...roomData, id }).then(() => {
+    return axios.post(`${API_URL}/api/rooms/edit`, { ...roomData, id }).then(() => {
       state.socket.emit("updateRooms", { id });
     });
   };
 
   const deleteRoom = (id) => {
-    return axios.post(`/api/rooms/delete`, { id }).then(() => {
+    return axios.post(`${API_URL}/api/rooms/delete`, { id }).then(() => {
       state.socket.emit("updateRooms", { id });
     });
   };
 
   const editChannel = (name, id) => {
-    return axios.post(`/api/channels/edit`, { name, id }).then(() => {
+    return axios.post(`${API_URL}/api/channels/edit`, { name, id }).then(() => {
       state.socket.emit("updateChannels");
     });
   };
 
   const deleteChannel = (id) => {
-    return axios.post(`/api/channels/delete`, { id }).then(() => {
+    return axios.post(`${API_URL}/api/channels/delete`, { id }).then(() => {
       state.socket.emit("updateChannels");
     });
   };
 
   const createChannel = (channelData) => {
-    return axios.post(`/api/channels`, channelData).then((channel) => {
+    return axios.post(`${API_URL}/api/channels`, channelData).then((channel) => {
       dispatch({
         type: r.ADD_CHANNELS,
         value: channel.data[0],
@@ -465,7 +466,7 @@ export default function useApplicationData() {
   };
 
   const addUserToRoom = async (user, roomID) => {
-    await axios.post("/api/rooms/adduser", { userID: user.id, roomID });
+    await axios.post(`${API_URL}/api/rooms/adduser`, { userID: user.id, roomID });
     state.socket.emit("updateRooms", { id: roomID });
     const userCopy = {
       ...user,
@@ -478,7 +479,7 @@ export default function useApplicationData() {
     state.socket.emit("updateRoomMembership", {
       user: userCopy,
     });
-    const { data: messages } = await axios.get(`/api/messages/`);
+    const { data: messages } = await axios.get(`${API_URL}/api/messages/`);
     dispatch({ type: r.SET_MESSAGES, value: messages });
   };
 
