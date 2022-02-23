@@ -73,6 +73,15 @@ const getUserBySocket = (socketID) => {
 io.on("connection", (socket) => {
   socket.on("updateActiveUsers", (action) => {
     users[action.value.id] = { ...action.value, socketID: socket.id };
+    console.log("UPDATE ACTIVE USERS: ", users);
+    io.emit("updateActiveUsers", {
+      type: r.SET_ACTIVE_USERS,
+      value: users,
+    });
+  });
+
+  socket.on("updateRoomMembership", (action) => {
+    users[action.user.id] = { ...action.user, socketID: socket.id };
     io.emit("updateActiveUsers", {
       type: r.SET_ACTIVE_USERS,
       value: users,

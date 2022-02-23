@@ -48,10 +48,15 @@ export default function useApplicationData() {
         });
 
         const userRooms = rooms.map((room) => room.id);
-
+        const updatedUser = {
+          ...user,
+          channel_id: null,
+          room_id: null,
+          memberOfRooms: userRooms,
+        };
         dispatch({
           type: r.SET_USER,
-          value: { ...user, memberOfRooms: userRooms },
+          value: updatedUser,
         });
 
         dispatch({
@@ -66,6 +71,7 @@ export default function useApplicationData() {
             privateMessages,
           },
         });
+        socketMan(updatedUser);
       } catch (err) {
         console.log(err);
       }
@@ -124,19 +130,6 @@ export default function useApplicationData() {
           type: r.SET_ROOM,
           value: messageSeenRooms.find((room) => room.id === id.id) || {},
         });
-
-        const updatedUser = {
-          ...state.user,
-          memberOfRooms: [...state.user.memberOfRooms, id.id],
-        };
-        dispatch({
-          type: r.SET_USER,
-          value: updatedUser,
-        });
-        socket.emit("updateActiveUsers", {
-          type: r.SET_ACTIVE_USERS,
-          value: updatedUser,
-        });
       });
 
       socket.on("updateChannels", () => {
@@ -194,7 +187,6 @@ export default function useApplicationData() {
   useEffect(() => {
     (async () => {
       await initialFetch(state.user);
-      socketMan(state.user);
     })();
   }, [state.user.id]);
 
@@ -422,6 +414,17 @@ export default function useApplicationData() {
       dispatch({
         type: r.SET_ROOM_SEEN,
         value: { id: room.data[0].id },
+      });
+      const userCopy = {
+        ...state.user,
+      };
+      userCopy.memberOfRooms.push(room.data[0].id);
+      dispatch({
+        type: r.SET_USER,
+        value: userCopy,
+      });
+      state.socket.emit("updateRoomMembership", {
+        user: userCopy,
       });
     });
   };
