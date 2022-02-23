@@ -124,6 +124,19 @@ export default function useApplicationData() {
           type: r.SET_ROOM,
           value: messageSeenRooms.find((room) => room.id === id.id) || {},
         });
+
+        const updatedUser = {
+          ...state.user,
+          memberOfRooms: [...state.user.memberOfRooms, id.id],
+        };
+        dispatch({
+          type: r.SET_USER,
+          value: updatedUser,
+        });
+        socket.emit("updateActiveUsers", {
+          type: r.SET_ACTIVE_USERS,
+          value: updatedUser,
+        });
       });
 
       socket.on("updateChannels", () => {
