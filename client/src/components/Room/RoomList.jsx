@@ -76,7 +76,7 @@ const RoomList = (props) => {
       checked,
       icon: null,
     };
-    createRoom(roomData);
+    createRoom(roomData, user);
     toggleNewRoom();
   }
 

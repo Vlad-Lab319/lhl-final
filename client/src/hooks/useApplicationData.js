@@ -405,27 +405,28 @@ export default function useApplicationData() {
     });
   };
 
-  const createRoom = (roomData) => {
-    return axios.post(`/api/rooms`, roomData).then((room) => {
-      dispatch({
-        type: r.ADD_ROOMS,
-        value: { ...room.data[0], messageCount: 0, messagesSeen: 0 },
-      });
-      dispatch({
-        type: r.SET_ROOM_SEEN,
-        value: { id: room.data[0].id },
-      });
-      const userCopy = {
-        ...state.user,
-      };
-      userCopy.memberOfRooms.push(room.data[0].id);
-      dispatch({
-        type: r.SET_USER,
-        value: userCopy,
-      });
-      state.socket.emit("updateRoomMembership", {
-        user: userCopy,
-      });
+  const createRoom = async (roomData, user) => {
+    const { data: room } = await axios.post(`/api/rooms`, roomData);
+    console.log(room);
+    dispatch({
+      type: r.ADD_ROOMS,
+      value: { ...room[0], messageCount: 0, messagesSeen: 0 },
+    });
+    dispatch({
+      type: r.SET_ROOM_SEEN,
+      value: { id: room[0].id },
+    });
+    const userCopy = {
+      ...user,
+    };
+    console.log("USER: ", user);
+    userCopy.memberOfRooms.push(room[0].id);
+    dispatch({
+      type: r.SET_USER,
+      value: userCopy,
+    });
+    state.socket.emit("updateRoomMembership", {
+      user: userCopy,
     });
   };
 
