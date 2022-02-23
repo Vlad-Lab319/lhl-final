@@ -130,6 +130,9 @@ export default function useApplicationData() {
           type: r.SET_ROOM,
           value: messageSeenRooms.find((room) => room.id === id.id) || {},
         });
+        if (!messageSeenRooms.find((room) => room.id === id.id)) {
+          dispatch({ type: r.SET_CHANNEL, value: {} });
+        }
       });
 
       socket.on("updateChannels", () => {
