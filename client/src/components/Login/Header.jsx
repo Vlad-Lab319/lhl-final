@@ -12,9 +12,7 @@ const Header = (props) => {
   return (
     <div className="container">
       <div className="nav-options">
-        <IconButton onClick={takeMeHome} disableRipple={true}>
-          <ClarionLogo className="clarion-small" />
-        </IconButton>
+        <ClarionLogo className="clarion-small" onClick={takeMeHome} />
       </div>
       <div className="user-options">
         {user ? (
