@@ -41,6 +41,7 @@ const io = new Server(server, {
 });
 
 const users = {};
+
 const reducerVariables = {
   SET_SOCKET: "SET_SOCKET",
   SET_USER: "SET_USER",
@@ -172,7 +173,16 @@ io.on("connection", (socket) => {
   });
 
   socket.on("message", (messageData) => {
-    socket.broadcast.emit("message", messageData);
+    const receivingUsers = Object.values(users).filter((user) => {
+      return user.memberOfRooms.includes(messageData.room_id);
+    });
+
+    receivingUsers.forEach((user) => {
+      if (user.id !== messageData.user_id) {
+        io.to(user.socketID).emit("message", messageData);
+      }
+    });
+    // socket.broadcast.emit("message", messageData);
   });
 
   socket.on("privatemessage", (messageData) => {
